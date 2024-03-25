@@ -41,7 +41,7 @@ docker-compose up -d
 1. default database: cs732
 
 ## MongoDB Admin Portal
-http://localhost:8081/ 
+http://localhost:8080/ 
 
 username: `dev`, password:`dev`
 
