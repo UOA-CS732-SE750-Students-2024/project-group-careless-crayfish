@@ -33,3 +33,15 @@ You must install Docker Desktop before running the following command
 ```bash
 docker-compose up -d
 ```
+
+# Usage
+## MongoDB
+1. default username: devroot
+1. default password: devroot
+1. default database: cs732
+
+## MongoDB Admin Portal
+http://localhost:8081/ 
+
+username: `dev`, password:`dev`
+
