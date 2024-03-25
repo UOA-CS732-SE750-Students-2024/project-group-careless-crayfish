@@ -10,4 +10,38 @@ Your team members are:
 - Yangcheng Zhou
 - Mark Zhu
 
-![](./group-image/Careless%20Crayfish.webp)
+<img src="./group-image/Careless%20Crayfish.webp" alt="Careless Crayfish" width="100px" height="100px">
+
+
+# Provision development environment (linux/Mac)
+## Install nvm
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+```
+
+## Provision nodejs
+```bash
+nvm install 20.11.1
+nvm use
+```
+
+## Install docker
+please google `Docker Desktop install`
+
+## Privison database
+You must install Docker Desktop before running the following command
+```bash
+docker-compose up -d
+```
+
+# Usage
+## MongoDB
+1. default username: devroot
+1. default password: devroot
+1. default database: cs732
+
+## MongoDB Admin Portal
+http://localhost:8080/ 
+
+username: `dev`, password:`dev`
+
