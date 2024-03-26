@@ -45,3 +45,8 @@ http://localhost:8080/
 
 username: `dev`, password:`dev`
 
+# Build docker image locally
+Run the following command under the root directory
+```
+sh scripts/build.sh
+```
