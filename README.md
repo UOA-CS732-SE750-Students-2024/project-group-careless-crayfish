@@ -11,37 +11,62 @@ Your team members are:
 - Yangcheng Zhou
 - Mark Zhu
 
-![](./group-image/Careless%20Crayfish.webp)
+<img src="./group-image/Careless%20Crayfish.webp" alt="Careless Crayfish" width="100px" height="100px">
 
 
-## How to set up project locally
+# Provision development environment (linux/Mac)
 
-### Prerequisites
+## Install nvm
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+```
 
-1. node 20.11.1 is known to work
-
-under project root folder:
-
-### setup frontend
+## Provision nodejs
+```bash
+nvm install 20.11.1
+nvm use
+```
+## setup frontend
 
 1. cd ./frontend
 2. npm install
 
-### setup backend
+## setup backend
 
 1. cd ./backend
 2. npm install
 
-## How to run automated tests
+## Install docker
+please google `Docker Desktop install`
 
-### frontend
+## Privison database
+You must install Docker Desktop before running the following command
+```bash
+docker-compose up -d
+```
+
+
+# Usage
+## MongoDB
+1. default username: devroot
+1. default password: devroot
+1. default database: cs732
+
+## MongoDB Admin Portal
+http://localhost:8080/ 
+
+username: `dev`, password:`dev`
+
+# How to run automated tests
+
+## frontend
 
 1. cd ./frontend
 2. npm test
 
-### backend
+## backend
 
 1. cd ./backend
 2. npm test
 
-### Github Actions used to build/test/deploy the app.
+
