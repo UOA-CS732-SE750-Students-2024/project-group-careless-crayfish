@@ -3,6 +3,7 @@
 Welcome to the project! I look forward to seeing your progress and your final results this semester!
 
 Your team members are:
+
 - Yongbin Yang
 - Hongjian Chen
 - Xinyuan Zeng
@@ -14,6 +15,7 @@ Your team members are:
 
 
 # Provision development environment (linux/Mac)
+
 ## Install nvm
 ```bash
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
@@ -24,6 +26,15 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 nvm install 20.11.1
 nvm use
 ```
+## setup frontend
+
+1. cd ./frontend
+2. npm install
+
+## setup backend
+
+1. cd ./backend
+2. npm install
 
 ## Install docker
 please google `Docker Desktop install`
@@ -44,6 +55,18 @@ docker-compose up -d
 http://localhost:8080/ 
 
 username: `dev`, password:`dev`
+
+# How to run automated tests
+
+## frontend
+
+1. cd ./frontend
+2. npm test
+
+## backend
+
+1. cd ./backend
+2. npm test
 
 # Docker image
 ## Build docker image locally

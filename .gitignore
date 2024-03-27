@@ -1,5 +1,4 @@
 node_modules/
-**/node_modules/**
 
 .idea
 *.iml
@@ -13,3 +12,8 @@ logs
 reports/
 target/
 dist/
+
+node_modules
+build
+coverage
+test-results
