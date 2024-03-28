@@ -45,8 +45,7 @@ You must install Docker Desktop before running the following command
 docker-compose up -d
 ```
 
-
-# Usage
+# Locally Available Developer Tools
 ## MongoDB
 1. default username: devroot
 1. default password: devroot
@@ -69,4 +68,19 @@ username: `dev`, password:`dev`
 1. cd ./backend
 2. npm test
 
+# Docker image
+## Build docker image locally
+Run the following command under the root directory
+```
+sh scripts/build.sh
+```
+A docker image `cs732-careless-crayfish` will be created locally
 
+## Run the image
+### Provision the newly built docker image
+```
+docker run -p 8001:3000 -p 8000:5000 -d cs732-careless-crayfish
+```
+### Verify the instance of the image is up and running
+1. Visit the backend: http://localhost:8001/api/users 
+1. Visit the frontend: http://localhost:8000/ 
