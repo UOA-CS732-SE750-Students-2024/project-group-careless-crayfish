@@ -13,14 +13,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20.11.1" # latest LTS at the time this is written.
-      - name: lint
-        working-directory: "./frontend/node_modules/.bin/eslint"
-        run: |
-          npm run lint
-      - name: build
+      - name: build & lint
         working-directory: "./frontend"
         run: |
           npm ci
+          npm run lint
           npm run build --if-present
       - name: test
         working-directory: "./frontend"
@@ -38,14 +35,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20.11.1" # latest LTS at the time this is written.
-      - name: lint
+      - name: build & lint
         working-directory: "./backend"
         run: |
-          npm run lint
-      - name: build
-        working-directory: "./backend/node_modules/.bin/eslint"
-        run: |
           npm ci
+          npm run lint
           npm run build --if-present
       - name: test
         working-directory: "./backend"
