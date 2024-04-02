@@ -1,4 +1,4 @@
 {
-    "verbose": true,
-    "rootDir": "./tests"
+  "verbose": true,
+  "rootDir": "./tests"
 }
