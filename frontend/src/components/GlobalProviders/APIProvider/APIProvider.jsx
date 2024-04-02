@@ -1,5 +1,6 @@
 import { createContext, useContext, useState } from "react";
 import axios from "axios";
+import { useSnackbar } from "@frontend-ui/components/Snackbar";
 
 const APIContext = createContext({});
 
@@ -8,6 +9,8 @@ export const useAPI = () => useContext(APIContext);
 const APIProvider = ({ children }) => {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
+  const { setOpen } = useSnackbar();
+
   const get = async (url) => {
     try {
       const response = await axios.get(url);
@@ -16,6 +19,7 @@ const APIProvider = ({ children }) => {
     } catch (error) {
       setError({ message: error.message, code: error.response?.status });
       setData(null);
+      setOpen(true);
     }
   };
   const post = async (url, body) => {
@@ -26,6 +30,7 @@ const APIProvider = ({ children }) => {
     } catch (error) {
       setError({ message: error.message, code: error.response?.status });
       setData(null);
+      setOpen(true);
     }
   };
   const del = async (url) => {
@@ -36,6 +41,7 @@ const APIProvider = ({ children }) => {
     } catch (error) {
       setError({ message: error.message, code: error.response?.status });
       setData(null);
+      setOpen(true);
     }
   };
   const put = async (url, body) => {
@@ -46,6 +52,7 @@ const APIProvider = ({ children }) => {
     } catch (error) {
       setError({ message: error.message, code: error.response?.status });
       setData(null);
+      setOpen(true);
     }
   };
   const patch = async (url, body) => {
@@ -56,6 +63,7 @@ const APIProvider = ({ children }) => {
     } catch (error) {
       setError({ message: error.message, code: error.response?.status });
       setData(null);
+      setOpen(true);
     }
   };
   return (

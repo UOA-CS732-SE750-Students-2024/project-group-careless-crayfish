@@ -11,6 +11,8 @@ const SnackbarContext = createContext({});
 export const useSnackbar = () => useContext(SnackbarContext);
 
 const SnackbarProvider = () => {
+  const [open, setOpen] = useState(false);
+
   const { error } = useAPI();
   const Alert = (props) => {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -48,10 +50,10 @@ const SnackbarProvider = () => {
   );
 
   return (
-    <SnackbarContext.Provider value={{}}>
+    <SnackbarContext.Provider value={{ setOpen }}>
       <MuiSnackbar
         aria-label={"Snackbar"}
-        open={!!error}
+        open={open}
         onClose={handleSnackbarClose}
         TransitionComponent={Collapse}
         ClickAwayListenerProps={{ mouseEvent: false }}

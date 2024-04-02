@@ -2,8 +2,6 @@ import { createContext, useContext, useState } from "react";
 import { MuiTheme, useAuth, useMuiTheme } from "../GlobalProviders";
 import {
   AppBar,
-  Button,
-  ClickAwayListener,
   Grid,
   ListItemButton,
   Menu,
