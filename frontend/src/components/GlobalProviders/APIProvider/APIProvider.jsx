@@ -19,7 +19,6 @@ const APIProvider = ({ children }) => {
     } catch (error) {
       setError({ message: error.message, code: error.response?.status });
       setData(null);
-      setOpen(true);
     }
   };
   const post = async (url, body) => {
@@ -67,7 +66,9 @@ const APIProvider = ({ children }) => {
     }
   };
   return (
-    <APIContext.Provider value={{ data, error, get, post, del, put, patch }}>
+    <APIContext.Provider
+      value={{ data, error, get, post, del, put, patch, setError }}
+    >
       {children}
     </APIContext.Provider>
   );

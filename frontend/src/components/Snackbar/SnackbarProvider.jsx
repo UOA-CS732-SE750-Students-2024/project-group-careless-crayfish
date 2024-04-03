@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext } from "react";
 import { default as MuiSnackbar } from "@mui/material/Snackbar";
 import { Box, Collapse, IconButton } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
@@ -11,9 +11,7 @@ const SnackbarContext = createContext({});
 export const useSnackbar = () => useContext(SnackbarContext);
 
 const SnackbarProvider = () => {
-  const [open, setOpen] = useState(false);
-
-  const { error } = useAPI();
+  const { error, setError } = useAPI();
   const Alert = (props) => {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   };
@@ -24,7 +22,7 @@ const SnackbarProvider = () => {
       return;
     }
 
-    setOpen(false);
+    setError(null);
   };
 
   const renderErrorAlert = () => (
@@ -50,10 +48,10 @@ const SnackbarProvider = () => {
   );
 
   return (
-    <SnackbarContext.Provider value={{ setOpen }}>
+    <SnackbarContext.Provider value={{}}>
       <MuiSnackbar
         aria-label={"Snackbar"}
-        open={open}
+        open={!!error}
         onClose={handleSnackbarClose}
         TransitionComponent={Collapse}
         ClickAwayListenerProps={{ mouseEvent: false }}

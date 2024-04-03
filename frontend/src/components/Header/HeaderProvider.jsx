@@ -69,7 +69,7 @@ const HeaderProvider = () => {
 
           <Grid>
             <Box display="flex">
-              <Tooltip title={`menu toggle`}>
+              <Tooltip title={`account`}>
                 <ListItemButton
                   id="demo-positioned-button"
                   aria-controls={

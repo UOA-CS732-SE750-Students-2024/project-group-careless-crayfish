@@ -29,14 +29,14 @@ const AuthPageProvider = () => {
   const [emailValue, setEmailValue] = React.useState("");
   const [passwordValue, setPasswordValue] = React.useState("");
 
-  const { get } = useAPI();
-  const { login } = useAuth();
+  const { login, createUser, getUserById } = useAuth();
+
+  const { data, error } = useAPI();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     // TODO implement SSO login
-    await get("https://google.com");
   };
 
   return (
@@ -155,6 +155,27 @@ const AuthPageProvider = () => {
             >
               Skip Sign In
             </Button>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              onClick={async (e) => {
+                e.preventDefault();
+                await createUser();
+              }}
+            >
+              create test user(xqc)
+            </Button>
+            <Button
+              onClick={async (e) => {
+                e.preventDefault();
+                await getUserById("xqc");
+              }}
+            >
+              get test user
+            </Button>
+            <Typography>test user: {JSON.stringify(data)}</Typography>
           </Grid>
         </Grid>
       )}
