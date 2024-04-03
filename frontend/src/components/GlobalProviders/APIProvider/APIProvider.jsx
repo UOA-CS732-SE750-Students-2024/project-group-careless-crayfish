@@ -9,7 +9,6 @@ export const useAPI = () => useContext(APIContext);
 const APIProvider = ({ children }) => {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
-  const { setOpen } = useSnackbar();
 
   const get = async (url) => {
     try {
@@ -29,7 +28,6 @@ const APIProvider = ({ children }) => {
     } catch (error) {
       setError({ message: error.message, code: error.response?.status });
       setData(null);
-      setOpen(true);
     }
   };
   const del = async (url) => {
@@ -40,7 +38,6 @@ const APIProvider = ({ children }) => {
     } catch (error) {
       setError({ message: error.message, code: error.response?.status });
       setData(null);
-      setOpen(true);
     }
   };
   const put = async (url, body) => {
@@ -51,7 +48,6 @@ const APIProvider = ({ children }) => {
     } catch (error) {
       setError({ message: error.message, code: error.response?.status });
       setData(null);
-      setOpen(true);
     }
   };
   const patch = async (url, body) => {
@@ -62,7 +58,6 @@ const APIProvider = ({ children }) => {
     } catch (error) {
       setError({ message: error.message, code: error.response?.status });
       setData(null);
-      setOpen(true);
     }
   };
   return (
