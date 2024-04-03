@@ -1,6 +1,5 @@
 import { createContext, useContext, useState } from "react";
 import axios from "axios";
-import { useSnackbar } from "@frontend-ui/components/Snackbar";
 
 const APIContext = createContext({});
 

@@ -31,7 +31,7 @@ const AuthPageProvider = () => {
 
   const { login, createUser, getUserById } = useAuth();
 
-  const { data, error } = useAPI();
+  const { data } = useAPI();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
