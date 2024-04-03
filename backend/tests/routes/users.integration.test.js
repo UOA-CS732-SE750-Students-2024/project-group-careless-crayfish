@@ -1,6 +1,6 @@
 const request = require("supertest");
-const app = require("../app");
-const { UserDto } = require("../dtos/userDto");
+const app = require("../../app");
+const { UserDto } = require("../../dtos/userDto");
 
 jest.mock("mongoose");
 
