@@ -4,7 +4,7 @@ var logger = require("morgan");
 const cors = require("cors");
 
 var userController = require("./controllers/userControllers");
-const { connect } = require("./configs/mongoConnection");
+const { connect } = require("./daos/mongoConnection");
 const swaggerController = require("./controllers/swaggerController");
 
 var app = express();
