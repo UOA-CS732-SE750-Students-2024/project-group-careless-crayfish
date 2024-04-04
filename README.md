@@ -38,7 +38,9 @@ nvm use
 1. `cd ./backend`
 2. `npm install`
 
-## Install Docker & Docker Desktop(if you use windows)
+## Install Docker Desktop(windows)
+
+install docker desktop: https://docs.docker.com/desktop/install/windows-install/#:~:text=Download%20the%20installer%20using%20the,Program%20Files%5CDocker%5CDocker%20.
 
 # How to start local development
 
@@ -68,7 +70,7 @@ under `./script` folder, run
 
 ## MongoDB Admin Portal
 
-http://localhost:8080/
+http://localhost:8080/db/admin/
 
 username: `dev`, password:`dev`
 
