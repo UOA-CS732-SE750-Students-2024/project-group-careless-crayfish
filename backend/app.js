@@ -3,9 +3,9 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const cors = require("cors");
 
-var userRoutes = require("./routes/userRoutes");
+var userController = require("./controllers/userControllers");
 const { connect } = require("./configs/mongoConnection");
-const swagger = require("./routes/swagger");
+const swaggerController = require("./controllers/swaggerController");
 
 var app = express();
 
@@ -17,9 +17,9 @@ app.use(cors());
 // Setup connection pool of mongoose.
 connect();
 
-app.use("/api/users", userRoutes);
+app.use("/api/users", userController);
 
 // setup swagger ui
-swagger(app);
+swaggerController(app);
 
 module.exports = app;

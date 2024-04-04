@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const userController = require("../controllers/userController");
+const userService = require("../services/userService");
 
 /**
  * @swagger
@@ -26,7 +26,14 @@ const userController = require("../controllers/userController");
  *       '500':
  *         description: Internal server error
  */
-router.post("/", userController.createUser);
+router.post("/", async function createUser(req, res) {
+  try {
+    const user = await userService.createUser(req.body);
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 /**
  * @swagger
@@ -50,7 +57,18 @@ router.post("/", userController.createUser);
  *       '500':
  *         description: Internal server error
  */
-router.get("/:userId", userController.getUserById);
+router.get("/:userId", async function getUserById(req, res) {
+  try {
+    const userId = req.params.userId;
+    const user = await userService.getUserById(userId);
+    if (!user) {
+      res.status(404).json({ error: "user not found" });
+    }
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 // Add other routes as needed
 

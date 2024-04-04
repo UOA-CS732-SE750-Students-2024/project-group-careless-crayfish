@@ -107,8 +107,8 @@ docker run -p 8001:3000 -p 8000:5000 -d cs732-careless-crayfish
 
 ## optionally, if you make a commit and push to origin, Github Actions will trigger with the `./github/workflow/ci.yml` workflow which runs all automated tests for frontend and backend.
 
-
 # Swagger UI API documentation
+
 1. spin up backend node server locally
 2. go to http://localhost:3000/api/api-docs
 3. view and trigger apis for testing
