@@ -29,7 +29,7 @@ const userService = require("../services/userService");
 router.post("/", async function createUser(req, res) {
   try {
     const user = await userService.createUser(req.body);
-    res.json(user);
+    res.status(201).json(user);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
