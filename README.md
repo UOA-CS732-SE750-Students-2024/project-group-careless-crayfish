@@ -28,39 +28,39 @@ nvm install 20.11.1
 nvm use
 ```
 
-## setup frontend
+## setup frontend react project
 
 1. `cd ./frontend`
 2. `npm install`
 
-## setup backend
+## setup backend node project
 
 1. `cd ./backend`
 2. `npm install`
 
-## run frontend
+## Install Docker & Docker Desktop(if you use windows)
+
+# How to start local development
+
+## run frontend react
 
 1. `cd ./frontend`
 2. `npm run dev`
 
-## run backend
+## run backend node
 
 1. `cd ./backend`
 2. `npm start`
 
-# Install Docker
+## run mongodb containers through docker-compose
 
-please google `Docker Desktop install`
-
-## Set up and run mongodb with docker-compose locally.
-
-You must install Docker Desktop before running the following command
+under `./script` folder, run
 
 ```bash
-docker-compose up -d
+./start.sh
 ```
 
-## MongoDB
+# MongoDB configs
 
 1. default username: devroot
 1. default password: devroot
@@ -72,15 +72,13 @@ http://localhost:8080/
 
 username: `dev`, password:`dev`
 
-# How to build and run docker image locally
+# Code deployment
 
-Run the following command under the root directory
+Run the following command under the root directory which builds a docker image `cs732-careless-crayfish` for react, node & mongodb
 
 ```
 sh scripts/build.sh
 ```
-
-A docker image `cs732-careless-crayfish` will be created locally
 
 ## Run the image
 
@@ -91,7 +89,8 @@ docker run -p 8001:3000 -p 8000:5000 -d cs732-careless-crayfish
 ### Verify the instance of the image is up and running
 
 1. Visit the backend: http://localhost:8001/api/users
-1. Visit the frontend: http://localhost:8000/
+2. Visit the frontend: http://localhost:8000/
+3. Visit mongodb admin portal: http://localhost:8080 with username: dev, password: dev
 
 # How to run automated tests
 
@@ -107,8 +106,9 @@ docker run -p 8001:3000 -p 8000:5000 -d cs732-careless-crayfish
 
 ## optionally, if you make a commit and push to origin, Github Actions will trigger with the `./github/workflow/ci.yml` workflow which runs all automated tests for frontend and backend.
 
-# Swagger UI API documentation
+# How to test your node apis
 
-1. spin up backend node server locally
-2. go to http://localhost:3000/api/api-docs
-3. view and trigger apis for testing
+1. spin up backend node server locally by running `npm start` under `./backend`
+2. spin up mongodb database docker container by
+3. go to http://localhost:3000/api/api-docs
+4. view and call apis for testing
