@@ -1,16 +1,22 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Login from "./login";
-import Dashboard from "./dashboard";
+import {
+  LocalStorageProvider,
+  RouteProvider,
+  ThemeProvider,
+  AuthProvider,
+  APIProvider,
+} from "./components/GlobalProviders";
+import { SnackbarProvider } from "./components/Snackbar";
 
-function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-      </Routes>
-    </BrowserRouter>
-  );
-}
-
+const App = () => (
+  <LocalStorageProvider>
+    <ThemeProvider>
+      <APIProvider>
+        <AuthProvider>
+          <RouteProvider />
+          <SnackbarProvider />
+        </AuthProvider>
+      </APIProvider>
+    </ThemeProvider>
+  </LocalStorageProvider>
+);
 export default App;

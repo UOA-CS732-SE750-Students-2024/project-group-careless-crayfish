@@ -1,34 +1,30 @@
 name: Node.js CI
-# triggers on pr to main branch and pushes to main branch
+# triggers on push to any branch
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
 jobs:
-# TODO modify frontend build steps
+  # TODO modify frontend build steps
   build-test-frontend:
-
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20.11.1' # latest LTS at the time this is written.
-      - name: build
+          node-version: "20.11.1" # latest LTS at the time this is written.
+      - name: build & lint
         working-directory: "./frontend"
-        run: | 
-              npm ci
-              npm run build --if-present
+        run: |
+          npm ci
+          npm run lint
+          npm run build --if-present
       - name: test
         working-directory: "./frontend"
-        run: | 
+        run: |
+          npm test
 
-              npm test
-
-# TODO modify backend build steps
+  # TODO modify backend build steps
 
   build-test-backend:
     runs-on: ubuntu-latest
@@ -38,13 +34,14 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20.11.1' # latest LTS at the time this is written.
-      - name: build
+          node-version: "20.11.1" # latest LTS at the time this is written.
+      - name: build & lint
         working-directory: "./backend"
-        run: | 
-              npm ci
-              npm run build --if-present
+        run: |
+          npm ci
+          npm run lint
+          npm run build --if-present
       - name: test
         working-directory: "./backend"
-        run: | 
-              npm test
+        run: |
+          npm test

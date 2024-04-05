@@ -13,74 +13,104 @@ Your team members are:
 
 <img src="./group-image/Careless%20Crayfish.webp" alt="Careless Crayfish" width="100px" height="100px">
 
-
-# Provision development environment (linux/Mac)
+# How to set up development environment locally (linux/Mac)
 
 ## Install nvm
+
 ```bash
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 ```
 
 ## Provision nodejs
+
 ```bash
 nvm install 20.11.1
 nvm use
 ```
-## setup frontend
 
-1. cd ./frontend
-2. npm install
+## setup frontend react project
 
-## setup backend
+1. `cd ./frontend`
+2. `npm install`
 
-1. cd ./backend
-2. npm install
+## setup backend node project
 
-## Install docker
-please google `Docker Desktop install`
+1. `cd ./backend`
+2. `npm install`
 
-## Privison database
-You must install Docker Desktop before running the following command
+## Install Docker Desktop(windows)
+
+install docker desktop: https://docs.docker.com/desktop/install/windows-install/#:~:text=Download%20the%20installer%20using%20the,Program%20Files%5CDocker%5CDocker%20.
+
+# How to start local development
+
+## run frontend react
+
+1. `cd ./frontend`
+2. `npm run dev`
+
+## run backend node
+
+1. `cd ./backend`
+2. `npm start`
+
+## run mongodb containers through docker-compose
+
+under `./script` folder, run
+
 ```bash
-docker-compose up -d
+./start.sh
 ```
 
-# Locally Available Developer Tools
-## MongoDB
+# MongoDB configs
+
 1. default username: devroot
 1. default password: devroot
 1. default database: cs732
 
 ## MongoDB Admin Portal
-http://localhost:8080/ 
+
+http://localhost:8080/db/admin/
 
 username: `dev`, password:`dev`
+
+# Code deployment
+
+Run the following command under the root directory which builds a docker image `cs732-careless-crayfish` for react, node & mongodb
+
+```
+sh scripts/build.sh
+```
+
+## Run the image
+
+```
+docker run -p 8001:3000 -p 8000:5000 -d cs732-careless-crayfish
+```
+
+### Verify the instance of the image is up and running
+
+1. Visit the backend: http://localhost:8001/api/users
+2. Visit the frontend: http://localhost:8000/
+3. Visit mongodb admin portal: http://localhost:8080 with username: dev, password: dev
 
 # How to run automated tests
 
 ## frontend
 
-1. cd ./frontend
-2. npm test
+1. `cd ./frontend`
+2. `npm test`
 
 ## backend
 
-1. cd ./backend
-2. npm test
+1. `cd ./backend`
+2. `npm test`
 
-# Docker image
-## Build docker image locally
-Run the following command under the root directory
-```
-sh scripts/build.sh
-```
-A docker image `cs732-careless-crayfish` will be created locally
+## optionally, if you make a commit and push to origin, Github Actions will trigger with the `./github/workflow/ci.yml` workflow which runs all automated tests for frontend and backend.
 
-## Run the image
-### Provision the newly built docker image
-```
-docker run -p 8001:3000 -p 8000:5000 -d cs732-careless-crayfish
-```
-### Verify the instance of the image is up and running
-1. Visit the backend: http://localhost:8001/api/users 
-1. Visit the frontend: http://localhost:8000/ 
+# How to test your node apis
+
+1. spin up backend node server locally by running `npm start` under `./backend`
+2. spin up mongodb database docker container by
+3. go to http://localhost:3000/api/api-docs
+4. view and call apis for testing
