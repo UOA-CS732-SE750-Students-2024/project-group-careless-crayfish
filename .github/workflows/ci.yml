@@ -34,7 +34,6 @@ jobs:
         image: mongo
         ports:
           - 27017:27017
-        options: --health-cmd "mongostat --json" --health-interval 10s --health-timeout 5s --health-retries 5
         env:
           MONGO_INITDB_ROOT_USERNAME: devroot
           MONGO_INITDB_ROOT_PASSWORD: devroot
