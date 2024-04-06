@@ -93,15 +93,10 @@ npm start
 ## Test backend api endpoints
 
 **Prerequisite**: backend is up and running
-### option 1
 ```
 cd ./backend
 npm run test:e2e
 ```
-
-### option 2
-1. go to http://localhost:3000/api/api-docs
-1. view and call apis for testing
 
 ## Run unit tests
 
@@ -119,6 +114,22 @@ npm test
 
 Optionally, if you make a commit and push to origin, Github Actions will trigger with the `./github/workflow/ci.yml` workflow which runs all automated tests for frontend and backend.
 
+## Swagger endpoint
+http://localhost:3000/api/api-docs
+
+## Github Action local development
+Official Doc: https://github.com/nektos/act
+### install dependency (Mac)
+```
+brew install arc
+```
+
+### run github action locally
+```
+act # run all github actions
+act -j build-test-backen # run a specific github action
+```
+
 # MongoDB
 
 ## Login to MongoDB 
@@ -132,8 +143,9 @@ http://localhost:8080/db/admin/
 
 username: `dev`, password:`dev`
 
-# Code deployment
+# Build Docker Image
 
+## Build the image
 Run the following command under the root directory which builds a docker image `cs732-careless-crayfish` for react, node & mongodb
 
 ```
