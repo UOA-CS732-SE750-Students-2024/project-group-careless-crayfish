@@ -29,6 +29,16 @@ jobs:
   build-test-backend:
     runs-on: ubuntu-latest
 
+    services:
+      mongodb:
+        image: mongo
+        ports:
+          - 27017:27017
+        options: --health-cmd "mongostat --json" --health-interval 10s --health-timeout 5s --health-retries 5
+        env:
+          MONGO_INITDB_ROOT_USERNAME: devroot
+          MONGO_INITDB_ROOT_PASSWORD: devroot
+
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js
@@ -45,3 +55,9 @@ jobs:
         working-directory: "./backend"
         run: |
           npm test
+      - name: Enable backend service and test
+        working-directory: "./backend"
+        run: |
+          (npm run start&)
+          sleep 10
+          npm run test:e2e

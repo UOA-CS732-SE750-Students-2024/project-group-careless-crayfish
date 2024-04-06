@@ -8,6 +8,25 @@ Team members are:
 - Yangcheng Zhou
 - Mark Zhu
 
+# Useful commands
+## Useful backend commands
+>
+> Only available for backend project, which is under `./backend` directory
+
+1. `npm run start:dep`: provision mongodb and wiremock locally
+1. `npm start`: start the nodejs server
+1. `npm test`: start unit test
+1. `npm run test:e2e`: start e2e test with httpyac
+1. `npm run test:dev`: test against local backend with httpyac
+1. `npm run build:image`: build a docker image that contains both backend and frontend codes and code dependencies.
+
+## Useful frontend commands
+>
+> Only available for frontend project, which is under `./frontend` directory
+
+1. `npm run dev`: start frontend react service
+1. `npm test`: start unit test
+
 # Set up development environment locally
 
 ## Install nvm
@@ -41,7 +60,12 @@ npm install
 ### Windows
 follow the instruction [HERE](https://docs.docker.com/desktop/install/windows-install/#:~:text=Download%20the%20installer%20using%20the,Program%20Files%5CDocker%5CDocker%20)
 
-# How to start local development
+### Mac
+```
+brew install docker
+```
+
+# local development
 
 ## Provision development environment (mongodb, wiremock)
 ```
@@ -65,6 +89,35 @@ npm run dev
 cd ./backend
 npm start
 ```
+
+## Test backend api endpoints
+
+**Prerequisite**: backend is up and running
+### option 1
+```
+cd ./backend
+npm run test:e2e
+```
+
+### option 2
+1. go to http://localhost:3000/api/api-docs
+1. view and call apis for testing
+
+## Run unit tests
+
+### frontend
+```
+cd ./frontend
+npm test
+```
+
+### backend
+```
+cd ./backend
+npm test
+```
+
+Optionally, if you make a commit and push to origin, Github Actions will trigger with the `./github/workflow/ci.yml` workflow which runs all automated tests for frontend and backend.
 
 # MongoDB
 
@@ -99,25 +152,3 @@ docker run -p 8001:3000 -p 8000:5000 -d cs732-careless-crayfish
 2. Visit the frontend: http://localhost:8000/
 3. Visit mongodb admin portal: http://localhost:8080 with username: dev, password: dev
 
-# Run automated tests
-
-## frontend
-```
-cd ./frontend
-npm test
-```
-
-## backend
-```
-cd ./backend
-npm test
-```
-
-Optionally, if you make a commit and push to origin, Github Actions will trigger with the `./github/workflow/ci.yml` workflow which runs all automated tests for frontend and backend.
-
-# Test backend api endpoints
-
-1. spin up backend node server locally by running `npm start` under `./backend`
-2. spin up mongodb database docker container by
-3. go to http://localhost:3000/api/api-docs
-4. view and call apis for testing
