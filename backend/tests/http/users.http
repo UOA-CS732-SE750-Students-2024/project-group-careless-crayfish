@@ -1,0 +1,37 @@
+@uuid = {{$random.uuid}}
+@email = {{$random.email}}
+
+### Create user
+# @name newUser
+POST {{host}}/api/users
+Accept: application/json
+Content-Type: application/json
+
+{
+    "userId": "{{uuid}}",
+    "email": "{{email}}"
+}
+
+## ====
+## Example
+## ====
+## Verify http response status code
+?? status == 201
+## Verify http response. the response body should contain the newly created user id
+## Example of response body 
+## {
+##     "userId": "123e4567-e89b-12d3-a456-426614174000",
+##     "email": "random@rmail.com"
+## }
+?? js response.parsedBody.userId == {{uuid}}
+
+### Query newly created user
+# @ref newUser
+# "@ref" reference to the "@name" in the previous request
+GET {{host}}/api/users/{{newUser.userId}}
+Accept: application/json
+
+## Verify http response status code and response body
+?? status = 200
+?? js response.parsedBody.userId == {{newUser.userId}}
+?? js response.parsedBody.email == {{newUser.email}}
