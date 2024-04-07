@@ -1,16 +1,10 @@
-name: End-to-End Tests
+name: Build
 
 on: [push]
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
-
-    services:
-      mongodb:
-        image: mongo
-        ports:
-          - 27017:27017
 
     steps:
     - uses: actions/checkout@v2
@@ -18,3 +12,5 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: '20.11.1'
+    # TODO: build docker image and push it to github packages
+    

@@ -124,10 +124,18 @@ Official Doc: https://github.com/nektos/act
 brew install arc
 ```
 
-### run github action locally
+## httpyac test example
+Follow the instruction from https://httpyac.github.io/guide/examples.html
+
+## wiremock 
+Put your mock files under `deployment/wiremock/__files` and `deployment/wiremock/mappings`
+
+Refere the `json` example here: https://wiremock.org/docs/stubbing/
+
+### Simulate github action locally
 ```
 act # run all github actions
-act -j build-test-backen # run a specific github action
+act -j build-test-backend # run a specific github action
 ```
 
 # MongoDB
