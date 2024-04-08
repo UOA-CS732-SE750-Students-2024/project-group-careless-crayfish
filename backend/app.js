@@ -4,6 +4,7 @@ var logger = require("morgan");
 const cors = require("cors");
 
 var userController = require("./controllers/userControllers");
+var recommendationController = require("./controllers/recommendationController");
 const { connect } = require("./daos/mongoConnection");
 const swaggerController = require("./controllers/swaggerController");
 
@@ -18,6 +19,7 @@ app.use(cors());
 connect();
 
 app.use("/api/users", userController);
+app.use("/api/recommendation", recommendationController);
 
 // setup swagger ui
 swaggerController(app);
