@@ -1,4 +1,5 @@
 const fetch = require('node-fetch');
+const logger = require('../utils/logger.js');
 
 async function fetchRestaurantRecommendations(location) {
   const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=';
@@ -23,6 +24,8 @@ async function fetchRestaurantRecommendations(location) {
       body: JSON.stringify(body)
     });
 
+    logger.info(`Gemini response status: ${response.status}`)
+
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -36,7 +39,7 @@ async function fetchRestaurantRecommendations(location) {
     const recommendations = data.candidates[0].content.parts[0].text.replace(/```/g, '').replace(/^json/g,'').trim().replace(/\n/g, '');
     return recommendations;
   } catch (error) {
-    console.error('Error:', error);
+    logger.error(error);
   }
 }
 
