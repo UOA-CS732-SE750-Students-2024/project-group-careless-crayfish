@@ -5,12 +5,12 @@
   "scripts": {
     "start": "node ./bin/www",
     "start:dev": "nodemon ./bin/www",
-    "start:dep": "cd ../; docker-compose up",
+    "start:dep": "sh ../scripts/./start.sh",
     "lint": "eslint . --fix --ext js",
     "test": "jest",
     "test:dev": "httpyac send -a -e dev -o short tests/http/**/*.http",
     "test:e2e": "httpyac send -a -e e2e -o short tests/http/**/*.http",
-    "build:image": "cd ../; sh scripts/build.sh"
+    "build:image": "cd ../ & sh scripts/build.sh"
   },
   "dependencies": {
     "config": "^3.3.11",
