@@ -1,0 +1,1 @@
+export { RestaurantRecommendations } from "./RestaurantRecommendations";
