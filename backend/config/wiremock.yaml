@@ -6,4 +6,4 @@ application:
     password: devroot
   gemini:
     api:
-      url: https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=
+      url: http://localhost:8081/v1beta/models/gemini-pro:generateContent?key=
