@@ -5,7 +5,7 @@ const cors = require("cors");
 const logger = require("./utils/logger.js");
 
 var userController = require("./controllers/userControllers");
-const { connect } = require("./daos/mongoConnection");
+const { connect } = require("./daos/mongodbClient");
 const swaggerController = require("./controllers/swaggerController");
 
 var app = express();
