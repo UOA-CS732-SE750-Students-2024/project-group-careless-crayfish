@@ -57,6 +57,24 @@ export const RestaurantRecommendations = () => {
     setChecked(newChecked);
   };
 
+  /**
+   * Capitalizes the first letter of each word in a string.
+   * 
+   * @param {string} str - The string to capitalize.
+   * 
+   * @returns {string} The capitalized string.
+   * 
+   * @example
+   * capitalizeEveryWord('hello world');
+   * // Returns 'Hello World'
+   * 
+   */
+  function capitalizeEveryWord(str) {
+    return str.split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
+  }
+
   useEffect(() => {
     // Fetch recommendations from the API
     const fetchRecommendations = async () => {
@@ -77,7 +95,7 @@ export const RestaurantRecommendations = () => {
   return (
     <Container maxWidth="md">
       <Typography variant="h4" component="h1" gutterBottom>
-        Restaurant Recommendations for Auckland
+        Restaurant Recommendations for {capitalizeEveryWord(location)}
       </Typography>
       <List>
         {recommendations.map((restaurant, index) => (
