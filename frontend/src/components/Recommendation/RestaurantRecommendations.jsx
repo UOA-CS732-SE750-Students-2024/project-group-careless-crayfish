@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 
@@ -37,7 +38,7 @@ export const RestaurantRecommendations = () => {
    *
    * @param {number} value - The index of the selected restaurant.
    */
-  const handleToggle = (value) => () => {
+  const handleToggleRestaurant = (value) => () => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
 
@@ -79,12 +80,18 @@ export const RestaurantRecommendations = () => {
           restaurant.selected = selectedIndex,
           
           restaurant.checked = checked,
-          restaurant.handleToggle = handleToggle,
+          restaurant.handleToggleRestaurant = handleToggleRestaurant,
           restaurant.lableId = `checkbox-list-label-${restaurant.index}`,
           <RestaurantElement key={restaurant.name} restaurant={restaurant} />
         ))}
         <Divider variant="inset" component="li" />
       </List>
+      <Button variant="contained" disableElevation onClick={()=>{
+        checked.sort().map((index) => {
+          console.log(index, recommendations[index].name);
+        })}}>
+        Start a vote (currently just log to console)
+      </Button>
     </Container>
   );
 };
