@@ -30,7 +30,6 @@ router.get("/restaurant/:location", async (req, res) => {
     const location = req.params.location;
     const recommentations = await geminiQueryService.fetchRestaurantRecommendations(location);
     if (!recommentations) {
-      logger.error(error);
       res.status(404).json({ error: "no recommendation" });
       return;
     }
