@@ -43,7 +43,9 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 nvm install 20.11.1
 nvm use
 ```
+
 ## Install nodemon globally
+
 ```bash
 npm install -g nodemon
 ```
@@ -196,6 +198,14 @@ act -j build-test-backend # run a specific github action
 
 ### note that we support only `chrome` at this time
 
+### prerequisite
+
+install playwright and chromium
+
+```
+npx playwright install --with-deps chromium
+```
+
 Ensure you have spinned up react, node servers & mongodb containers locally. If you have not, follow the `How to start local development` guide above.
 
 under project root folder:
@@ -203,4 +213,4 @@ under project root folder:
 1. `cd e2eTests`
 2. `npm run test:e2e`
 
-## If you raise a pr, Github Actions will trigger with the `./github/workflow/ci.yml` workflow which runs all automated tests
+If you raise a pr, Github Actions will trigger with the `./github/workflow/ci.yml` workflow which runs all automated tests
