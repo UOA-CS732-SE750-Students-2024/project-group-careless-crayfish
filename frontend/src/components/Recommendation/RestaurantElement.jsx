@@ -49,7 +49,11 @@ const RestaurantElement = ({ restaurant }) => {
           {/* Restaurant details */}
           <ListItemText
             primary={`${restaurant.name} (${restaurant.priceRange})`}
-            secondary={`Description: ${restaurant.description} Location: ${restaurant.location}`}
+            secondary={
+              <span style={{ whiteSpace: 'pre-line' }}>
+                {`Description: ${restaurant.description}\nLocation: ${restaurant.location}`}
+              </span>
+            }
           />
 
           {/* Expand button */}
