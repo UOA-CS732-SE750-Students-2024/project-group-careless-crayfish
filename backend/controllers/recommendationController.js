@@ -28,6 +28,7 @@ const logger = require('../utils/logger.js');
 router.get("/restaurant/:location", async (req, res) => {
   try {
     const location = req.params.location;
+    logger.info(`fetch restaurant recommendations for "${location}"`);
     const recommentations = await geminiQueryService.fetchRestaurantRecommendations(location);
     if (!recommentations) {
       res.status(404).json({ error: "no recommendation" });

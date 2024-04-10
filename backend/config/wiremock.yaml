@@ -1,3 +1,4 @@
+# development configuration
 application:
   name: project-group-careless-crayfish
   mongo:

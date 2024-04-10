@@ -49,10 +49,10 @@ const RouteProvider = () => {
           />
 
           <Route
-            path="/recommend/restaurants"
+            path="/recommend/restaurants/:location"
             element={
               isAuthenticated ? (
-                <RestaurantRecommendations />
+                <RestaurantRecommendations/>
               ) : (
                 <AuthPageProvider />
               )
