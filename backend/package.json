@@ -3,17 +3,16 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
-    "start:dev": "nodemon ./bin/www",
-    "start:dep": "cd ../; docker-compose up",
+    "start": "node --env-file=.env ./bin/www",
+    "start:dev": "nodemon --exec node --env-file=.env ./bin/www",
+    "start:dep": "sh ../scripts/./start.sh",
     "lint": "eslint . --fix --ext js",
     "test": "jest",
     "test:dev": "httpyac send -a -e dev -o short tests/http/**/*.http",
     "test:e2e": "httpyac send -a -e e2e -o short tests/http/**/*.http",
-    "build:image": "cd ../; sh scripts/build.sh"
+    "build:image": "cd ../ & sh scripts/build.sh"
   },
   "dependencies": {
-    "config": "^3.3.11",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
     "debug": "~2.6.9",

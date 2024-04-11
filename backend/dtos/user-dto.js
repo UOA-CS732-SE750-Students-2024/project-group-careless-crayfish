@@ -4,6 +4,4 @@ class UserDto {
     this.email = email;
   }
 }
-module.exports = {
-  UserDto,
-};
+module.exports = UserDto;

@@ -1,0 +1,65 @@
+version: "3"
+
+services:
+  cs732-careless-crayfish:
+    environment:
+      - MONGO_SERVER=${MONGO_SERVER}
+      - MONGO_USERNAME=${MONGO_USERNAME}
+      - MONGO_PASSWORD=${MONGO_PASSWORD}
+    image: zdy120939259/cs732-careless-crayfish:latest
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    ports:
+      - 3000:3000
+      - 5000:5000
+    depends_on:
+      - mongo
+      - mongo-express
+    networks:
+      - MONGO
+    # TODO update this when we deploy to aws
+    # volumes:
+    #   - ~/.aws/credentials:/root/.aws/credentials:ro
+  mongo:
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
+    ports:
+      - "27017:27017"
+    networks:
+      - MONGO
+    volumes:
+      - type: volume
+        source: MONGO_DATA
+        target: /data/db
+      - type: volume
+        source: MONGO_CONFIG
+        target: /data/configdb
+  mongo-express:
+    image: mongo-express
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=${ME_CONFIG_MONGODB_SERVER}
+      - ME_CONFIG_MONGODB_PORT=${ME_CONFIG_MONGODB_PORT}
+      - ME_CONFIG_MONGODB_ENABLE_ADMIN=${ME_CONFIG_MONGODB_ENABLE_ADMIN}
+      - ME_CONFIG_MONGODB_AUTH_DATABASE=${ME_CONFIG_MONGODB_AUTH_DATABASE}
+      - ME_CONFIG_MONGODB_AUTH_USERNAME=${ME_CONFIG_MONGODB_AUTH_USERNAME}
+      - ME_CONFIG_MONGODB_AUTH_PASSWORD=${ME_CONFIG_MONGODB_AUTH_PASSWORD}
+      - ME_CONFIG_BASICAUTH_USERNAME=${ME_CONFIG_BASICAUTH_USERNAME}
+      - ME_CONFIG_BASICAUTH_PASSWORD=${ME_CONFIG_BASICAUTH_PASSWORD}
+    depends_on:
+      - mongo
+    ports:
+      - "8080:8081"
+    networks:
+      - MONGO
+networks:
+  MONGO:
+    name: MONGO
+volumes:
+  MONGO_DATA:
+    name: MONGO_DATA
+  MONGO_CONFIG:
+    name: MONGO_CONFIG
