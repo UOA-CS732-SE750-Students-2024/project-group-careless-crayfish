@@ -1,8 +1,11 @@
 import * as React from "react";
+import { useEffect } from 'react';
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import { GoogleLoginButton } from 'react-social-login-buttons'
+import FlexBox from '../FlexBox'
 import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
@@ -11,37 +14,110 @@ import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { Navigate } from "react-router-dom";
-import { useAPI, useAuth } from "../GlobalProviders";
-
-const auth = () => {
-  if (localStorage.getItem("token")) {
+import { useAPI, useAuth,useRoute,useLocalStorage } from "../GlobalProviders";
+import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth'
+{/*const auth = () => {
+  if (localStorage.getItem("token11")) {
     return true;
   } else {
     return false;
   }
-};
-
+}; */}
+GoogleAuth.initialize({
+  clientId: '1072715892589-79a0l62lbjqr0cl6bvsij2t53n3hb1oj',
+  scopes: ['profile', 'email'],
+  grantOfflineAccess: true,
+});
 const AuthPageContext = React.createContext({});
 
 export const useAuthPage = () => React.useContext(AuthPageContext);
 
 const AuthPageProvider = () => {
+  const { isAuthenticated,setIsAuthenticated } = React.useState("");
   const [emailValue, setEmailValue] = React.useState("");
   const [passwordValue, setPasswordValue] = React.useState("");
-
   const { login, createUser, getUserById } = useAuth();
-
   const { data } = useAPI();
-
+  const{push}=useRoute();
+  const{setItem}=useLocalStorage();
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     // TODO implement SSO login
   };
+  
+  const handleGoogleLogin=async()=>{
+    const response = await GoogleAuth.signIn()
+    if (!response) {
+      return
+    }
+    await handleLogin('google', response)
+  };
+  const handleUserEmail = (email) => {
+    return email.includes('privaterelay.appleid.com') ? '' : email
+  };
+    const handleLogin = async (
+      loginType,response,update
+    ) => {
+      console.log(response);
+      const personInfo = {
+        email: response.email,
+        givenName: response.givenName,
+        familyName: response.familyName,
+        name: response.name,
+        imageUrl: response.imageUrl,
+        token: response.authentication.accessToken
+      };
+  
+      setItem('lt', loginType);
+      setItem('ue', handleUserEmail(personInfo.email));
+      setItem('gn', personInfo.givenName);
+      setItem('token',personInfo.token);
+      {/*
+     dispatch({
+        type: 'UPDATE_USER_EMAIL',
+        payload: handleUserEmail(personInfo.email),
+      });
+  
+      dispatch({
+        type: 'UPDATE_USER_GIVEN_NAME',
+        payload: personInfo.givenName,
+      });
+  
+     */} 
+      if (update) {
+        {/*
+         await updateUserPersonInfo(
+          personInfo.email,
+          JSON.stringify(personInfo),
+          personInfo.user // Ensure `user` is properly defined or fetched from `response`
+        );
+       */}
+       console.log( personInfo.email)
+       console.log( personInfo)
+       console.log(  personInfo.user)
+       
+      }
+      //???
+      login();
+      //setIsAuthenticated(true);
+      await push('/authenticated');
+      //mobile
+      //await push(isTablet ? '/main' : '/');
+  
+      {/*await push('/authenticated');
+      dispatch({
+        type: 'SHOW_NOTICE',
+        payload: {
+          message: ('Login Success!'),
+          show: true,
+        },
+      }); */}
+    };
 
   return (
     <AuthPageContext.Provider value={{}}>
-      {auth() ? (
+      {isAuthenticated ? (
         <Navigate to="/authenticated" />
       ) : (
         <Grid container component="main" sx={{ height: "100vh" }}>
@@ -167,6 +243,19 @@ const AuthPageProvider = () => {
             >
               create test user(xqc)
             </Button>
+            <FlexBox justifyContent="center">
+            <GoogleLoginButton
+              style={{
+                width: '19rem',
+                fontSize: '1rem',
+                boxShadow: 'none',
+                border: '1px solid rgb(193, 199, 209)',
+              }}
+              text="Continue with Google"
+              onClick={()=>handleGoogleLogin()}
+          
+            />
+          </FlexBox>
             <Button
               onClick={async (e) => {
                 e.preventDefault();

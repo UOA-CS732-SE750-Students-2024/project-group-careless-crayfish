@@ -6,7 +6,7 @@ const AuthContext = createContext({});
 export const useAuth = () => useContext(AuthContext);
 
 const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState();
   const { get, post } = useAPI();
 
   const login = () => {
