@@ -1,9 +1,9 @@
-name: Node.js CI
+# TODO load config/credentials from secret instead of hardcoding them.
+name: CI
 # triggers on push to any branch
 on:
-  push:
+  pull_request:
 jobs:
-  # TODO modify frontend build steps
   build-test-frontend:
     runs-on: ubuntu-latest
 
@@ -24,20 +24,17 @@ jobs:
         run: |
           npm test
 
-  # TODO modify backend build steps
-
   build-test-backend:
     runs-on: ubuntu-latest
 
     services:
-      mongodb:
+      mongo:
         image: mongo
         ports:
           - 27017:27017
         env:
           MONGO_INITDB_ROOT_USERNAME: devroot
           MONGO_INITDB_ROOT_PASSWORD: devroot
-
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js
@@ -49,14 +46,92 @@ jobs:
         run: |
           npm ci
           npm run lint
-          npm run build --if-present
       - name: test
         working-directory: "./backend"
         run: |
           npm test
+
       - name: Enable backend service and test
+
         working-directory: "./backend"
         run: |
-          (npm run start&)
-          sleep 10
+          echo "MONGO_SERVER=$MONGO_SERVER" >> .env
+          echo "MONGO_USERNAME=$MONGO_USERNAME" >> .env
+          echo "MONGO_PASSWORD=$MONGO_PASSWORD" >> .env
+          npm run start&
+          npm install -g wait-on
+          npx wait-on http://localhost:3000/api/api-docs --timeout 100000
           npm run test:e2e
+        env:
+          MONGO_SERVER: 127.0.0.1
+          MONGO_USERNAME: devroot
+          MONGO_PASSWORD: devroot
+  # Playwright end-to-end test
+  chrome-e2e-test:
+    needs: [build-test-backend, build-test-frontend]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.11.1" # latest LTS at the time this is written.
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
+      - name: build playwright
+        working-directory: "./e2eTests"
+        run: |
+          npm ci
+      - name: Start servers
+        working-directory: "./scripts"
+        run: |
+          echo "MONGO_SERVER=$MONGO_SERVER" >> ../.env
+          echo "MONGO_USERNAME=$MONGO_USERNAME" >> ../.env
+          echo "MONGO_PASSWORD=$MONGO_PASSWORD" >> ../.env
+          echo "MONGO_INITDB_ROOT_USERNAME=$MONGO_INITDB_ROOT_USERNAME" >> ../.env
+          echo "MONGO_INITDB_ROOT_PASSWORD=$MONGO_INITDB_ROOT_PASSWORD" >> ../.env
+          echo "MONGO_INITDB_DATABASE=$MONGO_INITDB_DATABASE" >> .env
+          echo "ME_CONFIG_MONGODB_SERVER=$ME_CONFIG_MONGODB_SERVER" >> ../.env
+          echo "ME_CONFIG_MONGODB_PORT=$ME_CONFIG_MONGODB_PORT" >> .env
+          echo "ME_CONFIG_MONGODB_ENABLE_ADMIN=$ME_CONFIG_MONGODB_ENABLE_ADMIN" >> ../.env
+          echo "ME_CONFIG_MONGODB_AUTH_DATABASE=$ME_CONFIG_MONGODB_AUTH_DATABASE" >> ../.env
+          echo "ME_CONFIG_MONGODB_AUTH_USERNAME=$ME_CONFIG_MONGODB_AUTH_USERNAME" >> ../.env
+          echo "ME_CONFIG_MONGODB_AUTH_PASSWORD=$ME_CONFIG_MONGODB_AUTH_PASSWORD" >> ../.env
+          echo "ME_CONFIG_BASICAUTH_USERNAME=$ME_CONFIG_BASICAUTH_USERNAME" >> ../.env
+          echo "ME_CONFIG_BASICAUTH_PASSWORD=$ME_CONFIG_BASICAUTH_PASSWORD" >> ../.env
+          chmod +x start-ci.sh
+          (./start-ci.sh)&
+          npm install -g wait-on
+          npx wait-on http://localhost:5000/ --timeout 120000
+          npx wait-on http://localhost:3000/api/api-docs --timeout 120000
+        env:
+          # node creds
+          MONGO_SERVER: mongo
+          MONGO_USERNAME: devroot
+          MONGO_PASSWORD: devroot
+          # mongo creds
+          MONGO_INITDB_ROOT_USERNAME: devroot
+          MONGO_INITDB_ROOT_PASSWORD: devroot
+          MONGO_INITDB_DATABASE: cs732
+          # mongo express creds
+          ME_CONFIG_MONGODB_SERVER: mongo
+          ME_CONFIG_MONGODB_PORT: 27017
+          ME_CONFIG_MONGODB_ENABLE_ADMIN: false
+          ME_CONFIG_MONGODB_AUTH_DATABASE: admin
+          ME_CONFIG_MONGODB_AUTH_USERNAME: devroot
+          ME_CONFIG_MONGODB_AUTH_PASSWORD: devroot
+          ME_CONFIG_BASICAUTH_USERNAME: dev
+          ME_CONFIG_BASICAUTH_PASSWORD: dev
+      - name: Run Playwright E2E tests
+
+        working-directory: "./e2eTests"
+        run: |
+          echo "REACT_APP_URL=$REACT_APP_URL" >> .env
+          echo "BACKEND_API_URL=$BACKEND_API_URL" >> .env
+          npm run test:e2e
+        env:
+          REACT_APP_URL: http://localhost:5000
+          BACKEND_API_URL: http://localhost:3000/api
