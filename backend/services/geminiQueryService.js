@@ -1,9 +1,8 @@
 const fetch = require('node-fetch');
 const logger = require('../utils/logger.js');
-const Config = require('config');
 
 async function fetchRestaurantRecommendations(location) {
-  const apiUrl = Config.get('application.gemini.api.url');
+  const apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=";
   const apiKey = 'AIzaSyCa-FGEff49LSRM3ITCnJ6LyhRRWFE9d3s';
 
   const headers = {
