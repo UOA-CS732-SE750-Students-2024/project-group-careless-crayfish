@@ -80,9 +80,10 @@ brew install docker
 
 ## Run mongodb & wiremock
 
+Run this from Git Bash if you use Windows
+
 ```
 # In a new shell, and keep this shell opened
-
 cd ./backend
 npm run start:dep
 
@@ -123,6 +124,8 @@ username: `dev`, password:`dev`
 ## Build the image
 
 Run the following command under the root directory which builds a docker image `cs732-careless-crayfish` for react, node & mongodb
+
+Run this from Git Bash if you use Windows
 
 ```
 sh scripts/build.sh
@@ -167,9 +170,17 @@ You can also manually test APIs with swagger UI
 1. go to http://localhost:3000/api/api-docs
 2. view and call apis for testing
 
-## Github Action local development
+## testing AWS CDK infrastructure as code
 
-Official Doc: https://github.com/nektos/act
+We currently put dev and prod stacks all in one account but you can test deploying the stack with your own suffix.
+You need to reachout to Mark(mzhu929) for giving you permission to access AWS console and deploying stacks as this is his personal AWS account.
+
+```
+cd ./infrastructure
+npm run deploy-dev
+```
+
+Note that `npm run deploy-dev` and `npm run deploy-prod` are actually deploying the same stack at the moment as we could not afford to have multiple stacks.
 
 ### install dependency (Mac)
 
@@ -214,3 +225,17 @@ under project root folder:
 2. `npm run test:e2e`
 
 If you raise a pr, Github Actions will trigger with the `./github/workflow/ci.yml` workflow which runs all automated tests
+
+# Deployment
+
+We deploy by using Github Actions to archive source code and ssh into ec2. See `.github/workflows/cd.yml`
+
+Q & A
+
+### 1. sh command not found running `npm run start:dep` for backend
+
+##### A: Please make sure you use Git Bash to run the command if you are on Windows
+
+### 2. For AWS CDK code getting error when running `npm run deploy-dev`
+
+##### A: See `testing AWS CDK infrastructure as code` section for details

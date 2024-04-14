@@ -62,11 +62,11 @@ router.get("/:userId", async function getUserById(req, res) {
     const userId = req.params.userId;
     const user = await userService.getUserById(userId);
     if (!user) {
-      res.status(404).json({ error: "user not found" });
+      return res.status(404).json({ error: "user not found" });
     }
-    res.json(user);
+    return res.json(user);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 });
 
