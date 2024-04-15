@@ -51,35 +51,36 @@ jobs:
         with:
           name: source_code
           path: ./cs732-careless-crayfish/source_code.tar.gz
-  # Currently disabled aws cdk deployment. It is dangerous, could incur massive costs if not careful.
-  # app should have been at mature stage here as we are trying to simplify infra as much as possible.
+  # Please try not make change to AWS CDK stack. 
+  # It is dangerous to deploy stuff to AWS, could incur massive costs if not careful.
+  # App should have been at mature stage here as we are trying to simplify infra as much as possible.
   # If you do need to make change to it you need to contact me zdy120939259@outlook.com or mzhu929@aucklanduni.ac.nz
-  # deploy-infra:
-  #   runs-on: ubuntu-latest
-  #   permissions:
-  #     id-token: write
-  #     contents: read
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - name: Use Node.js
-  #       uses: actions/setup-node@v4
-  #       with:
-  #         node-version: "^17.3.0"
-  #     - name: Install AWS CDK dependencies
-  #       working-directory: "./infrastructure"
-  #       run: |
-  #         npm install -g aws-cdk
-  #         npm ci
-  #     - name: Configure AWS Credentials
-  #       uses: aws-actions/configure-aws-credentials@b8c74de753fbcb4868bf2011fb2e15826ce973af
-  #       with:
-  #         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  #         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  #         aws-region: ap-southeast-2
-  #     - name: Deploy to aws cdk
-  #       run: |
-  #         npm run deploy-prod
-  #       working-directory: "./infrastructure"
+  deploy-infra:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "^17.3.0"
+      - name: Install AWS CDK dependencies
+        working-directory: "./infrastructure"
+        run: |
+          npm install -g aws-cdk
+          npm ci
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@b8c74de753fbcb4868bf2011fb2e15826ce973af
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-southeast-2
+      - name: Deploy to aws cdk
+        run: |
+          npm run deploy-prod
+        working-directory: "./infrastructure"
   deploy-ec2:
     needs: deploy-infra
     runs-on: ubuntu-latest
