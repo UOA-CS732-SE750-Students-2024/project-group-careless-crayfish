@@ -46,7 +46,7 @@ jobs:
           mkdir cs732-careless-crayfish
           tar -czvf cs732-careless-crayfish/source_code.tar.gz --exclude cs732-careless-crayfish --exclude=node_modules --exclude=infrastructure --exclude=e2eTests .
         working-directory: "./"
-      - name: release archived src code
+      - name: upload archived src code
         uses: actions/upload-artifact@v2
         with:
           name: source_code
@@ -85,7 +85,7 @@ jobs:
     needs: deploy-infra
     runs-on: ubuntu-latest
     steps:
-      - name: Download latest source code release
+      - name: Download latest archived source code
         uses: actions/download-artifact@v2
         with:
           name: source_code
@@ -99,7 +99,7 @@ jobs:
       - name: Get EC2 public IP address from our AWS stack
         run: |
           echo "EC2_INSTANCE_PUBLIC_DNS=$(aws cloudformation describe-stacks --stack-name DevAndProdStack --query 'Stacks[0].Outputs[?OutputKey==`EC2PublicDNS`].OutputValue' --output text)" >> $GITHUB_ENV
-      - name: ssh release to ec2 and deploy docker-compose
+      - name: ssh upload src code to ec2 and deploy docker-compose
         run: |
           echo "${{ secrets.EC2_PRIVATE_KEY }}" >> mykey.pem
           chmod 400 mykey.pem
