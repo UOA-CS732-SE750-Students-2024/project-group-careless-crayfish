@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 import axios from 'axios';
+import { getRecommendations } from '../GlobalProviders/RecommenationProvider';
 
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
@@ -78,15 +79,19 @@ export const RestaurantRecommendations = () => {
   useEffect(() => {
     // Fetch recommendations from the API
     const fetchRecommendations = async () => {
-      try {
-        const url = 'http://localhost:3000/api/recommendation/restaurant/'+location;
-        console.log("Fetching recommendations from: ", url);
-        const response = await axios.get(url);
-        console.log("recommendation response: ", response);
-        setRecommendations(response.data); // Assuming the API returns an array of recommendations
-      } catch (error) {
-        console.error('Error fetching recommendations:', error);
-      }
+      const response = await getRecommendations(location);
+      setRecommendations(response.data);
+      console.log("recommendation response: ", response);
+
+      // try {
+      //   const url = 'http://localhost:3000/api/recommendation/restaurant/'+location;
+      //   console.log("Fetching recommendations from: ", url);
+      //   const response = await axios.get(url);
+      //   console.log("recommendation response: ", response);
+      //   setRecommendations(response.data); // Assuming the API returns an array of recommendations
+      // } catch (error) {
+      //   console.error('Error fetching recommendations:', error);
+      // }
     };
 
     fetchRecommendations();
