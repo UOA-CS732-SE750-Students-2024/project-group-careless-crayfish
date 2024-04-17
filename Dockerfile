@@ -30,4 +30,4 @@ EXPOSE 3000
 EXPOSE 5000
 
 # Run the backend and frontend
-CMD ["sh", "-c", "node backend/bin/www & serve -s frontend -l 5000"]
+CMD ["sh", "-c", "node --env-file=./backend/.env ./backend/bin/www & serve -s frontend -l 5000"]
