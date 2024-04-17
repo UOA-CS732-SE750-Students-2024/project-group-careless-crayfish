@@ -12,7 +12,6 @@ logs
 reports/
 target/
 dist/
-
 node_modules
 build
 coverage
@@ -21,3 +20,6 @@ test-results
 playwright-report
 blob-report
 playwright/.cache
+
+# aws cdk
+cdk.out

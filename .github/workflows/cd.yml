@@ -1,18 +1,114 @@
 name: CD
-
+permissions:
+  id-token: write
+  contents: read
 on:
   push:
     branches:
       - main
 
 jobs:
-  build:
+  archive-src-code:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up Node.js
-        uses: actions/setup-node@v1
+      - uses: actions/checkout@v4
+      # - name: Write app prod env vars
+      #   working-directory: "./"
+      #   run: |
+      #     echo "MONGO_SERVER=$MONGO_SERVER" >> .env
+      #     echo "MONGO_USERNAME=$MONGO_USERNAME" >> .env
+      #     echo "MONGO_PASSWORD=$MONGO_PASSWORD" >> .env
+      #     echo "MONGO_INITDB_ROOT_USERNAME=$MONGO_INITDB_ROOT_USERNAME" >> .env
+      #     echo "MONGO_INITDB_ROOT_PASSWORD=$MONGO_INITDB_ROOT_PASSWORD" >> .env
+      #     echo "MONGO_INITDB_DATABASE=$MONGO_INITDB_DATABASE" >> .env
+      #     echo "ME_CONFIG_MONGODB_SERVER=$ME_CONFIG_MONGODB_SERVER" >> .env
+      #     echo "ME_CONFIG_MONGODB_PORT=$ME_CONFIG_MONGODB_PORT" >> .env
+      #     echo "ME_CONFIG_MONGODB_ENABLE_ADMIN=$ME_CONFIG_MONGODB_ENABLE_ADMIN" >> .env
+      #     echo "ME_CONFIG_MONGODB_AUTH_DATABASE=$ME_CONFIG_MONGODB_AUTH_DATABASE" >> .env
+      #     echo "ME_CONFIG_MONGODB_AUTH_USERNAME=$ME_CONFIG_MONGODB_AUTH_USERNAME" >> .env
+      #     echo "ME_CONFIG_MONGODB_AUTH_PASSWORD=$ME_CONFIG_MONGODB_AUTH_PASSWORD" >> .env
+      #     echo "ME_CONFIG_BASICAUTH_USERNAME=$ME_CONFIG_BASICAUTH_USERNAME" >> .env
+      #     echo "ME_CONFIG_BASICAUTH_PASSWORD=$ME_CONFIG_BASICAUTH_PASSWORD" >> .env
+      # - name: Write backend prod env vars
+      #   working-directory: "./backend"
+      #   run: |
+      #     echo "MONGO_SERVER=$MONGO_SERVER" >> .env
+      #     echo "MONGO_USERNAME=$MONGO_USERNAME" >> .env
+      #     echo "MONGO_PASSWORD=$MONGO_PASSWORD" >> .env
+      #   env:
+      #     MONGO_SERVER: 127.0.0.1
+      #     MONGO_USERNAME: devroot
+      #     MONGO_PASSWORD: devroot
+      - name: Archive src code
+        run: |
+          ls -a
+          ls -A
+          mkdir cs732-careless-crayfish
+          tar -czvf cs732-careless-crayfish/source_code.tar.gz --exclude cs732-careless-crayfish --exclude=node_modules --exclude=infrastructure --exclude=e2eTests .
+        working-directory: "./"
+      - name: upload archived src code
+        uses: actions/upload-artifact@v2
         with:
-          node-version: "20.11.1"
-    # TODO: build docker image and push it to github packages
+          name: source_code
+          path: ./cs732-careless-crayfish/source_code.tar.gz
+  # Please try not make change to AWS CDK stack. 
+  # It is dangerous to deploy stuff to AWS, could incur massive costs if not careful.
+  # App should have been at mature stage here as we are trying to simplify infra as much as possible.
+  # If you do need to make change to it you need to contact me zdy120939259@outlook.com or mzhu929@aucklanduni.ac.nz
+  deploy-infra:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "^17.3.0"
+      - name: Install AWS CDK dependencies
+        working-directory: "./infrastructure"
+        run: |
+          npm install -g aws-cdk
+          npm ci
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@b8c74de753fbcb4868bf2011fb2e15826ce973af
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-southeast-2
+      - name: Deploy to aws cdk
+        run: |
+          npm run deploy-prod
+        working-directory: "./infrastructure"
+  deploy-ec2:
+    needs: deploy-infra
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download latest archived source code
+        uses: actions/download-artifact@v2
+        with:
+          name: source_code
+          path: ./cs732-careless-crayfish
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@b8c74de753fbcb4868bf2011fb2e15826ce973af
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-southeast-2
+      - name: Get EC2 public IP address from our AWS stack
+        run: |
+          echo "EC2_INSTANCE_PUBLIC_DNS=$(aws cloudformation describe-stacks --stack-name DevAndProdStack --query 'Stacks[0].Outputs[?OutputKey==`EC2PublicDNS`].OutputValue' --output text)" >> $GITHUB_ENV
+      - name: ssh upload src code to ec2 and deploy docker-compose
+        run: |
+          echo "${{ secrets.EC2_PRIVATE_KEY }}" >> mykey.pem
+          chmod 400 mykey.pem
+          ssh -i mykey.pem -o StrictHostKeyChecking=no ec2-user@$EC2_INSTANCE_PUBLIC_DNS 'sudo rm -rf ~/cs732-careless-crayfish'
+          scp -i mykey.pem -o StrictHostKeyChecking=no -pr ./cs732-careless-crayfish ec2-user@$EC2_INSTANCE_PUBLIC_DNS:~/cs732-careless-crayfish
+          # install nvm and node
+          ssh -i mykey.pem -o StrictHostKeyChecking=no ec2-user@$EC2_INSTANCE_PUBLIC_DNS 'sudo curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash'
+          ssh -i mykey.pem -o StrictHostKeyChecking=no ec2-user@$EC2_INSTANCE_PUBLIC_DNS 'source ~/.bashrc; nvm install 20.11.1'
+          # unzip and spin up docker-compose
+          ssh -i mykey.pem -o StrictHostKeyChecking=no ec2-user@$EC2_INSTANCE_PUBLIC_DNS 'cd cs732-careless-crayfish; sudo tar -xzf ./source_code.tar.gz; sudo sh ~/cs732-careless-crayfish/scripts/start-prod.sh;'
+        env:
+          EC2_PRIVATE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}

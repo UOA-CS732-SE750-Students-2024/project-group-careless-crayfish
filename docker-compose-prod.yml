@@ -1,6 +1,22 @@
 version: "3"
 
 services:
+  cs732-careless-crayfish:
+    image: zdy120939259/cs732-careless-crayfish:latest
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    ports:
+      - 3000:3000
+      - 5000:5000
+    depends_on:
+      - mongo
+      - mongo-express
+    networks:
+      - MONGO
+    # TODO update this when we deploy to aws
+    # volumes:
+    #   - ~/.aws/credentials:/root/.aws/credentials:ro
   mongo:
     image: mongo
     env_file:
@@ -21,6 +37,7 @@ services:
         source: MONGO_CONFIG
         target: /data/configdb
   mongo-express:
+
     image: mongo-express
     env_file:
       - ./.env

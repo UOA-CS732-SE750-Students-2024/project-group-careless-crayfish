@@ -2,10 +2,6 @@ version: "3"
 
 services:
   cs732-careless-crayfish:
-    environment:
-      - MONGO_SERVER=${MONGO_SERVER}
-      - MONGO_USERNAME=${MONGO_USERNAME}
-      - MONGO_PASSWORD=${MONGO_PASSWORD}
     image: zdy120939259/cs732-careless-crayfish:latest
     build:
       context: ./
@@ -23,6 +19,8 @@ services:
     #   - ~/.aws/credentials:/root/.aws/credentials:ro
   mongo:
     image: mongo
+    env_file:
+      - ./.env
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
@@ -40,6 +38,8 @@ services:
         target: /data/configdb
   mongo-express:
     image: mongo-express
+    env_file:
+      - ./.env
     environment:
       - ME_CONFIG_MONGODB_SERVER=${ME_CONFIG_MONGODB_SERVER}
       - ME_CONFIG_MONGODB_PORT=${ME_CONFIG_MONGODB_PORT}

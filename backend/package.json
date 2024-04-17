@@ -4,13 +4,13 @@
   "private": true,
   "scripts": {
     "start": "node --env-file=.env ./bin/www",
-    "start:dev": "nodemon --exec node --env-file=.env ./bin/www",
-    "start:dep": "sh ../scripts/./start.sh",
+    "start:dev": "nodemon --exec node --env-file=./.env ./bin/www",
+    "start:dep": "cd ../ && sh scripts/start.sh",
     "lint": "eslint . --fix --ext js",
     "test": "jest",
     "test:dev": "httpyac send -a -e dev -o short tests/http/**/*.http",
     "test:e2e": "httpyac send -a -e e2e -o short tests/http/**/*.http",
-    "build:image": "cd ../ & sh scripts/build.sh"
+    "build:image": "cd ../ && sh scripts/build.sh"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
