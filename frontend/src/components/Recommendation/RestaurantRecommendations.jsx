@@ -11,6 +11,7 @@ import Divider from '@mui/material/Divider';
 
 import RestaurantElement from './RestaurantElement';
 import { useRecommendation } from '../GlobalProviders/RecommenationProvider';
+import { useAPI } from '../GlobalProviders';
 
 export const RestaurantRecommendations = () => {
 
@@ -75,13 +76,16 @@ export const RestaurantRecommendations = () => {
       .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
       .join(' ');
   }
+  const {data, error } = useAPI()
 
   useEffect(() => {
     // Fetch recommendations from the API
     const fetchRecommendations = async () => {
-      const response = await getRecommendations(location);
-      setRecommendations(response.data);
-      console.log("recommendation response: ", response);
+      await getRecommendations(location);
+      setRecommendations(data);
+      
+      console.log("recommendation data: ", data);
+      console.log("recommendation error: ", error);
 
       // try {
       //   const url = 'http://localhost:3000/api/recommendation/restaurant/'+location;
