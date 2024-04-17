@@ -6,10 +6,13 @@ const RecommendationContext = createContext({});
 export const useRecommendation = () => useContext(RecommendationContext);
 
 const RecommendationProvider = ({ children }) => {
-  const { get } = useAPI();
+  const { get, data, error } = useAPI();
 
   const getRecommendations = async (location) => {
-    const recommendations = await get(`http://localhost:3000/api/recommendations/${location}`);
+    // 你这里不用await 直接从useAPI()里面拿data和error就行
+    // 同时useAPI还和useSnackbar() 产生交互 如果有error会把error display到snackbar上
+    const recommendations = data.recommendations;
+    const recommendationErrors = error.message;
     return recommendations;
   };
 

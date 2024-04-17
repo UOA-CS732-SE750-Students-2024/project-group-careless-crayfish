@@ -4,6 +4,7 @@ import { useAuth } from "../AuthProvider";
 import { AuthenticatedProvider } from "@frontend-ui/components/Authenticated";
 import AuthPageProvider from "@frontend-ui/components/AuthPage/AuthPageProvider";
 import { RestaurantRecommendations } from "@frontend-ui/components/Recommendation";
+import { RecommendationProvider } from "../RecommenationProvider";
 
 const RouteContext = createContext({});
 
@@ -52,7 +53,9 @@ const RouteProvider = () => {
             path="/recommend/restaurants/:location"
             element={
               isAuthenticated ? (
-                <RestaurantRecommendations/>
+                // 这里用RecommendationProvider把RestaurantRecommendations包起来 
+                // 你就可以在RestaurantRecommendations里面用useRecommendation()这个hook来拿state和function
+                <RecommendationProvider><RestaurantRecommendations/></RecommendationProvider>
               ) : (
                 <AuthPageProvider />
               )

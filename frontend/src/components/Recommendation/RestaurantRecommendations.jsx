@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 import axios from 'axios';
-import { getRecommendations } from '../GlobalProviders/RecommenationProvider';
 
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
@@ -11,6 +10,7 @@ import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 
 import RestaurantElement from './RestaurantElement';
+import { useRecommendation } from '../GlobalProviders/RecommenationProvider';
 
 export const RestaurantRecommendations = () => {
 
@@ -96,6 +96,8 @@ export const RestaurantRecommendations = () => {
 
     fetchRecommendations();
   }, []);
+
+  const { getRecommendations} = useRecommendation();
 
   return (
     <Container maxWidth="md">
