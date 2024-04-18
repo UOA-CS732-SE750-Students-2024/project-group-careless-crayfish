@@ -23,6 +23,7 @@ const RestaurantElement = ({ restaurant }) => {
   return (<>
       {/* 1. Restaurant element */}
       <ListItem key={restaurant.index}
+        className = "restaurant-element"
         secondaryAction={
           <Checkbox
               edge="end"
@@ -36,6 +37,7 @@ const RestaurantElement = ({ restaurant }) => {
       >
         {/* 1.1 Clickable */}
         <ListItemButton 
+          className = "restaurant-element-button"
           selected = {restaurant.selected === restaurant.index}
           onClick={(event) => {
             restaurant.handleListItemClick(event, restaurant.index);
@@ -48,6 +50,7 @@ const RestaurantElement = ({ restaurant }) => {
 
           {/* Restaurant details */}
           <ListItemText
+            className='restaurant-element-text'
             primary={`${restaurant.name} (${restaurant.priceRange})`}
             secondary={
               <span style={{ whiteSpace: 'pre-line' }}>
