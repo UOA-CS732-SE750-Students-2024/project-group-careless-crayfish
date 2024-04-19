@@ -3,7 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { useAuth } from "../AuthProvider";
 import { AuthenticatedProvider } from "@frontend-ui/components/Authenticated";
 import AuthPageProvider from "@frontend-ui/components/AuthPage/AuthPageProvider";
-import { RestaurantRecommendations, Landing } from "@frontend-ui/components/Recommendation";
+import { RestaurantRecommendations, Landing, RestaurantOptions } from "@frontend-ui/components/Recommendation";
 
 const RouteContext = createContext({});
 
@@ -52,7 +52,24 @@ const RouteProvider = () => {
             path="/landing"
             element={
               isAuthenticated ? (
-                <Landing/>
+                <>
+                  <AuthenticatedProvider/>
+                  <Landing/>
+                </>
+              ) : (
+                <AuthPageProvider />
+              )
+            }
+          />
+
+          <Route
+            path="/recommend/restaurant-options"
+            element={
+              isAuthenticated ? (
+                <>
+                  {/* <AuthenticatedProvider/> */}
+                  <RestaurantOptions/>
+                </>
               ) : (
                 <AuthPageProvider />
               )
@@ -64,8 +81,8 @@ const RouteProvider = () => {
             element={
               isAuthenticated ? (
                 <>
-                <AuthenticatedProvider/>
-                <RestaurantRecommendations/>
+                  <AuthenticatedProvider/>
+                  <RestaurantRecommendations/>
                 </>
               ) : (
                 <AuthPageProvider />

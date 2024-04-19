@@ -11,7 +11,7 @@ export const Landing = () => {
         <p>
           Welcome to the Recommendation page. Please select a location to get started.
         </p>
-        <Link href="/recommend/restaurants/auckland" color="secondary">
+        <Link href="/recommend/restaurant-options" color="secondary">
           Restaurant
         </Link>
       </Container>
