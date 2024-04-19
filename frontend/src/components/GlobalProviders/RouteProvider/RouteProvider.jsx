@@ -63,7 +63,10 @@ const RouteProvider = () => {
             path="/recommend/restaurants/:location"
             element={
               isAuthenticated ? (
+                <>
+                <AuthenticatedProvider/>
                 <RestaurantRecommendations/>
+                </>
               ) : (
                 <AuthPageProvider />
               )
