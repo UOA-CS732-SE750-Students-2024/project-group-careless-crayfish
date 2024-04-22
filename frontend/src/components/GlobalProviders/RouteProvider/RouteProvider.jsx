@@ -67,7 +67,7 @@ const RouteProvider = () => {
             element={
               isAuthenticated ? (
                 <>
-                  {/* <AuthenticatedProvider/> */}
+                  <AuthenticatedProvider/>
                   <RestaurantOptions/>
                 </>
               ) : (

@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
+import Box from '@mui/material/Box';
 
 import RestaurantElement from './RestaurantElement';
 
@@ -93,7 +94,7 @@ export const RestaurantRecommendations = () => {
   }, []);
 
   return (
-    <Container maxWidth="md">
+    <Box mt={10}><Container maxWidth="md">
       <Typography variant="h4" component="h1" gutterBottom>
         Restaurant Recommendations for {capitalizeEveryWord(location)}
       </Typography>
@@ -117,6 +118,6 @@ export const RestaurantRecommendations = () => {
         })}}>
         Start a vote (currently just log to console)
       </Button>
-    </Container>
+    </Container></Box>
   );
 };

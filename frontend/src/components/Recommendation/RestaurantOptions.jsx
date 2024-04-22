@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 
-import { FormControl, InputLabel, Select, MenuItem, TextField, Button, Container } from '@mui/material';
+import { FormControl, InputLabel, Select, MenuItem, TextField, Button, Container, Box } from '@mui/material';
 
 export const RestaurantOptions = () => {
   const [ageGroup, setAgeGroup] = useState('');
@@ -19,7 +19,7 @@ export const RestaurantOptions = () => {
   };
 
   return (
-    <Container maxWidth="md">
+    <Box mt={10}><Container maxWidth="md">
       <form onSubmit={handleSubmit}>
         <FormControl fullWidth>
           <InputLabel id="age-group-label">Age Group</InputLabel>
@@ -63,6 +63,6 @@ export const RestaurantOptions = () => {
           Get Recommended Restaurant
         </Button>
       </form>
-    </Container>
+    </Container></Box>
   );
 };
