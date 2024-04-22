@@ -6,6 +6,7 @@ const logger = require("./utils/logger.js");
 
 var userController = require("./controllers/userControllers");
 var recommendationController = require("./controllers/recommendationController");
+var voteController = require("./controllers/voteController");
 const { connect } = require("./daos/mongodbClient");
 const swaggerController = require("./controllers/swaggerController");
 
@@ -23,6 +24,7 @@ connect().then(() => {
 
 app.use("/api/users", userController);
 app.use("/api/recommendation", recommendationController);
+app.use("/api/vote", voteController);
 
   // setup swagger ui
   swaggerController(app);
