@@ -2,8 +2,8 @@ const fetch = require('node-fetch');
 const logger = require('../utils/logger.js');
 
 async function fetchRestaurantRecommendations(location) {
-  // const apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=";
-  const apiUrl = 'http://localhost:8081/v1beta/models/gemini-pro:generateContent?key=';
+  const apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=";
+  // const apiUrl = 'http://localhost:8081/v1beta/models/gemini-pro:generateContent?key='; // Kept for local testing
   const apiKey = 'AIzaSyCa-FGEff49LSRM3ITCnJ6LyhRRWFE9d3s';
 
   const headers = {
