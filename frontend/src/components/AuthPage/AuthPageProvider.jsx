@@ -145,6 +145,7 @@ const AuthPageProvider = () => {
               </Box>
             </Box>
             <Button
+              id="skip-sign-in"
               type="submit"
               fullWidth
               variant="contained"
