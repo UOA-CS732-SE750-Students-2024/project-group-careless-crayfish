@@ -1,6 +1,8 @@
 import { test, expect } from "@playwright/test";
 require("dotenv").config();
 
+console.log(`REACT_APP_URL: ${process.env.REACT_APP_URL}`);
+
 async function skipSignIn(page) {
   // Skip signin
   const signInButton = await page.$("#skip-sign-in");
