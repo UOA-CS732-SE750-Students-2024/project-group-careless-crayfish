@@ -67,7 +67,7 @@ jobs:
           npx wait-on http://localhost:3000/api/api-docs --timeout 100000
           npm run test:e2e
         env:
-          MONGO_SERVER: 127.0.0.1
+          MONGO_SERVER: mongo
           MONGO_USERNAME: devroot
           MONGO_PASSWORD: devroot
   # Playwright end-to-end test
