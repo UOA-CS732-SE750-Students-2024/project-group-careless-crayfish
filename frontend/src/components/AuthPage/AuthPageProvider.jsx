@@ -1,183 +1,144 @@
 import * as React from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import { Navigate } from "react-router-dom";
-import { useAPI, useAuth } from "../GlobalProviders";
-
-const auth = () => {
-  if (localStorage.getItem("token")) {
-    return true;
-  } else {
-    return false;
-  }
-};
-
+import { useNavigate,Navigate } from "react-router-dom";
+import { useAPI, useAuth, useLocalStorage } from "../GlobalProviders";
+import { useState } from "react";
+import FlexBox from '../FlexBox'
+import { GoogleLoginButton } from 'react-social-login-buttons'
+import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth'
+import './LoginStyles.css'
+GoogleAuth.initialize({
+  clientId: '1072715892589-79a0l62lbjqr0cl6bvsij2t53n3hb1oj',
+  scopes: ['profile', 'email'],
+  grantOfflineAccess: true,
+});
 const AuthPageContext = React.createContext({});
 
 export const useAuthPage = () => React.useContext(AuthPageContext);
 
+
 const AuthPageProvider = () => {
-  const [emailValue, setEmailValue] = React.useState("");
-  const [passwordValue, setPasswordValue] = React.useState("");
+  const { get, post } = useAPI();
+  const { isAuthenticated, login,getUserById } = useAuth();
+  const { setItem } = useLocalStorage();
+  const [formData,setFormData]=useState({
+     userName:'',
+     email:'',
+     password:'',
+  });
 
-  const { login, createUser, getUserById } = useAuth();
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData(prevFormData => ({
+        ...prevFormData,
+        [name]: value  
+    }));
+};
 
-  const { data } = useAPI();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+        await post('http://localhost:3000/api/users', formData);
+        console.log(formData);
+        setFormData({ userName: '', email: '', password: '' }); // Reset form
+    } catch (error) {
+        console.error('Error creating user:',error);
+    }
+};
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    // TODO implement SSO login
+  const handleGoogleLogin = async () => {
+    const response = await GoogleAuth.signIn()
+    if (!response) {
+      return
+    }
+    await handleLogin('google', response)
   };
+
+
+  const handleUserEmail = (email) => {
+    return email.includes('privaterelay.appleid.com') ? '' : email
+  };
+  const handleLogin = async (
+    loginType, response
+  ) => {
+    console.log(response);
+    const personInfo = {
+      email: response.email,
+      givenName: response.givenName,
+      familyName: response.familyName,
+      name: response.name,
+      imageUrl: response.imageUrl,
+      token: response.authentication.accessToken
+    };
+    setItem('lt', loginType);
+    setItem('ue', handleUserEmail(personInfo.email));
+    setItem('gn', personInfo.givenName);
+    setItem('token', personInfo.token);
+    login();
+  };
+
+  const [isToggled, setToggled] = useState(false);
+  const [isActive, setActive] = useState(false);
+
+  const preventDefault = (e) => {
+    e.preventDefault();
+  };
+
+  const changeForm = () => {
+    setActive(true);
+    setToggled(!isToggled);
+    setTimeout(() => {
+      setActive(false);
+    }, 1500);
+  };
+
 
   return (
     <AuthPageContext.Provider value={{}}>
-      {auth() ? (
+      {isAuthenticated ? (
         <Navigate to="/authenticated" />
       ) : (
-        <Grid container component="main" sx={{ height: "100vh" }}>
-          <Grid
-            item
-            xs={8}
-            sm={4}
-            md={7}
-            sx={{
-              backgroundImage:
-                "url(https://source.unsplash.com/random?wallpapers)",
-              backgroundRepeat: "no-repeat",
-              backgroundColor: (t) =>
-                t.palette.mode === "light"
-                  ? t.palette.grey[50]
-                  : t.palette.grey[900],
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-            }}
-          />
-          <Grid
-            item
-            xs={12}
-            sm={8}
-            md={5}
-            component={Paper}
-            elevation={6}
-            square
-          >
-            <Box
-              sx={{
-                my: 8,
-                mx: 4,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-                <LockOutlinedIcon />
-              </Avatar>
-              <Typography component="h1" variant="h5">
-                Sign in
-              </Typography>
+        <div className="shell">
+          <div className={`container ${isToggled ? 'b-container' : 'a-container'}`} id={isToggled ? "b-container" : "a-container"}>
 
-              <Box
-                component="form"
-                noValidate
-                onSubmit={handleSubmit}
-                sx={{ mt: 1 }}
-              >
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                  autoFocus
-                  value={emailValue}
-                  onChange={(e) => setEmailValue(e.target.value)}
-                />
+            <form className="form" onSubmit={handleSubmit}>
+              {isToggled? <input type="text" className="form_input" placeholder="userName" name="userName" onChange={handleChange}  />:"" }
 
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="current-password"
-                  value={passwordValue}
-                  onChange={(e) => setPasswordValue(e.target.value)}
+              <input type="email" className="form_input" placeholder="Email"   name="email"onChange={handleChange}/>
+              <input type="password" className="form_input" placeholder="Password" name="password"onChange={handleChange} />
+
+              {isToggled ? <button type="submit" className="button submit" >SIGN UP</button>
+               :
+              <button type="submit"className="button submit">SIGN IN</button> }
+            </form>
+            <div className="google-login-container">
+               {isToggled ? "" :<FlexBox justifyContent="center">
+                <GoogleLoginButton
+                  className="google-login-button"
+                  text="Continue with Google"
+                  onClick={() => handleGoogleLogin()}
                 />
-                <FormControlLabel
-                  control={<Checkbox value="remember" color="primary" />}
-                  label="Remember me"
-                />
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
-                >
-                  Sign In
-                </Button>
-                <Grid container>
-                  <Grid item xs>
-                    <Link href="#" variant="body2">
-                      Forgot password?
-                    </Link>
-                  </Grid>
-                  <Grid item>
-                    <Link href="#" variant="body2">
-                      {"Don't have an account? Sign Up"}
-                    </Link>
-                  </Grid>
-                </Grid>
-              </Box>
-            </Box>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              onClick={() => {
-                login();
-              }}
-            >
-              Skip Sign In
-            </Button>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              onClick={async (e) => {
-                e.preventDefault();
-                await createUser();
-              }}
-            >
-              create test user(xqc)
-            </Button>
-            <Button
-              onClick={async (e) => {
-                e.preventDefault();
-                await getUserById("xqc");
-              }}
-            >
-              get test user
-            </Button>
-            <Typography>test user: {JSON.stringify(data)}</Typography>
-          </Grid>
-        </Grid>
+              </FlexBox>}
+            </div>
+           
+          </div>
+
+          <div className="switch" id="switch-cnt">
+            <div className="switch_circle"></div>
+            <div className="switch_circle switch_circle-t"></div>
+            <div className={`switch_container ${isToggled ? "" : "is-hidden"}`} id="switch-c1">
+              <h2 className="title">Welcome Back！</h2>
+              <p className="description">
+                Already have an account? Log in to enter the wonderful world!</p>
+              <button className="button submit" onClick={changeForm}>SIGN IN</button>
+            </div>
+
+            <div className={`switch_container ${isToggled ? "is-hidden" : ""}`} id="switch-c2">
+              <h2 className="title">Hello Friend！</h2>
+              <p className="description">Register an account and become a prestigious fan member, let us embark on a wonderful journey!</p>
+              <button className="button submit" onClick={changeForm}>SIGN UP</button>
+            </div>
+          </div>
+        </div>
       )}
     </AuthPageContext.Provider>
   );

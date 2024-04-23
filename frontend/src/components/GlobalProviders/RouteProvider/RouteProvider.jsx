@@ -1,5 +1,5 @@
-import { createContext, useContext } from "react";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { createContext, useContext, useEffect, useState } from "react";
+import { BrowserRouter, Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthProvider";
 import { AuthenticatedProvider } from "@frontend-ui/components/Authenticated";
 import AuthPageProvider from "@frontend-ui/components/AuthPage/AuthPageProvider";
@@ -9,7 +9,7 @@ const RouteContext = createContext({});
 export const useRoute = () => useContext(RouteContext);
 
 const RouteProvider = () => {
-  const { isAuthenticated } = useAuth();
+const {isAuthenticated}=useAuth();
 
   return (
     <RouteContext.Provider value={{}}>
