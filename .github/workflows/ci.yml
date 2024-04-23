@@ -137,6 +137,7 @@ jobs:
 
         working-directory: "./e2eTests"
         run: |
+          echo "">.env
           echo "REACT_APP_URL=$REACT_APP_URL" >> .env
           echo "BACKEND_API_URL=$BACKEND_API_URL" >> .env
           npm run test:e2e
