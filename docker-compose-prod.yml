@@ -14,9 +14,6 @@ services:
       - mongo-express
     networks:
       - MONGO
-    # TODO update this when we deploy to aws
-    # volumes:
-    #   - ~/.aws/credentials:/root/.aws/credentials:ro
   mongo:
     image: mongo
     env_file:
