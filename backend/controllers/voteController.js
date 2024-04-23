@@ -6,7 +6,8 @@
 const express = require("express");
 const router = express.Router();
 const logger = require('../utils/logger.js');
-const voteResult = require("../../wiremock/__files/auckland_restaurants.json")
+// a temporal file and shall be removed when the actual endpoint is ready
+const voteResult = require("../resources/auckland_restaurants.json") 
 
 /**
  * Route for creating a new vote.
