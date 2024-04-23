@@ -107,6 +107,7 @@ jobs:
           echo "ME_CONFIG_BASICAUTH_USERNAME=$ME_CONFIG_BASICAUTH_USERNAME" >> ../.env
           echo "ME_CONFIG_BASICAUTH_PASSWORD=$ME_CONFIG_BASICAUTH_PASSWORD" >> ../.env
           cp ../.env .env
+          cat .env
           chmod +x start-ci.sh
           (./start-ci.sh)&
           npm install -g wait-on
