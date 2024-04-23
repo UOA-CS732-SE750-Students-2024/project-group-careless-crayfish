@@ -19,6 +19,6 @@ async function connect() {
       maxPoolSize: 10,
     }
   );
-}
+} 
 
 module.exports = { connect };
