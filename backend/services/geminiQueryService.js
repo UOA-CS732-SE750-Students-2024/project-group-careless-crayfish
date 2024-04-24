@@ -4,7 +4,6 @@ const logger = require("../utils/logger.js");
 async function fetchRestaurantRecommendations(location) {
   // eslint-disable-next-line no-undef
   const apiUrl = process.env.API_URL;
-  // const apiUrl = 'http://localhost:8081/v1beta/models/gemini-pro:generateContent?key='; // Kept for local testing
   // eslint-disable-next-line no-undef
   const apiKey = process.env.API_KEY || "";
 
