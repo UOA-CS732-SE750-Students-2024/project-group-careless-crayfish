@@ -15,8 +15,10 @@ const APIProvider = ({ children }) => {
       setData(response.data);
       setError(null);
     } catch (error) {
+      console.log(error)
       setError({ message: error.message, code: error.response?.status });
       setData(null);
+      
     }
   };
   const post = async (url, body) => {
@@ -25,6 +27,7 @@ const APIProvider = ({ children }) => {
       setData(response.data);
       setError(null);
     } catch (error) {
+      console.log(error)
       setError({ message: error.message, code: error.response?.status });
       setData(null);
     }

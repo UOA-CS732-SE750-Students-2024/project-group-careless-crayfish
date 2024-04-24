@@ -22,12 +22,12 @@ const SnackbarProvider = () => {
 
   const errorMsgRenderer = () => {
     // Handle 500 class errors by displaying hardcoded text.
-    if(error.code?.startsWith("5")) {
+    if(error.code?.toString().startsWith("5")) {
       return <Typography>Server error, please contact developer</Typography>;
     }
     // Handle 400 class errors by displaying error message returned from server. 
     // So for 400 class errors you need to get your backend api to return meaningful error messages.
-    if(error.code?.startsWith("4")) {
+    if(error.code?.toString().startsWith("4")) {
       return <Typography>{error.message}</Typography>
     }
     // Handle all other types of error.

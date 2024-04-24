@@ -39,7 +39,7 @@ export class EC2Stack extends Stack {
       description: "Allow inbound from ports 3000(node) and 5000(react) and 8080(db admin)",
       allowAllOutbound: true,
     });
-
+    securityGroup.addIngressRule(Peer.anyIpv4(), Port.tcp(22));
     securityGroup.addIngressRule(Peer.anyIpv4(), Port.tcp(3000));
     securityGroup.addIngressRule(Peer.anyIpv4(), Port.tcp(5000));
     securityGroup.addIngressRule(Peer.anyIpv4(), Port.tcp(8080));
