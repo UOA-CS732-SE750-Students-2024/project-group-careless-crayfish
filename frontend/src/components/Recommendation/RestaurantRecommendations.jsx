@@ -11,6 +11,7 @@ import Divider from '@mui/material/Divider';
 import Box from '@mui/material/Box';
 
 import RestaurantElement from './RestaurantElement';
+import { useAPI } from '../GlobalProviders';
 
 export const RestaurantRecommendations = () => {
 
@@ -40,6 +41,7 @@ export const RestaurantRecommendations = () => {
   // checked is the index of the selected restaurant for further usage
   const [checked, setChecked] = React.useState([]);
 
+  const { get } = useAPI()
   /**
    * Handles the selection of a restaurant.
    *
@@ -82,7 +84,7 @@ export const RestaurantRecommendations = () => {
       try {
         const url = `${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/recommendation/restaurant/${location}`;
         console.log("Fetching recommendations from: ", url);
-        const response = await axios.get(url);
+        const response = await get(url);
         console.log("recommendation response: ", response);
         setRecommendations(response.data); // Assuming the API returns an array of recommendations
       } catch (error) {

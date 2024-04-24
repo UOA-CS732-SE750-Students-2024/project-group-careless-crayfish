@@ -17,14 +17,14 @@ const AuthProvider = ({ children }) => {
   };
 
   const createUser = async () => {
-    await post("http://localhost:3000/api/users", {
+    return await post("http://localhost:3000/api/users", {
       userId: "xqc",
       email: "xqc@gmail.com",
     });
   };
 
   const getUserById = async (userId) => {
-    await get("http://localhost:3000/api/users/" + userId);
+    return await get("http://localhost:3000/api/users/" + userId);
   };
   return (
     <AuthContext.Provider

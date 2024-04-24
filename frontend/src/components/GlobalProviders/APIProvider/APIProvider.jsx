@@ -1,9 +1,6 @@
 import { createContext, useContext, useState } from "react";
 import axios from "axios";
 
-/**
- * It is a snackbar and it is an error handler for api calls.
- */
 const APIContext = createContext({});
 
 export const useAPI = () => useContext(APIContext);
@@ -15,40 +12,50 @@ const APIProvider = ({ children }) => {
     try {
       const response = await axios.get(url);
       setError(null);
+      return response;
     } catch (error) {
       setError({ message: error.message, code: error.response?.status });
+      return null;
     }
   };
   const post = async (url, body) => {
     try {
       const response = await axios.post(url, body);
       setError(null);
+      return response;
     } catch (error) {
       setError({ message: error.message, code: error.response?.status });
+      return null;
     }
   };
   const del = async (url) => {
     try {
       const response = await axios.delete(url);
       setError(null);
+      return response;
     } catch (error) {
       setError({ message: error.message, code: error.response?.status });
+      return null;
     }
   };
   const put = async (url, body) => {
     try {
       const response = await axios.put(url, body);
       setError(null);
+      return response;
     } catch (error) {
       setError({ message: error.message, code: error.response?.status });
+      return null;
     }
   };
   const patch = async (url, body) => {
     try {
       const response = await axios.patch(url, body);
       setError(null);
+      return response;
     } catch (error) {
       setError({ message: error.message, code: error.response?.status });
+      return null;
     }
   };
   return (
