@@ -2,7 +2,7 @@
 FROM node:latest AS backend-build
 WORKDIR /usr/src/app/backend
 COPY backend/package*.json ./
-RUN npm install
+RUN npm ci
 COPY backend/ .
 # RUN npm run build
 
@@ -10,7 +10,7 @@ COPY backend/ .
 FROM node:latest AS frontend-build
 WORKDIR /usr/src/app/frontend
 COPY frontend/package*.json ./
-RUN npm install
+RUN npm ci
 COPY frontend/ .
 RUN npm run build
 

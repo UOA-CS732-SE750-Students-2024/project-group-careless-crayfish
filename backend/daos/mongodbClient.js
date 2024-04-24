@@ -5,7 +5,7 @@ async function connect() {
   const address = process.env.MONGO_SERVER;
   const username = process.env.MONGO_USERNAME;
   const password = process.env.MONGO_PASSWORD;
-
+  
   if (!address || !username || !password) {
     throw Error("necessary configs are missing. Check your environment vars");
   }

@@ -1,0 +1,19 @@
+{
+    "request": {
+      "method": "POST",
+      "urlPattern": "/v1beta/models/gemini-pro:generateContent\\?.*",
+      "bodyPatterns": [
+        {
+          "contains": "restaurant"
+        }
+      ]
+    },
+    "response": {
+      "status": 200,
+      "bodyFileName": "auckland_restaurants.json",
+      "headers": {
+        "Content-Type": "application/json"
+      }
+    }
+  }
+  

@@ -65,11 +65,15 @@ jobs:
           echo "MONGO_SERVER=$MONGO_SERVER" >> .env
           echo "MONGO_USERNAME=$MONGO_USERNAME" >> .env
           echo "MONGO_PASSWORD=$MONGO_PASSWORD" >> .env
+          echo "API_KEY=$API_KEY" >> .env
+          echo "API_URL=$API_URL" >> .env
         env:
           # node creds
           MONGO_SERVER: mongo
           MONGO_USERNAME: ${{ secrets.MONGO_USERNAME }}
           MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
+          API_KEY: ${{ secrets.API_KEY }}
+          API_URL: https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=
       - name: Archive src code
         run: |
           cat ".env"

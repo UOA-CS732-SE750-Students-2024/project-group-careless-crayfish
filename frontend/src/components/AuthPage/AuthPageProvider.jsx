@@ -28,10 +28,8 @@ export const useAuthPage = () => React.useContext(AuthPageContext);
 const AuthPageProvider = () => {
   const [emailValue, setEmailValue] = React.useState("");
   const [passwordValue, setPasswordValue] = React.useState("");
-
+  const [userData, setUserData] = React.useState(null);
   const { login, createUser, getUserById } = useAuth();
-
-  const { data } = useAPI();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -145,6 +143,7 @@ const AuthPageProvider = () => {
               </Box>
             </Box>
             <Button
+              id="skip-sign-in"
               type="submit"
               fullWidth
               variant="contained"
@@ -162,7 +161,7 @@ const AuthPageProvider = () => {
               sx={{ mt: 3, mb: 2 }}
               onClick={async (e) => {
                 e.preventDefault();
-                await createUser();
+                await createUser()
               }}
             >
               create test user(xqc)
@@ -170,12 +169,12 @@ const AuthPageProvider = () => {
             <Button
               onClick={async (e) => {
                 e.preventDefault();
-                await getUserById("xqc");
+                setUserData((await getUserById("xqc")).data)
               }}
             >
               get test user
             </Button>
-            <Typography>test user: {JSON.stringify(data)}</Typography>
+            <Typography>test user: {userData && JSON.stringify(userData)}</Typography>
           </Grid>
         </Grid>
       )}
