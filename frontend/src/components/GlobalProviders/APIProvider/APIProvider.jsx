@@ -14,6 +14,7 @@ const APIProvider = ({ children }) => {
       setError(null);
       return response;
     } catch (error) {
+      console.log(error)
       setError({ message: error.message, code: error.response?.status });
       return null;
     }
@@ -24,6 +25,7 @@ const APIProvider = ({ children }) => {
       setError(null);
       return response;
     } catch (error) {
+      console.log(error)
       setError({ message: error.message, code: error.response?.status });
       return null;
     }
