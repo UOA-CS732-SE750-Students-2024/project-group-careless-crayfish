@@ -37,8 +37,8 @@ jobs:
         ports:
           - 27017:27017
         env:
-          MONGO_INITDB_ROOT_USERNAME: devroot
-          MONGO_INITDB_ROOT_PASSWORD: devroot
+          MONGO_INITDB_ROOT_USERNAME: ${{ secrets.MONGO_INITDB_ROOT_USERNAME }}
+          MONGO_INITDB_ROOT_PASSWORD: ${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js
@@ -70,9 +70,9 @@ jobs:
           npm run test:e2e
         env:
           MONGO_SERVER: 127.0.0.1
-          MONGO_USERNAME: devroot
-          MONGO_PASSWORD: devroot
-          API_KEY: ${{ secrets.MONGO_INITDB_ROOT_USERNAME }}
+          MONGO_USERNAME: ${{ secrets.MONGO_USERNAME }}
+          MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
+          API_KEY: ${{ secrets.API_KEY }}
           API_URL: https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=
   # Playwright end-to-end test
   chrome-e2e-test:
@@ -114,9 +114,9 @@ jobs:
         env:
           # node creds
           MONGO_SERVER: mongo
-          MONGO_USERNAME: devroot
-          MONGO_PASSWORD: devroot
-          API_KEY: ${{ secrets.MONGO_INITDB_ROOT_USERNAME }}
+          MONGO_USERNAME: ${{ secrets.MONGO_USERNAME }}
+          MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
+          API_KEY: ${{ secrets.API_KEY }}
           API_URL: https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=
       - name: Set docker-compose configs
         working-directory: "./"
@@ -135,18 +135,18 @@ jobs:
           echo "ME_CONFIG_BASICAUTH_PASSWORD=$ME_CONFIG_BASICAUTH_PASSWORD" >> .env
         env:
           # mongo creds
-          MONGO_INITDB_ROOT_USERNAME: devroot
-          MONGO_INITDB_ROOT_PASSWORD: devroot
-          MONGO_INITDB_DATABASE: cs732
+          MONGO_INITDB_ROOT_USERNAME: ${{ secrets.MONGO_INITDB_ROOT_USERNAME }}
+          MONGO_INITDB_ROOT_PASSWORD: ${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}
+          MONGO_INITDB_DATABASE: ${{ secrets.MONGO_INITDB_DATABASE }}
           # mongo express creds
           ME_CONFIG_MONGODB_SERVER: mongo
           ME_CONFIG_MONGODB_PORT: 27017
           ME_CONFIG_MONGODB_ENABLE_ADMIN: false
           ME_CONFIG_MONGODB_AUTH_DATABASE: admin
-          ME_CONFIG_MONGODB_AUTH_USERNAME: devroot
-          ME_CONFIG_MONGODB_AUTH_PASSWORD: devroot
-          ME_CONFIG_BASICAUTH_USERNAME: dev
-          ME_CONFIG_BASICAUTH_PASSWORD: dev
+          ME_CONFIG_MONGODB_AUTH_USERNAME: ${{ secrets.ME_CONFIG_MONGODB_AUTH_USERNAME }}
+          ME_CONFIG_MONGODB_AUTH_PASSWORD: ${{ secrets.ME_CONFIG_MONGODB_AUTH_PASSWORD }}
+          ME_CONFIG_BASICAUTH_USERNAME: ${{ secrets.ME_CONFIG_BASICAUTH_USERNAME }}
+          ME_CONFIG_BASICAUTH_PASSWORD: ${{ secrets.ME_CONFIG_BASICAUTH_PASSWORD }}
       - name: Start servers
         working-directory: "./scripts"
         run: |
