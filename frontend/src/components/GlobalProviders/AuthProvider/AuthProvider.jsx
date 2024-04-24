@@ -17,7 +17,7 @@ const AuthProvider = ({ children }) => {
   };
 
   const createUser = async () => {
-    await post("http://localhost:3000/api/users", {
+    await post(`${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/users/`, {
       userId: "xqc",
       email: "xqc@gmail.com",
     });
@@ -25,7 +25,7 @@ const AuthProvider = ({ children }) => {
 
   const getUserById = async (userId) => {
     // TODO properly handle param on urls.
-    await get("http://localhost:3000/api/users/" + userId);
+    await get(`${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/users/` + userId);
   };
   return (
     <AuthContext.Provider
