@@ -62,6 +62,8 @@ jobs:
           echo "MONGO_SERVER=$MONGO_SERVER" >> .env
           echo "MONGO_USERNAME=$MONGO_USERNAME" >> .env
           echo "MONGO_PASSWORD=$MONGO_PASSWORD" >> .env
+          echo "API_KEY=$API_KEY" >> .env
+          echo "API_URL=$API_URL" >> .env
           npm run start&
           npm install -g wait-on
           npx wait-on http://localhost:3000/api/api-docs --timeout 100000
@@ -70,6 +72,8 @@ jobs:
           MONGO_SERVER: 127.0.0.1
           MONGO_USERNAME: devroot
           MONGO_PASSWORD: devroot
+          API_KEY: ${{ secrets.MONGO_INITDB_ROOT_USERNAME }}
+          API_URL: https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=
   # Playwright end-to-end test
   chrome-e2e-test:
     needs: [build-test-backend, build-test-frontend]
@@ -89,37 +93,47 @@ jobs:
         working-directory: "./e2eTests"
         run: |
           npm ci
-      - name: Start servers
-        working-directory: "./scripts"
+      - name: Set frontend envs
+        working-directory: "./frontend"
         run: |
-          echo ""> ../.env
-          echo "MONGO_SERVER=$MONGO_SERVER" >> ../.env
-          echo "MONGO_USERNAME=$MONGO_USERNAME" >> ../.env
-          echo "MONGO_PASSWORD=$MONGO_PASSWORD" >> ../.env
-          echo "MONGO_INITDB_ROOT_USERNAME=$MONGO_INITDB_ROOT_USERNAME" >> ../.env
-          echo "MONGO_INITDB_ROOT_PASSWORD=$MONGO_INITDB_ROOT_PASSWORD" >> ../.env
-          echo "MONGO_INITDB_DATABASE=$MONGO_INITDB_DATABASE" >> .env
-          echo "ME_CONFIG_MONGODB_SERVER=$ME_CONFIG_MONGODB_SERVER" >> ../.env
-          echo "ME_CONFIG_MONGODB_PORT=$ME_CONFIG_MONGODB_PORT" >> .env
-          echo "ME_CONFIG_MONGODB_ENABLE_ADMIN=$ME_CONFIG_MONGODB_ENABLE_ADMIN" >> ../.env
-          echo "ME_CONFIG_MONGODB_AUTH_DATABASE=$ME_CONFIG_MONGODB_AUTH_DATABASE" >> ../.env
-          echo "ME_CONFIG_MONGODB_AUTH_USERNAME=$ME_CONFIG_MONGODB_AUTH_USERNAME" >> ../.env
-          echo "ME_CONFIG_MONGODB_AUTH_PASSWORD=$ME_CONFIG_MONGODB_AUTH_PASSWORD" >> ../.env
-          echo "ME_CONFIG_BASICAUTH_USERNAME=$ME_CONFIG_BASICAUTH_USERNAME" >> ../.env
-          echo "ME_CONFIG_BASICAUTH_PASSWORD=$ME_CONFIG_BASICAUTH_PASSWORD" >> ../.env
-          cp ../.env .env
-          cp ../.env ../backend/.env
-          cat .env
-          chmod +x start-ci.sh
-          (./start-ci.sh)&
-          npm install -g wait-on
-          npx wait-on http://localhost:5000/ --timeout 120000
-          npx wait-on http://localhost:3000/api/api-docs --timeout 120000
+          rm .env
+          echo "VITE_BACKEND_API_BASE_URL=$VITE_BACKEND_API_BASE_URL" >> .env
+        env:
+          # node creds
+          VITE_BACKEND_API_BASE_URL: http://localhost:3000
+      - name: Set node configs
+        working-directory: "./backend"
+        run: |
+          rm .env
+          echo "MONGO_SERVER=$MONGO_SERVER" >> .env
+          echo "MONGO_USERNAME=$MONGO_USERNAME" >> .env
+          echo "MONGO_PASSWORD=$MONGO_PASSWORD" >> .env
+          echo "API_KEY=$API_KEY" >> .env
+          echo "API_URL=$API_URL" >> .env
+
         env:
           # node creds
           MONGO_SERVER: mongo
           MONGO_USERNAME: devroot
           MONGO_PASSWORD: devroot
+          API_KEY: ${{ secrets.MONGO_INITDB_ROOT_USERNAME }}
+          API_URL: https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=
+      - name: Set docker-compose configs
+        working-directory: "./"
+        run: |
+          rm .env
+          echo "MONGO_INITDB_ROOT_USERNAME=$MONGO_INITDB_ROOT_USERNAME" >> .env
+          echo "MONGO_INITDB_ROOT_PASSWORD=$MONGO_INITDB_ROOT_PASSWORD" >> .env
+          echo "MONGO_INITDB_DATABASE=$MONGO_INITDB_DATABASE" >> .env
+          echo "ME_CONFIG_MONGODB_SERVER=$ME_CONFIG_MONGODB_SERVER" >> .env
+          echo "ME_CONFIG_MONGODB_PORT=$ME_CONFIG_MONGODB_PORT" >> .env
+          echo "ME_CONFIG_MONGODB_ENABLE_ADMIN=$ME_CONFIG_MONGODB_ENABLE_ADMIN" >> .env
+          echo "ME_CONFIG_MONGODB_AUTH_DATABASE=$ME_CONFIG_MONGODB_AUTH_DATABASE" >> .env
+          echo "ME_CONFIG_MONGODB_AUTH_USERNAME=$ME_CONFIG_MONGODB_AUTH_USERNAME" >> .env
+          echo "ME_CONFIG_MONGODB_AUTH_PASSWORD=$ME_CONFIG_MONGODB_AUTH_PASSWORD" >> .env
+          echo "ME_CONFIG_BASICAUTH_USERNAME=$ME_CONFIG_BASICAUTH_USERNAME" >> .env
+          echo "ME_CONFIG_BASICAUTH_PASSWORD=$ME_CONFIG_BASICAUTH_PASSWORD" >> .env
+        env:
           # mongo creds
           MONGO_INITDB_ROOT_USERNAME: devroot
           MONGO_INITDB_ROOT_PASSWORD: devroot
@@ -133,11 +147,18 @@ jobs:
           ME_CONFIG_MONGODB_AUTH_PASSWORD: devroot
           ME_CONFIG_BASICAUTH_USERNAME: dev
           ME_CONFIG_BASICAUTH_PASSWORD: dev
+      - name: Start servers
+        working-directory: "./scripts"
+        run: |
+          chmod +x start-ci.sh
+          (./start-ci.sh)&
+          npm install -g wait-on
+          npx wait-on http://localhost:5000/ --timeout 120000
+          npx wait-on http://localhost:3000/api/api-docs --timeout 120000
       - name: Run Playwright E2E tests
 
         working-directory: "./e2eTests"
         run: |
-          echo "">.env
           echo "REACT_APP_URL=$REACT_APP_URL" >> .env
           echo "BACKEND_API_URL=$BACKEND_API_URL" >> .env
           npm run test:e2e
