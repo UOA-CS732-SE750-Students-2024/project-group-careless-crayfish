@@ -10,41 +10,81 @@ on:
 jobs:
   archive-src-code:
     runs-on: ubuntu-latest
+    needs: deploy-infra
     steps:
       - uses: actions/checkout@v4
-      # - name: Write app prod env vars
-      #   working-directory: "./"
-      #   run: |
-      #     echo "MONGO_SERVER=$MONGO_SERVER" >> .env
-      #     echo "MONGO_USERNAME=$MONGO_USERNAME" >> .env
-      #     echo "MONGO_PASSWORD=$MONGO_PASSWORD" >> .env
-      #     echo "MONGO_INITDB_ROOT_USERNAME=$MONGO_INITDB_ROOT_USERNAME" >> .env
-      #     echo "MONGO_INITDB_ROOT_PASSWORD=$MONGO_INITDB_ROOT_PASSWORD" >> .env
-      #     echo "MONGO_INITDB_DATABASE=$MONGO_INITDB_DATABASE" >> .env
-      #     echo "ME_CONFIG_MONGODB_SERVER=$ME_CONFIG_MONGODB_SERVER" >> .env
-      #     echo "ME_CONFIG_MONGODB_PORT=$ME_CONFIG_MONGODB_PORT" >> .env
-      #     echo "ME_CONFIG_MONGODB_ENABLE_ADMIN=$ME_CONFIG_MONGODB_ENABLE_ADMIN" >> .env
-      #     echo "ME_CONFIG_MONGODB_AUTH_DATABASE=$ME_CONFIG_MONGODB_AUTH_DATABASE" >> .env
-      #     echo "ME_CONFIG_MONGODB_AUTH_USERNAME=$ME_CONFIG_MONGODB_AUTH_USERNAME" >> .env
-      #     echo "ME_CONFIG_MONGODB_AUTH_PASSWORD=$ME_CONFIG_MONGODB_AUTH_PASSWORD" >> .env
-      #     echo "ME_CONFIG_BASICAUTH_USERNAME=$ME_CONFIG_BASICAUTH_USERNAME" >> .env
-      #     echo "ME_CONFIG_BASICAUTH_PASSWORD=$ME_CONFIG_BASICAUTH_PASSWORD" >> .env
-      # - name: Write backend prod env vars
-      #   working-directory: "./backend"
-      #   run: |
-      #     echo "MONGO_SERVER=$MONGO_SERVER" >> .env
-      #     echo "MONGO_USERNAME=$MONGO_USERNAME" >> .env
-      #     echo "MONGO_PASSWORD=$MONGO_PASSWORD" >> .env
-      #   env:
-      #     MONGO_SERVER: 127.0.0.1
-      #     MONGO_USERNAME: devroot
-      #     MONGO_PASSWORD: devroot
+      - name: Write app prod env vars
+        working-directory: "./"
+        run: |
+          rm .env
+          echo "MONGO_INITDB_ROOT_USERNAME=$MONGO_INITDB_ROOT_USERNAME" >> .env
+          echo "MONGO_INITDB_ROOT_PASSWORD=$MONGO_INITDB_ROOT_PASSWORD" >> .env
+          echo "MONGO_INITDB_DATABASE=$MONGO_INITDB_DATABASE" >> .env
+          echo "ME_CONFIG_MONGODB_SERVER=$ME_CONFIG_MONGODB_SERVER" >> .env
+          echo "ME_CONFIG_MONGODB_PORT=$ME_CONFIG_MONGODB_PORT" >> .env
+          echo "ME_CONFIG_MONGODB_ENABLE_ADMIN=$ME_CONFIG_MONGODB_ENABLE_ADMIN" >> .env
+          echo "ME_CONFIG_MONGODB_AUTH_DATABASE=$ME_CONFIG_MONGODB_AUTH_DATABASE" >> .env
+          echo "ME_CONFIG_MONGODB_AUTH_USERNAME=$ME_CONFIG_MONGODB_AUTH_USERNAME" >> .env
+          echo "ME_CONFIG_MONGODB_AUTH_PASSWORD=$ME_CONFIG_MONGODB_AUTH_PASSWORD" >> .env
+          echo "ME_CONFIG_BASICAUTH_USERNAME=$ME_CONFIG_BASICAUTH_USERNAME" >> .env
+          echo "ME_CONFIG_BASICAUTH_PASSWORD=$ME_CONFIG_BASICAUTH_PASSWORD" >> .env
+        env:
+          # mongo creds
+          MONGO_INITDB_ROOT_USERNAME: ${{ secrets.MONGO_INITDB_ROOT_USERNAME }}
+          MONGO_INITDB_ROOT_PASSWORD: ${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}
+          MONGO_INITDB_DATABASE: ${{ secrets.MONGO_INITDB_DATABASE }}
+          # mongo express creds
+          ME_CONFIG_MONGODB_SERVER: mongo
+          ME_CONFIG_MONGODB_PORT: 27017
+          ME_CONFIG_MONGODB_ENABLE_ADMIN: false
+          ME_CONFIG_MONGODB_AUTH_DATABASE: admin
+          ME_CONFIG_MONGODB_AUTH_USERNAME: ${{ secrets.ME_CONFIG_MONGODB_AUTH_USERNAME }}
+          ME_CONFIG_MONGODB_AUTH_PASSWORD: ${{ secrets.ME_CONFIG_MONGODB_AUTH_PASSWORD }}
+          ME_CONFIG_BASICAUTH_USERNAME: ${{ secrets.ME_CONFIG_BASICAUTH_USERNAME }}
+          ME_CONFIG_BASICAUTH_PASSWORD: ${{ secrets.ME_CONFIG_BASICAUTH_PASSWORD }}
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@b8c74de753fbcb4868bf2011fb2e15826ce973af
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-southeast-2
+      - name: Get EC2 public IP address from our AWS stack
+        run: |
+          echo "EC2_INSTANCE_PUBLIC_DNS=$(aws cloudformation describe-stacks --stack-name DevAndProdStack --query 'Stacks[0].Outputs[?OutputKey==`EC2PublicDNS`].OutputValue' --output text)" >> $GITHUB_ENV
+      - name: Set frontend envs
+        working-directory: "./frontend"
+        run: |
+          rm .env
+          echo "VITE_BACKEND_API_BASE_URL=http://$EC2_INSTANCE_PUBLIC_DNS:3000" >> .env
+          cat .env
+
+      - name: Write docker-compose prod env vars
+        working-directory: "./backend"
+        run: |
+          rm .env
+          echo "MONGO_SERVER=$MONGO_SERVER" >> .env
+          echo "MONGO_USERNAME=$MONGO_USERNAME" >> .env
+          echo "MONGO_PASSWORD=$MONGO_PASSWORD" >> .env
+          echo "API_KEY=$API_KEY" >> .env
+          echo "API_URL=$API_URL" >> .env
+        env:
+          # node creds
+          MONGO_SERVER: mongo
+          MONGO_USERNAME: ${{ secrets.MONGO_USERNAME }}
+          MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
+          API_KEY: ${{ secrets.API_KEY }}
+          API_URL: https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=
       - name: Archive src code
         run: |
-          ls -a
-          ls -A
+          cat ".env"
+          cat "./backend/.env"
           mkdir cs732-careless-crayfish
-          tar -czvf cs732-careless-crayfish/source_code.tar.gz --exclude cs732-careless-crayfish --exclude=node_modules --exclude=infrastructure --exclude=e2eTests .
+          tar -czvf cs732-careless-crayfish/source_code.tar.gz \
+          --exclude=cs732-careless-crayfish \
+          --exclude=node_modules \
+          --exclude=infrastructure \
+          --exclude=.ssh \
+          --exclude=e2eTests .
         working-directory: "./"
       - name: upload archived src code
         uses: actions/upload-artifact@v2
@@ -82,7 +122,7 @@ jobs:
           npm run deploy-prod
         working-directory: "./infrastructure"
   deploy-ec2:
-    needs: deploy-infra
+    needs: archive-src-code
     runs-on: ubuntu-latest
     steps:
       - name: Download latest archived source code

@@ -4,7 +4,6 @@ import { useAuth } from "../AuthProvider";
 import { AuthenticatedProvider } from "@frontend-ui/components/Authenticated";
 import AuthPageProvider from "@frontend-ui/components/AuthPage/AuthPageProvider";
 import { RestaurantRecommendations, Landing, RestaurantOptions } from "@frontend-ui/components/Recommendation";
-
 const RouteContext = createContext({});
 
 export const useRoute = () => useContext(RouteContext);
@@ -41,23 +40,12 @@ const RouteProvider = () => {
             path="/authenticated"
             element={
               isAuthenticated ? (
-                <AuthenticatedProvider />
-              ) : (
-                <Navigate to="/auth" />
-              )
-            }
-          />
-
-          <Route
-            path="/landing"
-            element={
-              isAuthenticated ? (
                 <>
                   <AuthenticatedProvider/>
                   <Landing/>
                 </>
               ) : (
-                <AuthPageProvider />
+                <Navigate to="/auth" />
               )
             }
           />

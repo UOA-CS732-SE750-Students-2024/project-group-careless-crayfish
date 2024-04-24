@@ -1,8 +1,6 @@
 import { test, expect } from "@playwright/test";
 require("dotenv").config();
 
-console.log(`REACT_APP_URL: ${process.env.REACT_APP_URL}`);
-
 async function skipSignIn(page) {
   // Skip signin
   const signInButton = await page.$("#skip-sign-in");
@@ -20,7 +18,7 @@ async function skipSignIn(page) {
 
 test("Landing page", async ({ page }) => {
   // Navigate to the local development server where your React app is running
-  await page.goto(process.env.REACT_APP_URL+"/landing");
+  await page.goto(process.env.REACT_APP_URL);
 
   // Wait for the app to load
   await page.waitForLoadState("domcontentloaded");
