@@ -4,7 +4,7 @@ import { APIProvider, useAPI } from "@frontend-ui/components/GlobalProviders";
 import { act, renderHook } from "@testing-library/react";
 
 const mockData = { message: "Test" };
-const mockSuccessResponse = { data:  mockData}
+const mockSuccessResponse = { data: mockData };
 const mockError = { message: "Error", response: { status: 500 } };
 
 // Mocking axios globally

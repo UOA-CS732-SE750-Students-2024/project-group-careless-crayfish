@@ -161,7 +161,7 @@ const AuthPageProvider = () => {
               sx={{ mt: 3, mb: 2 }}
               onClick={async (e) => {
                 e.preventDefault();
-                await createUser()
+                await createUser();
               }}
             >
               create test user(xqc)
@@ -169,12 +169,14 @@ const AuthPageProvider = () => {
             <Button
               onClick={async (e) => {
                 e.preventDefault();
-                setUserData((await getUserById("xqc")).data)
+                setUserData((await getUserById("xqc")).data);
               }}
             >
               get test user
             </Button>
-            <Typography>test user: {userData && JSON.stringify(userData)}</Typography>
+            <Typography>
+              test user: {userData && JSON.stringify(userData)}
+            </Typography>
           </Grid>
         </Grid>
       )}

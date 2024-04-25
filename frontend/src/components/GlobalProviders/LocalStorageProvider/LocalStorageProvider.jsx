@@ -7,19 +7,19 @@ const LocalStorageContext = createContext({
   },
   getItem: (key) => {
     console.log(
-      `Failed to find item with key = ${key}, no local storage provider`
+      `Failed to find item with key = ${key}, no local storage provider`,
     );
     return null;
   },
   setItem: (key, value) => {
     console.log(
-      `Failed to set item with key = ${key} and value = ${value}, no local storage provider or an error is thrown`
+      `Failed to set item with key = ${key} and value = ${value}, no local storage provider or an error is thrown`,
     );
     return false;
   },
   removeItem: (key) => {
     console.log(
-      `Failed to remove item with key = ${key}, no local storage provider or an error is thrown`
+      `Failed to remove item with key = ${key}, no local storage provider or an error is thrown`,
     );
     return false;
   },
