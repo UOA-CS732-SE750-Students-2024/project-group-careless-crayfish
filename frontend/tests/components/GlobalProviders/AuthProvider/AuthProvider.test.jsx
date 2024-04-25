@@ -1,6 +1,6 @@
-import { expect, test } from "vitest";
+import { expect, test } from 'vitest';
 
-test("test", async () => {
+test('test', async () => {
   // Given
 
   // When

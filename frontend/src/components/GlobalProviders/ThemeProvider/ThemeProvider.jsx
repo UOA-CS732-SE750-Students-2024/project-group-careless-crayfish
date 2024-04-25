@@ -1,13 +1,12 @@
-import { useState } from "react";
+import { useState, createContext, useContext } from 'react';
 
-import { createContext, useContext } from "react";
-import { localStorageKeys, useLocalStorage } from "../LocalStorageProvider";
-import { DarkTheme, LightTheme } from "@frontend-ui/themes";
-import { ThemeProvider as MuiThemeProvider } from "@mui/material/styles";
+import { localStorageKeys, useLocalStorage } from '../LocalStorageProvider';
+import { DarkTheme, LightTheme } from '@frontend-ui/themes';
+import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 
 export const MuiTheme = {
-  Dark: "dark",
-  Light: "light",
+  Dark: 'dark',
+  Light: 'light',
 };
 
 const ThemeContext = createContext({

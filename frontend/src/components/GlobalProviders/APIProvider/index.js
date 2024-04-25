@@ -1,1 +1,1 @@
-export { useAPI, default as APIProvider } from "./APIProvider";
+export { useAPI, default as APIProvider } from './APIProvider';

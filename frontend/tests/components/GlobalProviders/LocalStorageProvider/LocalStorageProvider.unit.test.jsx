@@ -1,20 +1,20 @@
-import { LocalStorageProvider } from "@frontend-ui/components/GlobalProviders/LocalStorageProvider";
-import { findByText, getByText, render } from "@testing-library/react";
-import { LocalStorageProviderDebug } from "tests/testUtils";
-import { describe, expect, test } from "vitest";
+import { LocalStorageProvider } from '@frontend-ui/components/GlobalProviders/LocalStorageProvider';
+import { findByText, getByText, render } from '@testing-library/react';
+import { LocalStorageProviderDebug } from 'tests/testUtils';
+import { describe, expect, test } from 'vitest';
 
-describe("LocalStorageProvider tests.", () => {
-  test("local storage provider function getItem with non existing key works", async () => {
+describe('LocalStorageProvider tests.', () => {
+  test('local storage provider function getItem with non existing key works', async () => {
     const { container } = render(
       <LocalStorageProvider>
         <LocalStorageProviderDebug />
       </LocalStorageProvider>
     );
     expect(container).toBeTruthy();
-    getByText(container, "null", { exact: true });
+    getByText(container, 'null', { exact: true });
   });
 
-  test("local storage provider function setItem works", async () => {
+  test('local storage provider function setItem works', async () => {
     const { container } = render(
       <LocalStorageProvider>
         <LocalStorageProviderDebug functionToDebug="setItem" />
@@ -23,19 +23,19 @@ describe("LocalStorageProvider tests.", () => {
     expect(container).toBeTruthy();
     await findByText(container, '"1"');
   });
-  test("local storage provider function keys works", async () => {
+  test('local storage provider function keys works', async () => {
     const { container } = render(
       <LocalStorageProvider>
         <LocalStorageProviderDebug functionToDebug="keys" />
       </LocalStorageProvider>
     );
     expect(container).toBeTruthy();
-    await findByText(container, "a", { exact: true });
-    localStorage.removeItem("a");
+    await findByText(container, 'a', { exact: true });
+    localStorage.removeItem('a');
   });
-  test("local storage provider function removeItem works", async () => {
-    localStorage.setItem("b", "2");
-    localStorage.setItem("a", "1");
+  test('local storage provider function removeItem works', async () => {
+    localStorage.setItem('b', '2');
+    localStorage.setItem('a', '1');
 
     const { container } = render(
       <LocalStorageProvider>
@@ -43,7 +43,7 @@ describe("LocalStorageProvider tests.", () => {
       </LocalStorageProvider>
     );
     expect(container).toBeTruthy();
-    await findByText(container, "2", { exact: true });
-    await findByText(container, "b", { exact: true });
+    await findByText(container, '2', { exact: true });
+    await findByText(container, 'b', { exact: true });
   });
 });

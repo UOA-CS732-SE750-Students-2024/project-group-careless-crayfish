@@ -1,20 +1,20 @@
-import * as React from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import { Navigate } from "react-router-dom";
-import { useAPI, useAuth } from "../GlobalProviders";
+import * as React from 'react';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Link from '@mui/material/Link';
+import Paper from '@mui/material/Paper';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+import { Navigate } from 'react-router-dom';
+import { useAPI, useAuth } from '../GlobalProviders';
 
 const auth = () => {
-  if (localStorage.getItem("token")) {
+  if (localStorage.getItem('token')) {
     return true;
   } else {
     return false;
@@ -26,8 +26,8 @@ const AuthPageContext = React.createContext({});
 export const useAuthPage = () => React.useContext(AuthPageContext);
 
 const AuthPageProvider = () => {
-  const [emailValue, setEmailValue] = React.useState("");
-  const [passwordValue, setPasswordValue] = React.useState("");
+  const [emailValue, setEmailValue] = React.useState('');
+  const [passwordValue, setPasswordValue] = React.useState('');
   const [userData, setUserData] = React.useState(null);
   const { login, createUser, getUserById } = useAuth();
 
@@ -42,7 +42,7 @@ const AuthPageProvider = () => {
       {auth() ? (
         <Navigate to="/authenticated" />
       ) : (
-        <Grid container component="main" sx={{ height: "100vh" }}>
+        <Grid container component="main" sx={{ height: '100vh' }}>
           <Grid
             item
             xs={8}
@@ -50,14 +50,14 @@ const AuthPageProvider = () => {
             md={7}
             sx={{
               backgroundImage:
-                "url(https://source.unsplash.com/random?wallpapers)",
-              backgroundRepeat: "no-repeat",
+                'url(https://source.unsplash.com/random?wallpapers)',
+              backgroundRepeat: 'no-repeat',
               backgroundColor: (t) =>
-                t.palette.mode === "light"
+                t.palette.mode === 'light'
                   ? t.palette.grey[50]
                   : t.palette.grey[900],
-              backgroundSize: "cover",
-              backgroundPosition: "center",
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
             }}
           />
           <Grid
@@ -73,12 +73,12 @@ const AuthPageProvider = () => {
               sx={{
                 my: 8,
                 mx: 4,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
               }}
             >
-              <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+              <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                 <LockOutlinedIcon />
               </Avatar>
               <Typography component="h1" variant="h5">
@@ -161,7 +161,7 @@ const AuthPageProvider = () => {
               sx={{ mt: 3, mb: 2 }}
               onClick={async (e) => {
                 e.preventDefault();
-                await createUser()
+                await createUser();
               }}
             >
               create test user(xqc)
@@ -169,12 +169,14 @@ const AuthPageProvider = () => {
             <Button
               onClick={async (e) => {
                 e.preventDefault();
-                setUserData((await getUserById("xqc")).data)
+                setUserData((await getUserById('xqc')).data);
               }}
             >
               get test user
             </Button>
-            <Typography>test user: {userData && JSON.stringify(userData)}</Typography>
+            <Typography>
+              test user: {userData && JSON.stringify(userData)}
+            </Typography>
           </Grid>
         </Grid>
       )}

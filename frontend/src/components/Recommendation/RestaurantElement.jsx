@@ -11,7 +11,6 @@ import ListItem from '@mui/material/ListItem';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
 
 const RestaurantElement = ({ restaurant }) => {
-
   // State for the expanded details
   const [open, setOpen] = React.useState(false);
 
@@ -20,37 +19,39 @@ const RestaurantElement = ({ restaurant }) => {
     setOpen(!open);
   };
 
-  return (<>
+  return (
+    <>
       {/* 1. Restaurant element */}
-      <ListItem key={restaurant.index}
-        className = "restaurant-element"
+      <ListItem
+        key={restaurant.index}
+        className="restaurant-element"
         secondaryAction={
           <Checkbox
-              edge="end"
-              checked={restaurant.checked.indexOf(restaurant.index) !== -1}
-              onChange={restaurant.handleToggleRestaurant(restaurant.index)}
-              tabIndex={-1}
-              disableRipple
-              inputProps={{ 'aria-labelledby': restaurant.labelId }}
-            />
+            edge="end"
+            checked={restaurant.checked.indexOf(restaurant.index) !== -1}
+            onChange={restaurant.handleToggleRestaurant(restaurant.index)}
+            tabIndex={-1}
+            disableRipple
+            inputProps={{ 'aria-labelledby': restaurant.labelId }}
+          />
         }
       >
         {/* 1.1 Clickable */}
-        <ListItemButton 
-          className = "restaurant-element-button"
-          selected = {restaurant.selected === restaurant.index}
+        <ListItemButton
+          className="restaurant-element-button"
+          selected={restaurant.selected === restaurant.index}
           onClick={(event) => {
             restaurant.handleListItemClick(event, restaurant.index);
             handleFoldUnFoldDetails(event);
           }}
-        >  
+        >
           <ListItemIcon>
             <RestaurantIcon />
           </ListItemIcon>
 
           {/* Restaurant details */}
           <ListItemText
-            className='restaurant-element-text'
+            className="restaurant-element-text"
             primary={`${restaurant.name} (${restaurant.priceRange})`}
             secondary={
               <span style={{ whiteSpace: 'pre-line' }}>
@@ -68,7 +69,7 @@ const RestaurantElement = ({ restaurant }) => {
       <Collapse in={open} timeout="auto" unmountOnExit>
         <Container maxWidth="lg">
           {`${restaurant.name} details`}
-          <br/>
+          <br />
           {`place holder for image, map, and other details`}
         </Container>
       </Collapse>

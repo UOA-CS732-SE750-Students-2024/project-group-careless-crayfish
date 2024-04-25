@@ -1,1 +1,1 @@
-export { useRoute, default as RouteProvider } from "./RouteProvider";
+export { useRoute, default as RouteProvider } from './RouteProvider';

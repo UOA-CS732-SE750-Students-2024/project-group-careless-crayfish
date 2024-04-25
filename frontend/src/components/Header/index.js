@@ -1,1 +1,1 @@
-export { useHeader, default as HeaderProvider } from "./HeaderProvider";
+export { useHeader, default as HeaderProvider } from './HeaderProvider';

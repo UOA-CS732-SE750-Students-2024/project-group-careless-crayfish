@@ -1,8 +1,8 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext } from 'react';
 
 const LocalStorageContext = createContext({
   keys: () => {
-    console.log("Failed to get keys, no local storage provider");
+    console.log('Failed to get keys, no local storage provider');
     return [];
   },
   getItem: (key) => {

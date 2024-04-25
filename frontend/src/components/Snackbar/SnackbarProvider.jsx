@@ -1,11 +1,15 @@
-import { createContext, useContext } from "react";
-import { default as MuiSnackbar } from "@mui/material/Snackbar";
-import { Box, Collapse, IconButton } from "@mui/material";
-import MuiAlert from "@mui/material/Alert";
-import { Typography } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import { AlertTitle } from "@mui/material";
-import { useAPI } from "../GlobalProviders";
+import { createContext, useContext } from 'react';
+import { default as MuiSnackbar } from '@mui/material/Snackbar';
+import {
+  Box,
+  Collapse,
+  IconButton,
+  Typography,
+  AlertTitle,
+} from '@mui/material';
+import MuiAlert from '@mui/material/Alert';
+import CloseIcon from '@mui/icons-material/Close';
+import { useAPI } from '../GlobalProviders';
 
 const SnackbarContext = createContext({});
 export const useSnackbar = () => useContext(SnackbarContext);
@@ -22,20 +26,20 @@ const SnackbarProvider = () => {
 
   const errorMsgRenderer = () => {
     // Handle 500 class errors by displaying hardcoded text.
-    if(error.code?.toString().startsWith("5")) {
+    if (error.code?.toString().startsWith('5')) {
       return <Typography>Server error, please contact developer</Typography>;
     }
-    // Handle 400 class errors by displaying error message returned from server. 
+    // Handle 400 class errors by displaying error message returned from server.
     // So for 400 class errors you need to get your backend api to return meaningful error messages.
-    if(error.code?.toString().startsWith("4")) {
-      return <Typography>{error.message}</Typography>
+    if (error.code?.toString().startsWith('4')) {
+      return <Typography>{error.message}</Typography>;
     }
     // Handle all other types of error.
-    return <Typography>Unkown error, please contact developer</Typography>
-  }
+    return <Typography>Unkown error, please contact developer</Typography>;
+  };
   const renderErrorAlert = () => (
     <Alert
-      severity={"error"}
+      severity={'error'}
       onClose={handleSnackbarClose}
       action={
         <Box display="flex" flexDirection="row" width="100%">
@@ -58,13 +62,13 @@ const SnackbarProvider = () => {
   return (
     <SnackbarContext.Provider value={{}}>
       <MuiSnackbar
-        aria-label={"Snackbar"}
+        aria-label={'Snackbar'}
         open={!!error}
         onClose={handleSnackbarClose}
         TransitionComponent={Collapse}
         ClickAwayListenerProps={{ mouseEvent: false }}
-        key={"Snackbar"}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        key={'Snackbar'}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
         {error && renderErrorAlert()}
       </MuiSnackbar>
