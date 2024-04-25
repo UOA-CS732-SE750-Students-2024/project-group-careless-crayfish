@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
-import axios from 'axios';
+import axios from "axios";
 
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import Box from '@mui/material/Box';
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import List from "@mui/material/List";
+import Divider from "@mui/material/Divider";
+import Box from "@mui/material/Box";
 
-import RestaurantElement from './RestaurantElement';
-import { useAPI } from '../GlobalProviders';
+import RestaurantElement from "./RestaurantElement";
+import { useAPI } from "../GlobalProviders";
 
 export const RestaurantRecommendations = () => {
   const { location } = useParams(); // Extract the location parameter from the current route
@@ -32,7 +32,7 @@ export const RestaurantRecommendations = () => {
    */
   const handleListItemClick = (
     event, // React.MouseEvent<HTMLDivElement, MouseEvent>
-    index // number
+    index, // number
   ) => {
     setSelectedIndex(index);
   };
@@ -73,9 +73,9 @@ export const RestaurantRecommendations = () => {
    */
   function capitalizeEveryWord(str) {
     return str
-      .split(' ')
+      .split(" ")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-      .join(' ');
+      .join(" ");
   }
 
   useEffect(() => {
@@ -83,12 +83,12 @@ export const RestaurantRecommendations = () => {
     const fetchRecommendations = async () => {
       try {
         const url = `${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/recommendation/restaurant/${location}`;
-        console.log('Fetching recommendations from: ', url);
+        console.log("Fetching recommendations from: ", url);
         const response = await get(url);
-        console.log('recommendation response: ', response);
+        console.log("recommendation response: ", response);
         setRecommendations(response.data); // Assuming the API returns an array of recommendations
       } catch (error) {
-        console.error('Error fetching recommendations:', error);
+        console.error("Error fetching recommendations:", error);
       }
     };
 
@@ -116,7 +116,7 @@ export const RestaurantRecommendations = () => {
                   restaurant={restaurant}
                 />
               )
-            )
+            ),
           )}
           <Divider variant="inset" component="li" />
         </List>

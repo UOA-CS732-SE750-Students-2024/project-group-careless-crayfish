@@ -1,1 +1,1 @@
-export { useSnackbar, default as SnackbarProvider } from './SnackbarProvider';
+export { useSnackbar, default as SnackbarProvider } from "./SnackbarProvider";

@@ -1,5 +1,5 @@
-import { createContext, useContext, useState } from 'react';
-import { useAPI } from '../APIProvider';
+import { createContext, useContext, useState } from "react";
+import { useAPI } from "../APIProvider";
 
 const AuthContext = createContext({});
 
@@ -17,14 +17,14 @@ const AuthProvider = ({ children }) => {
   };
 
   const createUser = async () => {
-    return await post('http://localhost:3000/api/users', {
-      userId: 'xqc',
-      email: 'xqc@gmail.com',
+    return await post("http://localhost:3000/api/users", {
+      userId: "xqc",
+      email: "xqc@gmail.com",
     });
   };
 
   const getUserById = async (userId) => {
-    return await get('http://localhost:3000/api/users/' + userId);
+    return await get("http://localhost:3000/api/users/" + userId);
   };
   return (
     <AuthContext.Provider

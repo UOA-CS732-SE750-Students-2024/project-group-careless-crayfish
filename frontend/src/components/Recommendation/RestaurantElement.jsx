@@ -1,14 +1,14 @@
-import React from 'react';
-import Container from '@mui/material/Container';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemButton from '@mui/material/ListItemButton';
-import Collapse from '@mui/material/Collapse';
-import ExpandMore from '@mui/icons-material/ExpandMore';
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import Checkbox from '@mui/material/Checkbox';
-import ListItem from '@mui/material/ListItem';
-import RestaurantIcon from '@mui/icons-material/Restaurant';
+import React from "react";
+import Container from "@mui/material/Container";
+import ListItemText from "@mui/material/ListItemText";
+import ListItemButton from "@mui/material/ListItemButton";
+import Collapse from "@mui/material/Collapse";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import Checkbox from "@mui/material/Checkbox";
+import ListItem from "@mui/material/ListItem";
+import RestaurantIcon from "@mui/icons-material/Restaurant";
 
 const RestaurantElement = ({ restaurant }) => {
   // State for the expanded details
@@ -32,7 +32,7 @@ const RestaurantElement = ({ restaurant }) => {
             onChange={restaurant.handleToggleRestaurant(restaurant.index)}
             tabIndex={-1}
             disableRipple
-            inputProps={{ 'aria-labelledby': restaurant.labelId }}
+            inputProps={{ "aria-labelledby": restaurant.labelId }}
           />
         }
       >
@@ -54,7 +54,7 @@ const RestaurantElement = ({ restaurant }) => {
             className="restaurant-element-text"
             primary={`${restaurant.name} (${restaurant.priceRange})`}
             secondary={
-              <span style={{ whiteSpace: 'pre-line' }}>
+              <span style={{ whiteSpace: "pre-line" }}>
                 {`Description: ${restaurant.description}\nLocation: ${restaurant.location}`}
               </span>
             }

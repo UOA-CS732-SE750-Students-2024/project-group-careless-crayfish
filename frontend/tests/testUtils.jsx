@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import {
   useLocalStorage,
   useMuiTheme,
-} from '@frontend-ui/components/GlobalProviders';
+} from "@frontend-ui/components/GlobalProviders";
 
 export const ThemeProviderDebug = ({ themeMode }) => {
   const { theme, setMuiTheme } = useMuiTheme();
@@ -18,35 +18,35 @@ export const LocalStorageProviderDebug = ({ functionToDebug }) => {
     useState(false);
   useEffect(() => {
     switch (functionToDebug) {
-      case 'setItem':
-      case 'keys':
-        setIsLocalStorageEventSuccessful(setItem('a', '1'));
+      case "setItem":
+      case "keys":
+        setIsLocalStorageEventSuccessful(setItem("a", "1"));
         break;
-      case 'removeItem':
-        setIsLocalStorageEventSuccessful(removeItem('a'));
+      case "removeItem":
+        setIsLocalStorageEventSuccessful(removeItem("a"));
         break;
       default:
         break;
     }
   }, []);
   switch (functionToDebug) {
-    case 'setItem':
-      return <>{getItem('a') || 'null'}</>;
-    case 'keys':
-      return <>{keys() || '[]'}</>;
+    case "setItem":
+      return <>{getItem("a") || "null"}</>;
+    case "keys":
+      return <>{keys() || "[]"}</>;
 
-    case 'removeItem':
+    case "removeItem":
       return (
         <>
           <span>
             is localstorage event successful:
             {isLocalStorageEventSuccessful.toString()}
           </span>
-          <span>{keys() || '[]'}</span>
-          {getItem('b') || 'null'}
+          <span>{keys() || "[]"}</span>
+          {getItem("b") || "null"}
         </>
       );
     default:
-      return <>{getItem('a') || 'null'}</>;
+      return <>{getItem("a") || "null"}</>;
   }
 };

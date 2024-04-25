@@ -1,4 +1,4 @@
 export {
   default as AuthenticatedProvider,
   useAuthenticated,
-} from './AuthenticatedProvider';
+} from "./AuthenticatedProvider";

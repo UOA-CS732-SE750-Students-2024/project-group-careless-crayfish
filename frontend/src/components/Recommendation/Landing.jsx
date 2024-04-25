@@ -1,16 +1,16 @@
-import React from 'react';
+import React from "react";
 
-import Container from '@mui/material/Container';
-import Link from '@mui/material/Link';
-import { Button } from '@mui/material';
-import { useRoute } from '../GlobalProviders';
-import { useNavigate } from 'react-router-dom';
+import Container from "@mui/material/Container";
+import Link from "@mui/material/Link";
+import { Button } from "@mui/material";
+import { useRoute } from "../GlobalProviders";
+import { useNavigate } from "react-router-dom";
 
 export const Landing = () => {
   const navigate = useNavigate();
 
   const handleRestaurantClick = () => {
-    navigate('/recommend/restaurant-options');
+    navigate("/recommend/restaurant-options");
   };
   return (
     <div>

@@ -1,5 +1,5 @@
-import { createContext, useContext, useState } from 'react';
-import { MuiTheme, useAuth, useMuiTheme } from '../GlobalProviders';
+import { createContext, useContext, useState } from "react";
+import { MuiTheme, useAuth, useMuiTheme } from "../GlobalProviders";
 import {
   AppBar,
   Grid,
@@ -12,9 +12,9 @@ import {
   Toolbar,
   Tooltip,
   Typography,
-} from '@mui/material';
-import { Box } from '@mui/system';
-import Person2Icon from '@mui/icons-material/Person2';
+} from "@mui/material";
+import { Box } from "@mui/system";
+import Person2Icon from "@mui/icons-material/Person2";
 const HeaderContext = createContext({});
 
 export const useHeader = () => useContext(HeaderContext);
@@ -61,7 +61,7 @@ const HeaderProvider = () => {
                 checked={theme === MuiTheme.Dark}
                 onChange={handleThemeSwitchClick}
                 inputProps={{
-                  'aria-label': `Toggle light/dark mode - Currently ${theme} mode.`,
+                  "aria-label": `Toggle light/dark mode - Currently ${theme} mode.`,
                 }}
               />
             </Tooltip>
@@ -73,10 +73,10 @@ const HeaderProvider = () => {
                 <ListItemButton
                   id="demo-positioned-button"
                   aria-controls={
-                    isMenuOpen ? 'demo-positioned-menu' : undefined
+                    isMenuOpen ? "demo-positioned-menu" : undefined
                   }
                   aria-haspopup="true"
-                  aria-expanded={isMenuOpen ? 'true' : undefined}
+                  aria-expanded={isMenuOpen ? "true" : undefined}
                   onClick={handleMenuToggle}
                 >
                   <Person2Icon fontSize="large" />
@@ -92,13 +92,13 @@ const HeaderProvider = () => {
               >
                 <MenuList autoFocusItem={isMenuOpen}>
                   <MenuItem
-                    aria-label={'menu profile link'}
+                    aria-label={"menu profile link"}
                     onClick={handleMenuClose}
                   >
                     <Typography noWrap>profile</Typography>
                   </MenuItem>
                   <MenuItem
-                    aria-label={'menu logout link'}
+                    aria-label={"menu logout link"}
                     onClick={handleLogoutLinkCLick}
                   >
                     <Typography noWrap>logout</Typography>

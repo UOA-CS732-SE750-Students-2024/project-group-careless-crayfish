@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import {
   FormControl,
@@ -10,24 +10,24 @@ import {
   Button,
   Container,
   Box,
-} from '@mui/material';
+} from "@mui/material";
 
 export const RestaurantOptions = () => {
-  const [ageGroup, setAgeGroup] = useState('');
-  const [cuisine, setCuisine] = useState('');
-  const [location, setLocation] = useState('Auckland City');
+  const [ageGroup, setAgeGroup] = useState("");
+  const [cuisine, setCuisine] = useState("");
+  const [location, setLocation] = useState("Auckland City");
   const navigateTo = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
     // Handle the form submission logic here
     console.log(
-      `ageGroup: ${ageGroup}, crusine: ${cuisine}, Location: ${location}`
+      `ageGroup: ${ageGroup}, crusine: ${cuisine}, Location: ${location}`,
     );
 
     // Redirect to the recommendation page
     navigateTo(
-      `/recommend/restaurants/${location}?ageGroup=${ageGroup}&cuisine=${cuisine}`
+      `/recommend/restaurants/${location}?ageGroup=${ageGroup}&cuisine=${cuisine}`,
     );
   };
 
