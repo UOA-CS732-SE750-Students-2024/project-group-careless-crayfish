@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const voteService = require("../services/voteService.js");
-
+const Response = require("../utils/response.js");
 /**
  * @swagger
  * /api/votes:
@@ -34,18 +34,18 @@ const voteService = require("../services/voteService.js");
  *       '500':
  *         description: Internal server error
  */
-router.post("/", async (req, res) => {
+router.post("/create", async (req, res) => {
   try {
     const vote = await voteService.createVote(req.body);
-    res.status(201).json(vote);
+    res.status(200).json(Response.success(vote));
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(200).json(Response.internalServerError(error.message));
   }
 });
 
 /**
  * @swagger
- * /api/votes/{voteId}:
+ * /api/votes/getDetail:
  *   get:
  *     tags:
  *     - Vote Controller
@@ -65,16 +65,19 @@ router.post("/", async (req, res) => {
  *       '500':
  *         description: Internal server error
  */
-router.get("/:voteId", async (req, res) => {
+router.get("/getDetail", async (req, res) => {
   try {
-    const voteId = req.params.voteId;
+    const voteId = req.query.voteId;
+    console.log(req.query, "voteId");
     const vote = await voteService.getVote(voteId);
     if (!vote) {
-      return res.status(404).json({ error: "Vote not found" });
+      return res
+        .status(200)
+        .json({ code: 40400, data: null, message: "not found" });
     }
     return res.json(vote);
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    return res.status(500).json({ code: 5000, data: null, msg: error.message });
   }
 });
 
@@ -113,19 +116,45 @@ router.get("/:voteId", async (req, res) => {
  *       '500':
  *         description: Internal server error
  */
-router.put("/:voteId", async (req, res) => {
+router.post("/update", async (req, res) => {
   try {
-    const voteId = req.params.voteId;
-    const updatedVote = await voteService.updateVote(voteId, req.body);
+    const voteId = req.body.voteId;
+    const recommend = req.body.recommend;
+    const updatedVote = await voteService.updateVote(voteId, recommend);
     if (!updatedVote) {
-      return res.status(404).json({ error: "Vote not found" });
+      return res
+        .status(200)
+        .json({ code: 40400, data: null, message: "not found" });
     }
-    return res.json(updatedVote);
+    return res
+      .status(200)
+      .json({ code: 20000, data: null, message: "update successfully" });
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    return res
+      .status(500)
+      .json({ code: 50000, data: null, error: error.message });
   }
 });
 
+router.post("/endVote", async (req, res) => {
+  try {
+    const voteId = req.body.voteId;
+    const status = req.body.status;
+    const endVote = await voteService.endVote(voteId, status);
+    if (!endVote) {
+      return res
+        .status(200)
+        .json({ code: 40400, data: null, message: "not found" });
+    }
+    return res
+      .status(200)
+      .json({ code: 20000, data: null, message: "update successfully" });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ code: 50000, data: null, error: error.message });
+  }
+});
 // Add other routes as needed
 
 module.exports = router;

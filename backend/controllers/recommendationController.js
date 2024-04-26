@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const geminiQueryService = require("../services/geminiQueryService.js");
-const logger = require('../utils/logger.js');
+const logger = require("../utils/logger.js");
 
 /**
  * @swagger
@@ -29,12 +29,15 @@ router.get("/restaurant/:location", async (req, res) => {
   try {
     const location = req.params.location;
     logger.info(`fetch restaurant recommendations for "${location}"`);
-    const recommentations = await geminiQueryService.fetchRestaurantRecommendations(location);
+    const recommentations =
+      await geminiQueryService.fetchRestaurantRecommendations(location);
     if (!recommentations) {
       res.status(404).json({ error: "no recommendation" });
       return;
     }
-    logger.info(`recommend the following restaurants for ${location}: ${recommentations}`);
+    logger.info(
+      `recommend the following restaurants for ${location}: ${recommentations}`
+    );
     res.json(JSON.parse(recommentations));
   } catch (error) {
     logger.error(error);
