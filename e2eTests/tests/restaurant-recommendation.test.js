@@ -35,7 +35,7 @@ test("Landing page", async ({ page }) => {
 
 test("Recommendation Options page", async ({ page }) => {
   // Navigate to the local development server where your React app is running
-  await page.goto(process.env.REACT_APP_URL+"/recommend/restaurant-options");
+  await page.goto(process.env.REACT_APP_URL+"/authenticated/recommend/restaurant-options");
 
   // Wait for the app to load
   await page.waitForLoadState("domcontentloaded");

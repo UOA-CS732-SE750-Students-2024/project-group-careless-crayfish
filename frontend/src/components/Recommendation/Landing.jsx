@@ -10,7 +10,7 @@ export const Landing = () => {
   const navigate = useNavigate();
 
   const handleRestaurantClick = () => {
-    navigate("/recommend/restaurant-options");
+    navigate("/authenticated/recommend/restaurant-options");
   };
   return (
     <div>

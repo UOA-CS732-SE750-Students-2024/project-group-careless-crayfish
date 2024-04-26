@@ -27,7 +27,7 @@ export const RestaurantOptions = () => {
 
     // Redirect to the recommendation page
     navigateTo(
-      `/recommend/restaurants/${location}?ageGroup=${ageGroup}&cuisine=${cuisine}`,
+      `/authenticated/recommend/restaurants/${location}?ageGroup=${ageGroup}&cuisine=${cuisine}`,
     );
   };
 
