@@ -52,7 +52,7 @@ export const CommentDialogPaginated = ({
       if (response && response.data.length > 0) {
         setHasMore(true);
         const map = new Map(
-          [...comments, ...response.data].map((obj) => [obj._id, obj]),
+          [...response.data, ...comments].map((obj) => [obj._id, obj]),
         );
         const deduplicatedComments = Array.from(map.values());
         setComments(deduplicatedComments);

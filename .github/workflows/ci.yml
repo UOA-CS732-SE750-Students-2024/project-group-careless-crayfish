@@ -155,8 +155,11 @@ jobs:
           npm install -g wait-on
           npx wait-on http://localhost:5000/ --timeout 120000
           npx wait-on http://localhost:3000/api/api-docs --timeout 120000
+      - name: frontend build
+        working-directory: "./frontend"
+        run: |
+          npm run build
       - name: Run Playwright E2E tests
-
         working-directory: "./e2eTests"
         run: |
           echo "REACT_APP_URL=$REACT_APP_URL" >> .env

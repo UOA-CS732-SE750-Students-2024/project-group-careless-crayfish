@@ -79,7 +79,7 @@ export const Profile = () => {
         winner: {
           votingItemId: "uid",
           occurence: 2,
-          name: "winning restaurant",
+          name: "winning restaurant 2",
           description: "bla",
           pictureUrl: "",
         },
