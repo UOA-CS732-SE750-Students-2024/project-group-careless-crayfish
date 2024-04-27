@@ -36,8 +36,9 @@ async function createComment({ userId, voteId, isAI, comment }) {
   return comments;
 }
 
-async function getTotalNumRecords() {
-  const totalNumRecords = await commentDao.getTotalNumRecords();
+async function getTotalNumRecords({ voteId }) {
+  logger.info(`getting total num records for voteId=${voteId}`);
+  const totalNumRecords = await commentDao.getTotalNumRecords({ voteId });
   logger.info(
     `got total number of records totalNumRecords = ${totalNumRecords}`
   );
