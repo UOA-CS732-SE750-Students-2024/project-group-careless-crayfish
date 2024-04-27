@@ -39,25 +39,56 @@ export const CommentDialogPaginated = ({
   const limit = 5;
   const { get, post } = useAPI();
 
-  const fetchComments = async () => {
+  const fetchLatestComments = async () => {
     try {
       if (!voteId || !openComments || !userId) {
         return;
       }
       setIsLoadingComments(true);
+      const totalNumRecordsResp = await get(
+        `${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/comments/totalNumRecords/${voteId}`,
+      );
+
+      const lastPageIndex = Number.isInteger(totalNumRecordsResp.data / limit)
+        ? totalNumRecordsResp.data / limit - 1
+        : Math.floor(totalNumRecordsResp.data / limit);
       const response = await get(
-        `${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/comments/${userId}/${voteId}?page=${page}&limit=${limit}`,
+        `${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/comments/${userId}/${voteId}?page=${lastPageIndex}&limit=${limit}`,
+      );
+      setPage(lastPageIndex);
+      setHasMore(true);
+      setComments(response.data);
+    } finally {
+      setIsLoadingComments(false);
+      setInput("");
+    }
+  };
+
+  const fetchPreviousPageComments = async (page) => {
+    try {
+      if (!voteId || !openComments || !userId) {
+        return;
+      }
+      setPage(page - 1);
+      const prevPage = page - 1;
+      if (prevPage <= 0) {
+        setHasMore(false);
+        return;
+      }
+
+      setIsLoadingComments(true);
+
+      const response = await get(
+        `${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/comments/${userId}/${voteId}?page=${prevPage}&limit=${limit}`,
       );
 
       if (response && response.data.length > 0) {
-        setHasMore(true);
         const map = new Map(
           [...response.data, ...comments].map((obj) => [obj._id, obj]),
         );
         const deduplicatedComments = Array.from(map.values());
         setComments(deduplicatedComments);
-      } else {
-        setHasMore(false);
+        setHasMore(true);
       }
     } finally {
       setIsLoadingComments(false);
@@ -65,11 +96,11 @@ export const CommentDialogPaginated = ({
     }
   };
   useEffect(() => {
-    fetchComments();
-  }, [page, voteId, userId, openComments]);
+    fetchLatestComments();
+  }, [voteId, userId, openComments]);
 
   const handleHasMoreButtonClick = () => {
-    setPage(page + 1);
+    fetchPreviousPageComments(page);
   };
   const handleClose = () => {
     setOpenComments(false);
@@ -77,7 +108,6 @@ export const CommentDialogPaginated = ({
     setIsAICheckbox(false);
     setIsSubmittingComment(false);
     setIsGeneratingAIResponse(false);
-    setPage(0);
   };
   const handleCheckboxChange = (event) => {
     setIsAICheckbox(event.target.checked);
@@ -99,7 +129,7 @@ export const CommentDialogPaginated = ({
       if (response && response.data) {
         createdComment = response.data;
 
-        await fetchComments();
+        await fetchLatestComments();
       }
 
       setIsSubmittingComment(false);
@@ -121,7 +151,7 @@ export const CommentDialogPaginated = ({
       );
 
       if (response && response.data) {
-        await fetchComments();
+        await fetchLatestComments();
       }
 
       setIsSubmittingComment(false);
@@ -134,6 +164,15 @@ export const CommentDialogPaginated = ({
     <Dialog open={openComments} onClose={handleClose} fullScreen>
       <DialogTitle>Comments for Voting Result {voteId}</DialogTitle>
       <DialogContent dividers>
+        <Box textAlign="center">
+          {hasMore ? (
+            <Button onClick={handleHasMoreButtonClick}>
+              {isLoadingComments ? <CircularProgress /> : "Previous Page"}
+            </Button>
+          ) : (
+            <Typography>No more comments</Typography>
+          )}
+        </Box>
         {comments.map((comment) => (
           <Card key={comment.commentId + v4()} sx={{ marginBottom: 2 }}>
             <CardHeader
@@ -152,15 +191,7 @@ export const CommentDialogPaginated = ({
             </CardContent>
           </Card>
         ))}
-        <Box textAlign="center">
-          {hasMore ? (
-            <Button onClick={handleHasMoreButtonClick}>
-              {isLoadingComments ? <CircularProgress /> : "Previous Page"}
-            </Button>
-          ) : (
-            <Typography>No more comments</Typography>
-          )}
-        </Box>
+
         <Box textAlign="center">
           <Grid container direction="column" alignItems={"center"} spacing={2}>
             <FormControl fullWidth sx={{ m: 1 }}>

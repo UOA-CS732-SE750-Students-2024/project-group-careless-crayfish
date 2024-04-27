@@ -11,6 +11,10 @@ const geminiQueryService = require("../services/geminiQueryService");
  *     tags:
  *       - Comment Controller
  *     summary: Get total num records
+ *     parameters:
+ *         name: voteId
+ *         schema:
+ *           type: string
  *     responses:
  *       '200':
  *         description: Comments retrieved successfully
@@ -21,10 +25,10 @@ const geminiQueryService = require("../services/geminiQueryService");
  *       '500':
  *         description: Internal server error - Something went wrong on the server side
  */
-router.get("/totalNumRecords", async function getCommentsBy(req, res) {
+router.get("/totalNumRecords/:voteId", async function getCommentsBy(req, res) {
   try {
-    console.log(await commentService.getTotalNumRecords());
-    res.status(200).json(await commentService.getTotalNumRecords());
+    const { voteId } = req.params;
+    res.status(200).json(await commentService.getTotalNumRecords({ voteId }));
   } catch (error) {
     logger.error(JSON.stringify(error));
     if (error.response?.status) {
