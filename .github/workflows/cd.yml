@@ -81,6 +81,7 @@ jobs:
         run: |
           cat ".env"
           cat "./backend/.env"
+          ls -a
           mkdir cs732-careless-crayfish
           tar -czvf cs732-careless-crayfish/source_code.tar.gz \
           --exclude=cs732-careless-crayfish \

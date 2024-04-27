@@ -13,7 +13,6 @@ import {
   SubnetType,
   Vpc,
 } from "aws-cdk-lib/aws-ec2";
-import { Role, ServicePrincipal } from "aws-cdk-lib/aws-iam";
 import { Construct } from "constructs";
 
 interface RootStackProps extends StackProps {
