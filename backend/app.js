@@ -5,11 +5,8 @@ const cors = require("cors");
 const logger = require("./utils/logger.js");
 
 var userController = require("./controllers/userControllers");
-
 var recommendationController = require("./controllers/recommendationController");
-
 var voteController = require("./controllers/voteControllers");
-
 var commentController = require("./controllers/commentController");
 
 const { connect } = require("./daos/mongodbClient");
@@ -27,10 +24,6 @@ app.use(cors());
 connect().then(() => {
   logger.info("Mongodb connection pool created.");
 
-  app.use("/api/users", userController);
-  app.use("/api/recommendation", recommendationController);
-
-  app.use("/api/votes", voteController); // Use the vote controller here
   app.use("/api/users", userController);
   app.use("/api/recommendations", recommendationController);
   app.use("/api/votes", voteController);
