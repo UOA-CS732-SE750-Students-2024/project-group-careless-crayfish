@@ -14,7 +14,7 @@ const RestaurantElement = ({ restaurant }) => {
   // State for the expanded details
   const [open, setOpen] = React.useState(false);
 
-  // Function to handle the expand button
+// Function to handle the expand button
   const handleFoldUnFoldDetails = () => {
     setOpen(!open);
   };

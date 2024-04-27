@@ -82,7 +82,7 @@ export const RestaurantRecommendations = () => {
     // Fetch recommendations from the API
     const fetchRecommendations = async () => {
       try {
-        const url = `${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/recommendation/restaurant/${location}`;
+        const url = `${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/recommendations/restaurant/${location}`;
         console.log("Fetching recommendations from: ", url);
         const response = await get(url);
         console.log("recommendation response: ", response);

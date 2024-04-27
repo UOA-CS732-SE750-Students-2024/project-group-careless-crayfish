@@ -2,6 +2,7 @@ import { test, expect } from "@playwright/test";
 require("dotenv").config();
 
 test("Example test.", async ({ page }) => {
+  console.log(process.env.REACT_APP_URL);
   // Navigate to the local development server where your React app is running
   await page.goto(process.env.REACT_APP_URL);
 
