@@ -148,6 +148,11 @@ jobs:
           ME_CONFIG_MONGODB_AUTH_PASSWORD: ${{ secrets.ME_CONFIG_MONGODB_AUTH_PASSWORD }}
           ME_CONFIG_BASICAUTH_USERNAME: ${{ secrets.ME_CONFIG_BASICAUTH_USERNAME }}
           ME_CONFIG_BASICAUTH_PASSWORD: ${{ secrets.ME_CONFIG_BASICAUTH_PASSWORD }}
+      - name: frontend build
+        working-directory: "./frontend"
+        run: |
+          npm ci
+          npm run build
       - name: Start servers
         working-directory: "./scripts"
         run: |
@@ -156,11 +161,7 @@ jobs:
           npm install -g wait-on
           npx wait-on http://localhost:5000/ --timeout 120000
           npx wait-on http://localhost:3000/api/api-docs --timeout 120000
-      - name: frontend build
-        working-directory: "./frontend"
-        run: |
-          npm ci
-          npm run build
+
       - name: Run Playwright E2E tests
         working-directory: "./e2eTests"
         run: |
