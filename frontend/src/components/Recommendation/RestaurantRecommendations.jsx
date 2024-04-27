@@ -10,7 +10,8 @@ import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 import Box from "@mui/material/Box";
 
-import RestaurantElement from "./RestaurantElement";
+import RestaurantElement from './RestaurantElement';
+import { useAPI } from '../GlobalProviders';
 import { useNavigate } from "react-router-dom";
 
 export const RestaurantRecommendations = () => {
@@ -41,6 +42,8 @@ export const RestaurantRecommendations = () => {
   // checked is the index of the selected restaurant for further usage
   const [checked, setChecked] = React.useState([]);
 
+
+  const { get } = useAPI();
   /**
    * Handles the selection of a restaurant.
    *
@@ -87,10 +90,9 @@ export const RestaurantRecommendations = () => {
     // Fetch recommendations from the API
     const fetchRecommendations = async () => {
       try {
-        const url =
-          "http://localhost:3000/api/recommendation/restaurant/" + location;
-
-        const response = await axios.get(url);
+        const url = `${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/recommendations/restaurant/${location}`;
+        console.log("Fetching recommendations from: ", url);
+        const response = await get(url);
         console.log("recommendation response: ", response);
         setRecommendations(response.data); // Assuming the API returns an array of recommendations
       } catch (error) {

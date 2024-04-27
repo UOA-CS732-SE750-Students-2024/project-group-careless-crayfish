@@ -13,7 +13,6 @@ import {
   SubnetType,
   Vpc,
 } from "aws-cdk-lib/aws-ec2";
-import { Role, ServicePrincipal } from "aws-cdk-lib/aws-iam";
 import { Construct } from "constructs";
 
 interface RootStackProps extends StackProps {
@@ -36,7 +35,8 @@ export class EC2Stack extends Stack {
 
     const securityGroup = new SecurityGroup(this, "AppSG", {
       vpc,
-      description: "Allow inbound from ports 3000(node) and 5000(react) and 8080(db admin)",
+      description:
+        "Allow inbound from ports 3000(node) and 5000(react) and 8080(db admin)",
       allowAllOutbound: true,
     });
     securityGroup.addIngressRule(Peer.anyIpv4(), Port.tcp(22));

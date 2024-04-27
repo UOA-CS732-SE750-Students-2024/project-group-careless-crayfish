@@ -2,7 +2,7 @@
 FROM node:latest AS backend-build
 WORKDIR /usr/src/app/backend
 COPY backend/package*.json ./
-RUN npm install
+RUN npm ci --omit=dev
 COPY backend/ .
 # RUN npm run build
 
@@ -10,9 +10,7 @@ COPY backend/ .
 FROM node:latest AS frontend-build
 WORKDIR /usr/src/app/frontend
 COPY frontend/package*.json ./
-RUN npm install
 COPY frontend/ .
-RUN npm run build
 
 # Final stage
 FROM node:20-alpine3.18

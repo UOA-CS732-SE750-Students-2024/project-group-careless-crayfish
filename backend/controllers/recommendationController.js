@@ -5,7 +5,7 @@ const logger = require("../utils/logger.js");
 
 /**
  * @swagger
- * /api/recommendation/restaurant/{location}:
+ * /api/recommendations/restaurant/{location}:
  *   get:
  *     tags:
  *     - Recommendation Controller
@@ -44,7 +44,5 @@ router.get("/restaurant/:location", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-
-// Add other routes as needed
 
 module.exports = router;

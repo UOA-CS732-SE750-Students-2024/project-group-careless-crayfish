@@ -10,6 +10,8 @@ var recommendationController = require("./controllers/recommendationController")
 
 var voteController = require("./controllers/voteControllers");
 
+var commentController = require("./controllers/commentController");
+
 const { connect } = require("./daos/mongodbClient");
 const swaggerController = require("./controllers/swaggerController");
 
@@ -29,6 +31,10 @@ connect().then(() => {
   app.use("/api/recommendation", recommendationController);
 
   app.use("/api/votes", voteController); // Use the vote controller here
+  app.use("/api/users", userController);
+  app.use("/api/recommendations", recommendationController);
+  app.use("/api/votes", voteController);
+  app.use("/api/comments", commentController);
 
   // setup swagger ui
   swaggerController(app);
