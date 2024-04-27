@@ -1,5 +1,5 @@
-import { createContext, useContext, useState } from "react";
-import { MuiTheme, useAuth, useMuiTheme } from "../GlobalProviders";
+import { createContext, useContext, useEffect, useState } from "react";
+import { MuiTheme, useAuth, useMuiTheme, useRoute } from "../GlobalProviders";
 import {
   AppBar,
   Grid,
@@ -22,6 +22,9 @@ export const useHeader = () => useContext(HeaderContext);
 
 const HeaderProvider = () => {
   const { toggleLightDarkTheme, theme } = useMuiTheme();
+
+  const { pageTitle, setPageTitle } = useRoute();
+
   const handleThemeSwitchClick = () => {
     toggleLightDarkTheme();
   };
@@ -54,9 +57,7 @@ const HeaderProvider = () => {
 
             <Slide direction="right" in={true} timeout={500}>
               <Box display="flex" flexDirection="row" alignItems="center">
-                <Typography>
-                  Put acommodations and voting logic below
-                </Typography>
+                <Typography>{pageTitle}</Typography>
               </Box>
             </Slide>
           </Box>

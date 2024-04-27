@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
@@ -12,10 +12,14 @@ export const Landing = () => {
   const handleRestaurantClick = () => {
     navigate("/authenticated/recommend/restaurant-options");
   };
+
+  const { pageTitle, setPageTitle } = useRoute();
+  useEffect(() => {
+    setPageTitle("Recommendation");
+  });
   return (
     <Box mt={10}>
       <Container maxWidth="md">
-        <h1>Recommendation</h1>
         <p>
           Welcome to the Recommendation page. Please select a location to get
           started.

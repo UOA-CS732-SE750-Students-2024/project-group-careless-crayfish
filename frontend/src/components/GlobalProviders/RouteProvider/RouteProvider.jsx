@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, useState } from "react";
 import {
   BrowserRouter,
   Navigate,
@@ -25,7 +25,7 @@ export const useRoute = () => useContext(RouteContext);
 
 const RouteProvider = () => {
   const { isAuthenticated } = useAuth();
-
+  const [pageTitle, setPageTitle] = useState("");
   const GoBackButton = () => {
     const navigate = useNavigate();
     const handleGoBack = () => {
@@ -50,7 +50,7 @@ const RouteProvider = () => {
     );
   };
   return (
-    <RouteContext.Provider value={{}}>
+    <RouteContext.Provider value={{ pageTitle, setPageTitle }}>
       <BrowserRouter>
         <Routes>
           <Route
@@ -80,9 +80,8 @@ const RouteProvider = () => {
               isAuthenticated ? (
                 <>
                   <AuthenticatedProvider />
-                  
-                      <Landing />
-                    
+
+                  <Landing />
                 </>
               ) : (
                 <Navigate to="/auth" />

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -11,13 +11,17 @@ import {
   Container,
   Box,
 } from "@mui/material";
+import { useRoute } from "../GlobalProviders";
 
 export const RestaurantOptions = () => {
   const [ageGroup, setAgeGroup] = useState("");
   const [cuisine, setCuisine] = useState("");
   const [location, setLocation] = useState("Auckland City");
   const navigateTo = useNavigate();
-
+  const { pageTitle, setPageTitle } = useRoute();
+  useEffect(() => {
+    setPageTitle("Choose Restuarant options");
+  });
   const handleSubmit = (event) => {
     event.preventDefault();
     // Handle the form submission logic here
