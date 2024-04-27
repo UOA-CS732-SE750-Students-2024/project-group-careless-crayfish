@@ -93,6 +93,7 @@ jobs:
         working-directory: "./e2eTests"
         run: |
           npm ci
+          
       - name: Set frontend envs
         working-directory: "./frontend"
         run: |
@@ -158,6 +159,7 @@ jobs:
       - name: frontend build
         working-directory: "./frontend"
         run: |
+          npm ci
           npm run build
       - name: Run Playwright E2E tests
         working-directory: "./e2eTests"

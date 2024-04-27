@@ -62,6 +62,7 @@ jobs:
         working-directory: "./frontend"
         run: |
           rm .env
+          npm ci
           npm run build
           echo "VITE_BACKEND_API_BASE_URL=http://$EC2_INSTANCE_PUBLIC_DNS:3000" >> .env
           cat .env
