@@ -1,0 +1,6 @@
+application:
+  name: project-group-careless-crayfish
+  mongo:
+    address: 127.0.0.1:27017
+    username : devroot
+    password : devroot

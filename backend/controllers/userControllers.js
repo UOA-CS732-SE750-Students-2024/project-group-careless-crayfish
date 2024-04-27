@@ -16,9 +16,11 @@ const userService = require("../services/userService.js");
  *         schema:
  *           type: object
  *           properties:
- *             userId:
+ *             userName:
  *                 type: string
  *             email:
+ *                 type: string
+ *             password:
  *                 type: string
  *     responses:
  *       '200':
@@ -28,7 +30,12 @@ const userService = require("../services/userService.js");
  */
 router.post("/", async function createUser(req, res) {
   try {
-    const user = await userService.createUser(req.body);
+    const { userName, email, password } = req.body;
+  console.log('Received userName:', userName);
+  console.log('Received email:', email);
+  console.log('Received password:', password);
+  const user= await userService.createUser(req.body);
+   // const user = await userService.createUser(req.body);
     res.status(201).json(user);
   } catch (error) {
     res.status(500).json({ error: error.message });
