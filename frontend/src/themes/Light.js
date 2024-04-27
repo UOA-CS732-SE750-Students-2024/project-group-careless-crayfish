@@ -12,6 +12,13 @@ const LightTheme = createTheme({
         },
       },
     },
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          backgroundColor: "#E0E0E0", // Set the background color for the body
+        },
+      },
+    },
   },
 });
 export default LightTheme;

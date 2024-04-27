@@ -169,6 +169,7 @@ export const CommentDialogPaginated = ({
               <TextField
                 onChange={handleCommentTextFieldChange}
                 autoFocus
+                placeholder="Put in your comment or ask AI questions"
                 margin="dense"
                 type="text"
                 fullWidth
