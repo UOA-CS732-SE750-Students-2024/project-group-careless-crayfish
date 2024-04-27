@@ -43,32 +43,32 @@ export class EC2Stack extends Stack {
     securityGroup.addIngressRule(Peer.anyIpv4(), Port.tcp(3000));
     securityGroup.addIngressRule(Peer.anyIpv4(), Port.tcp(5000));
     securityGroup.addIngressRule(Peer.anyIpv4(), Port.tcp(8080));
-    // const ec2Instance = new Instance(this, "EC2Instance", {
-    //   vpc,
-    //   // free tier t2.micro
-    //   vpcSubnets: { subnetType: SubnetType.PUBLIC },
-    //   instanceType: InstanceType.of(InstanceClass.T2, InstanceSize.MICRO),
-    //   machineImage: MachineImage.latestAmazonLinux2023(),
-    //   securityGroup,
-    //   instanceName: "cs732-careless-crayfish-ec2",
-    //   keyPair: KeyPair.fromKeyPairName(this, "KeyPair", "mykey"),
-    // });
+    const ec2Instance = new Instance(this, "EC2Instance", {
+      vpc,
+      // free tier t2.micro
+      vpcSubnets: { subnetType: SubnetType.PUBLIC },
+      instanceType: InstanceType.of(InstanceClass.T2, InstanceSize.MICRO),
+      machineImage: MachineImage.latestAmazonLinux2023(),
+      securityGroup,
+      instanceName: "cs732-careless-crayfish-ec2",
+      keyPair: KeyPair.fromKeyPairName(this, "KeyPair", "mykey"),
+    });
 
-    // ec2Instance.userData.addCommands(
-    //   // update existing packages
-    //   "sudo yum update -y",
-    //   // install docker
-    //   "sudo yum install -y docker",
-    //   "sudo service docker start",
-    //   "sudo usermod -a -G docker ec2-user",
-    //   // install docker-compose
-    //   "sudo curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose",
-    //   "sudo chmod +x /usr/local/bin/docker-compose"
-    // );
-    // // output ec2 public ip address so we can use it in github actions
-    // new CfnOutput(this, "EC2PublicDNS", {
-    //   value: ec2Instance.instancePublicDnsName,
-    //   exportName: "EC2PublicDNS",
-    // });
+    ec2Instance.userData.addCommands(
+      // update existing packages
+      "sudo yum update -y",
+      // install docker
+      "sudo yum install -y docker",
+      "sudo service docker start",
+      "sudo usermod -a -G docker ec2-user",
+      // install docker-compose
+      "sudo curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose",
+      "sudo chmod +x /usr/local/bin/docker-compose"
+    );
+    // output ec2 public ip address so we can use it in github actions
+    new CfnOutput(this, "EC2PublicDNS", {
+      value: ec2Instance.instancePublicDnsName,
+      exportName: "EC2PublicDNS",
+    });
   }
 }
