@@ -40,7 +40,7 @@ router.get("/restaurant/:location", async (req, res) => {
     );
     res.json(JSON.parse(recommentations));
   } catch (error) {
-    logger.error(error);
+    console.error(error);
     res.status(500).json({ error: error.message });
   }
 });

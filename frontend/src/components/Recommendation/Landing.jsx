@@ -2,7 +2,7 @@ import React from "react";
 
 import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
-import { Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { useRoute } from "../GlobalProviders";
 import { useNavigate } from "react-router-dom";
 
@@ -13,7 +13,7 @@ export const Landing = () => {
     navigate("/authenticated/recommend/restaurant-options");
   };
   return (
-    <div>
+    <Box mt={10}>
       <Container maxWidth="md">
         <h1>Recommendation</h1>
         <p>
@@ -28,6 +28,6 @@ export const Landing = () => {
           Restaurant
         </Button>
       </Container>
-    </div>
+    </Box>
   );
 };

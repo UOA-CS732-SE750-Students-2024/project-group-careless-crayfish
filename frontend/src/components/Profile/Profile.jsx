@@ -145,7 +145,6 @@ export const Profile = () => {
             </CardActions>
             <Collapse in={expanded[vote.voteId]} timeout="auto" unmountOnExit>
               <CardContent>
-                <Typography paragraph>Method:</Typography>
                 {vote.candidates.map((candidate) => (
                   <Typography key={candidate.votingItem1Id + v4()} paragraph>
                     {candidate.name}

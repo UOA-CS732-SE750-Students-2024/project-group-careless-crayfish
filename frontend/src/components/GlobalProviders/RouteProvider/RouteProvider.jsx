@@ -16,7 +16,7 @@ import {
   RestaurantOptions,
 } from "@frontend-ui/components/Recommendation";
 import { CommentDialogPaginated } from "@frontend-ui/components/Comment/";
-import { Button, Grid, Stack } from "@mui/material";
+import { Button, Container, Grid, Stack } from "@mui/material";
 import { Profile } from "@frontend-ui/components/Profile/Profile";
 import { Box } from "@mui/system";
 const RouteContext = createContext({});
@@ -80,7 +80,9 @@ const RouteProvider = () => {
               isAuthenticated ? (
                 <>
                   <AuthenticatedProvider />
-                  <Landing />
+                  
+                      <Landing />
+                    
                 </>
               ) : (
                 <Navigate to="/auth" />
