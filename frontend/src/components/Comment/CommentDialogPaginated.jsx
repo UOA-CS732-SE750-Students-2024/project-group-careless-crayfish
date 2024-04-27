@@ -59,9 +59,9 @@ export const CommentDialogPaginated = ({
       } else {
         setHasMore(false);
       }
+    } finally {
       setIsLoadingComments(false);
-    } catch (err) {
-      setIsLoadingComments(false);
+      setInput("");
     }
   };
   useEffect(() => {
@@ -75,8 +75,6 @@ export const CommentDialogPaginated = ({
     setOpenComments(false);
     setComments([]);
     setIsAICheckbox(false);
-    setInput("");
-    setHasMore(false);
     setIsSubmittingComment(false);
     setIsGeneratingAIResponse(false);
     setPage(0);

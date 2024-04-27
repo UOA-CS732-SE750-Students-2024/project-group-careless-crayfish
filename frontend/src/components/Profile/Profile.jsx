@@ -17,7 +17,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useAPI } from "../GlobalProviders";
+import { useAPI, useRoute } from "../GlobalProviders";
 import { v4 } from "uuid";
 import _ from "lodash";
 import SmartToyIcon from "@mui/icons-material/SmartToy";
@@ -27,6 +27,11 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CommentIcon from "@mui/icons-material/Comment";
 export const Profile = () => {
+  const { pageTitle, setPageTitle } = useRoute();
+  useEffect(() => {
+    setPageTitle("Profile");
+  });
+
   const [openComments, setOpenComments] = useState(false);
   const [expanded, setExpanded] = useState({});
   const [currVoteId, setCurrVoteId] = useState("");
@@ -145,7 +150,6 @@ export const Profile = () => {
             </CardActions>
             <Collapse in={expanded[vote.voteId]} timeout="auto" unmountOnExit>
               <CardContent>
-                <Typography paragraph>Method:</Typography>
                 {vote.candidates.map((candidate) => (
                   <Typography key={candidate.votingItem1Id + v4()} paragraph>
                     {candidate.name}
