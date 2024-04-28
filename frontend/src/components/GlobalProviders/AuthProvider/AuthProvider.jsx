@@ -24,8 +24,7 @@ const AuthProvider = ({ children }) => {
   };
 
   const getUserById = async (userId) => {
-    // TODO properly handle param on urls.
-    await get("http://localhost:3000/api/users/" + userId);
+    return await get("http://localhost:3000/api/users/" + userId);
   };
   return (
     <AuthContext.Provider

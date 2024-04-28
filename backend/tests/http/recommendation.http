@@ -1,0 +1,11 @@
+@uuid = {{$random.uuid}}
+@email = {{$random.email}}
+
+### Get recommended restaurants in Auckland
+# @name newUser
+GET {{host}}/api/recommendations/restaurant/auckland
+Accept: application/json
+Content-Type: application/json
+
+## Verify http response status code
+?? status == 200
