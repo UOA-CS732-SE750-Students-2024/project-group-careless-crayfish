@@ -11,6 +11,7 @@ import Divider from "@mui/material/Divider";
 import Box from "@mui/material/Box";
 
 import RestaurantElement from "./RestaurantElement";
+import { useAPI } from "../GlobalProviders";
 import { useNavigate } from "react-router-dom";
 
 export const RestaurantRecommendations = () => {
@@ -33,7 +34,7 @@ export const RestaurantRecommendations = () => {
    */
   const handleListItemClick = (
     event, // React.MouseEvent<HTMLDivElement, MouseEvent>
-    index // number
+    index, // number
   ) => {
     setSelectedIndex(index);
   };
@@ -41,6 +42,7 @@ export const RestaurantRecommendations = () => {
   // checked is the index of the selected restaurant for further usage
   const [checked, setChecked] = React.useState([]);
 
+  const { get } = useAPI();
   /**
    * Handles the selection of a restaurant.
    *
@@ -122,19 +124,18 @@ export const RestaurantRecommendations = () => {
                   restaurant={restaurant}
                 />
               )
-            )
+            ),
           )}
           <Divider variant="inset" component="li" />
         </List>
         <Button
           variant="contained"
           disableElevation
-          // onClick={() => {
-          //   checked.sort().map((index) => {
-          //     console.log(index, recommendations[index].name);
-          //   }); //handleStartVote
-          // }}
-          onClick={handleStartVote}
+          onClick={() => {
+            checked.sort().map((index) => {
+              console.log(index, recommendations[index].name);
+            });
+          }}
         >
           Start a vote (currently just log to console)
         </Button>

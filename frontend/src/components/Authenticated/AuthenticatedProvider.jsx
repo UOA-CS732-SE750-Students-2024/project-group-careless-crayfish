@@ -18,9 +18,6 @@ const AuthenticatedProvider = () => {
         <Grid item>
           <HeaderProvider />
         </Grid>
-        <Grid item sx={{ flexGrow: 1 }}>
-          <Paper sx={{ height: "100%", width: "100%" }}></Paper>
-        </Grid>
       </Grid>
     </AuthenticatedContext.Provider>
   );

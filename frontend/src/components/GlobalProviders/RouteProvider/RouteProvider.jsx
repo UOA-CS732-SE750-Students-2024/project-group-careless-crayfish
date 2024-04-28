@@ -46,7 +46,10 @@ const RouteProvider = () => {
             path="/authenticated"
             element={
               isAuthenticated ? (
-                <AuthenticatedProvider />
+                <>
+                  <AuthenticatedProvider />
+                  <Landing />
+                </>
               ) : (
                 <Navigate to="/auth" />
               )

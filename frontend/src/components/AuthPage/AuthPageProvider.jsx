@@ -28,10 +28,8 @@ export const useAuthPage = () => React.useContext(AuthPageContext);
 const AuthPageProvider = () => {
   const [emailValue, setEmailValue] = React.useState("");
   const [passwordValue, setPasswordValue] = React.useState("");
-
+  const [userData, setUserData] = React.useState(null);
   const { login, createUser, getUserById } = useAuth();
-
-  const { data } = useAPI();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -171,12 +169,14 @@ const AuthPageProvider = () => {
             <Button
               onClick={async (e) => {
                 e.preventDefault();
-                await getUserById("xqc");
+                setUserData((await getUserById("xqc")).data);
               }}
             >
               get test user
             </Button>
-            <Typography>test user: {JSON.stringify(data)}</Typography>
+            <Typography>
+              test user: {userData && JSON.stringify(userData)}
+            </Typography>
           </Grid>
         </Grid>
       )}

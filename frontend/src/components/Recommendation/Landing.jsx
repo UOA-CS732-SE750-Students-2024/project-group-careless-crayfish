@@ -1,20 +1,33 @@
-import React from 'react';
+import React from "react";
 
-import Container from '@mui/material/Container';
-import Link from '@mui/material/Link';
+import Container from "@mui/material/Container";
+import Link from "@mui/material/Link";
+import { Button } from "@mui/material";
+import { useRoute } from "../GlobalProviders";
+import { useNavigate } from "react-router-dom";
 
 export const Landing = () => {
+  const navigate = useNavigate();
+
+  const handleRestaurantClick = () => {
+    navigate("/recommend/restaurant-options");
+  };
   return (
     <div>
       <Container maxWidth="md">
         <h1>Recommendation</h1>
         <p>
-          Welcome to the Recommendation page. Please select a location to get started.
+          Welcome to the Recommendation page. Please select a location to get
+          started.
         </p>
-        <Link id="landing-restaurant" href="/recommend/restaurant-options" color="secondary">
+        <Button
+          id="landing-restaurant"
+          color="secondary"
+          onClick={handleRestaurantClick}
+        >
           Restaurant
-        </Link>
+        </Button>
       </Container>
     </div>
   );
-}
+};
