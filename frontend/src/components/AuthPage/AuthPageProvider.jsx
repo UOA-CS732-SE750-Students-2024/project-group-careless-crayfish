@@ -1,65 +1,60 @@
-import * as React from "react";
-import { useNavigate,Navigate } from "react-router-dom";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import Link from "@mui/material/Link";
+import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
+import { Navigate } from "react-router-dom";
 import { useAPI, useAuth, useLocalStorage } from "../GlobalProviders";
-import { useState } from "react";
-import FlexBox from '../FlexBox'
-import { GoogleLoginButton } from 'react-social-login-buttons'
-import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth'
-import './LoginStyles.css'
+import { GoogleLoginButton } from "react-social-login-buttons";
+import { GoogleAuth } from "@codetrix-studio/capacitor-google-auth";
+import { createContext, useContext, useState } from "react";
+import { IconButton } from "@mui/material";
+import GitHubIcon from "@mui/icons-material/GitHub";
 GoogleAuth.initialize({
-  clientId: '1072715892589-79a0l62lbjqr0cl6bvsij2t53n3hb1oj',
-  scopes: ['profile', 'email'],
+  clientId: "1072715892589-79a0l62lbjqr0cl6bvsij2t53n3hb1oj",
+  scopes: ["profile", "email"],
   grantOfflineAccess: true,
 });
-const AuthPageContext = React.createContext({});
+const AuthPageContext = createContext({});
 
-export const useAuthPage = () => React.useContext(AuthPageContext);
-
+export const useAuthPage = () => useContext(AuthPageContext);
 
 const AuthPageProvider = () => {
   const { get, post } = useAPI();
-  const { isAuthenticated, login,getUserById } = useAuth();
+  const { isAuthenticated, login, getUserById } = useAuth();
   const { setItem } = useLocalStorage();
-  const [formData,setFormData]=useState({
-     userName:'',
-     email:'',
-     password:'',
+  const [formData, setFormData] = useState({
+    userName: "",
+    email: "",
+    password: "",
   });
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setFormData(prevFormData => ({
-        ...prevFormData,
-        [name]: value  
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
     }));
-};
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-        await post('http://localhost:3000/api/users', formData);
-        console.log(formData);
-        setFormData({ userName: '', email: '', password: '' }); // Reset form
-    } catch (error) {
-        console.error('Error creating user:',error);
-    }
-};
+  };
 
   const handleGoogleLogin = async () => {
-    const response = await GoogleAuth.signIn()
+    const response = await GoogleAuth.signIn();
     if (!response) {
-      return
+      return;
     }
-    await handleLogin('google', response)
+    await handleLogin("google", response);
   };
-
 
   const handleUserEmail = (email) => {
-    return email.includes('privaterelay.appleid.com') ? '' : email
+    return email.includes("privaterelay.appleid.com") ? "" : email;
   };
-  const handleLogin = async (
-    loginType, response
-  ) => {
+  const handleLogin = async (loginType, response) => {
     console.log(response);
     const personInfo = {
       email: response.email,
@@ -67,12 +62,12 @@ const AuthPageProvider = () => {
       familyName: response.familyName,
       name: response.name,
       imageUrl: response.imageUrl,
-      token: response.authentication.accessToken
+      token: response.authentication.accessToken,
     };
-    setItem('lt', loginType);
-    setItem('ue', handleUserEmail(personInfo.email));
-    setItem('gn', personInfo.givenName);
-    setItem('token', personInfo.token);
+    setItem("lt", loginType);
+    setItem("ue", handleUserEmail(personInfo.email));
+    setItem("gn", personInfo.givenName);
+    setItem("token", personInfo.token);
     login();
   };
 
@@ -91,55 +86,49 @@ const AuthPageProvider = () => {
     }, 1500);
   };
 
-
   return (
     <AuthPageContext.Provider value={{}}>
-      {isAuthenticated ? (
-        <Navigate to="/authenticated" />
-      ) : (
-        <div className="shell">
-          <div className={`container ${isToggled ? 'b-container' : 'a-container'}`} id={isToggled ? "b-container" : "a-container"}>
-
-            <form className="form" onSubmit={handleSubmit}>
-              {isToggled? <input type="text" className="form_input" placeholder="userName" name="userName" onChange={handleChange}  />:"" }
-
-              <input type="email" className="form_input" placeholder="Email"   name="email"onChange={handleChange}/>
-              <input type="password" className="form_input" placeholder="Password" name="password"onChange={handleChange} />
-
-              {isToggled ? <button type="submit" className="button submit" >SIGN UP</button>
-               :
-              <button type="submit"className="button submit">SIGN IN</button> }
-            </form>
-            <div className="google-login-container">
-               {isToggled ? "" :<FlexBox justifyContent="center">
-                <GoogleLoginButton
-                  className="google-login-button"
-                  text="Continue with Google"
-                  onClick={() => handleGoogleLogin()}
-                />
-              </FlexBox>}
-            </div>
-           
-          </div>
-
-          <div className="switch" id="switch-cnt">
-            <div className="switch_circle"></div>
-            <div className="switch_circle switch_circle-t"></div>
-            <div className={`switch_container ${isToggled ? "" : "is-hidden"}`} id="switch-c1">
-              <h2 className="title">Welcome Back！</h2>
-              <p className="description">
-                Already have an account? Log in to enter the wonderful world!</p>
-              <button className="button submit" onClick={changeForm}>SIGN IN</button>
-            </div>
-
-            <div className={`switch_container ${isToggled ? "is-hidden" : ""}`} id="switch-c2">
-              <h2 className="title">Hello Friend！</h2>
-              <p className="description">Register an account and become a prestigious fan member, let us embark on a wonderful journey!</p>
-              <button className="button submit" onClick={changeForm}>SIGN UP</button>
-            </div>
-          </div>
-        </div>
-      )}
+      <Grid container component="main" sx={{ height: "100vh" }}>
+        <Grid
+          item
+          xs={0}
+          sm={4}
+          md={7}
+          sx={{
+            backgroundImage:
+              "url(https://source.unsplash.com/random?wallpapers)",
+            backgroundRepeat: "no-repeat",
+            backgroundColor: (t) =>
+              t.palette.mode === "light"
+                ? t.palette.grey[50]
+                : t.palette.grey[900],
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        />
+        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              height: "100%", // Ensure the Box takes up the full height of its parent
+            }}
+          >
+            <Button
+              component="label"
+              fontSize="large"
+              size="large"
+              variant="contained"
+              onClick={handleGoogleLogin}
+              startIcon={<GitHubIcon fontSize="large" />}
+            >
+              Google SSO Sign In
+            </Button>
+          </Box>
+        </Grid>
+      </Grid>
     </AuthPageContext.Provider>
   );
 };
