@@ -1,3 +1,4 @@
+import { CssBaseline } from "@mui/material";
 import {
   LocalStorageProvider,
   RouteProvider,
@@ -10,6 +11,7 @@ import { SnackbarProvider } from "./components/Snackbar";
 const App = () => (
   <LocalStorageProvider>
     <ThemeProvider>
+      <CssBaseline />
       <APIProvider>
         <AuthProvider>
           <RouteProvider />

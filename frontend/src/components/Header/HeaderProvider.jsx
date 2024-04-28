@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { MuiTheme, useAuth, useMuiTheme } from "../GlobalProviders";
+import { MuiTheme, useAuth, useMuiTheme, useRoute } from "../GlobalProviders";
 import {
   AppBar,
   Grid,
@@ -15,12 +15,16 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import Person2Icon from "@mui/icons-material/Person2";
+import { Navigate, useNavigate } from "react-router-dom";
 const HeaderContext = createContext({});
 
 export const useHeader = () => useContext(HeaderContext);
 
 const HeaderProvider = () => {
   const { toggleLightDarkTheme, theme } = useMuiTheme();
+
+  const { pageTitle, setPageTitle } = useRoute();
+
   const handleThemeSwitchClick = () => {
     toggleLightDarkTheme();
   };
@@ -46,6 +50,12 @@ const HeaderProvider = () => {
       setUserName(userName);
     }
   }, [])
+  const navigate = useNavigate();
+
+  const handleProfileClick = (event) => {
+    handleMenuClose();
+    navigate("/authenticated/profile");
+  };
   return (
     <HeaderContext.Provider value={{}}>
       <AppBar>
@@ -55,9 +65,7 @@ const HeaderProvider = () => {
 
             <Slide direction="right" in={true} timeout={500}>
               <Box display="flex" flexDirection="row" alignItems="center">
-                <Typography>
-                  Put acommodations and voting logic below
-                </Typography>
+                <Typography>{pageTitle}</Typography>
               </Box>
             </Slide>
           </Box>
@@ -106,7 +114,7 @@ const HeaderProvider = () => {
                 <MenuList autoFocusItem={isMenuOpen}>
                   <MenuItem
                     aria-label={"menu profile link"}
-                    onClick={handleMenuClose}
+                    onClick={handleProfileClick}
                   >
                     <Typography noWrap>profile</Typography>
                   </MenuItem>

@@ -1,0 +1,1 @@
+export { CommentDialogPaginated } from "./CommentDialogPaginated";

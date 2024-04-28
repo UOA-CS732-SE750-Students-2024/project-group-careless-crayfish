@@ -8,7 +8,7 @@ describe("LocalStorageProvider tests.", () => {
     const { container } = render(
       <LocalStorageProvider>
         <LocalStorageProviderDebug />
-      </LocalStorageProvider>
+      </LocalStorageProvider>,
     );
     expect(container).toBeTruthy();
     getByText(container, "null", { exact: true });
@@ -18,7 +18,7 @@ describe("LocalStorageProvider tests.", () => {
     const { container } = render(
       <LocalStorageProvider>
         <LocalStorageProviderDebug functionToDebug="setItem" />
-      </LocalStorageProvider>
+      </LocalStorageProvider>,
     );
     expect(container).toBeTruthy();
     await findByText(container, '"1"');
@@ -27,7 +27,7 @@ describe("LocalStorageProvider tests.", () => {
     const { container } = render(
       <LocalStorageProvider>
         <LocalStorageProviderDebug functionToDebug="keys" />
-      </LocalStorageProvider>
+      </LocalStorageProvider>,
     );
     expect(container).toBeTruthy();
     await findByText(container, "a", { exact: true });
@@ -40,7 +40,7 @@ describe("LocalStorageProvider tests.", () => {
     const { container } = render(
       <LocalStorageProvider>
         <LocalStorageProviderDebug functionToDebug="removeItem" />
-      </LocalStorageProvider>
+      </LocalStorageProvider>,
     );
     expect(container).toBeTruthy();
     await findByText(container, "2", { exact: true });

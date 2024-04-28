@@ -1,14 +1,12 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import jsconfigPaths from 'vite-jsconfig-paths'
-
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import jsconfigPaths from "vite-jsconfig-paths";
 
 export default defineConfig({
   plugins: [react(), jsconfigPaths()],
   test: {
-    environment: 'jsdom',
+    environment: "jsdom",
     globals: true,
-    setupFiles: './tests/setup.js'
-  }
-})
-
+    setupFiles: "./tests/setup.js",
+  },
+});

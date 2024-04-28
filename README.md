@@ -17,6 +17,7 @@ Team members are:
 
 1. `npm run start:dep`: provision mongodb and wiremock locally
 1. `npm start`: start the nodejs server
+1. `npm run start:dev`: start the nodejs server in development mode (recommended, and where the AI response comes from wiremock)
 1. `npm test`: start unit test
 1. `npm run test:e2e`: start e2e test with httpyac
 1. `npm run test:dev`: test against local backend with httpyac

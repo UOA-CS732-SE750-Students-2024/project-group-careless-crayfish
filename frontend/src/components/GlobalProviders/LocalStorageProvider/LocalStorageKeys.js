@@ -1,5 +1,5 @@
 const localStorageKeys = {
-  THEME: "theme"
+  THEME: "theme",
 };
 
 export default localStorageKeys;
