@@ -30,7 +30,7 @@ router.post("/", async function createUser(req, res) {
   try {
     const { userName, email } = req.body;
 
-    const user = await userService.createUser({userName, email});
+    const user = await userService.createUser({ userName, email });
     res.status(201).json(user);
   } catch (error) {
     res.status(500).json(error);

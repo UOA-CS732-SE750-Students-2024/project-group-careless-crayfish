@@ -1,7 +1,25 @@
-const voteDao = require("../daos/voteDao");
+// services/voteService.js
+const voteDao = require("../daos/voteDao.js");
 
-async function getVotingResultsBy(userId, page, limit) {
-  const votes = await voteDao.getVotingResultsBy(userId, page, limit);
-  return votes;
+async function createVote(voteData) {
+  console.log(voteData, "voteData");
+  return await voteDao.createVote(voteData);
 }
-module.exports = { getVotingResultsBy };
+
+async function getVote(id) {
+  return await voteDao.getVoteById(id);
+}
+
+async function updateVote(id, recommend) {
+  return await voteDao.updateVote(id, recommend);
+}
+
+async function endVote(id, status) {
+  return await voteDao.endVote(id, status);
+}
+module.exports = {
+  createVote,
+  getVote,
+  updateVote,
+  endVote,
+};

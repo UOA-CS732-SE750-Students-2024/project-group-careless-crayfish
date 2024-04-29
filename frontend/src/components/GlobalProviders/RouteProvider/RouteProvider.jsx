@@ -15,6 +15,7 @@ import {
   Landing,
   RestaurantOptions,
 } from "@frontend-ui/components/Recommendation";
+import { Voting } from "@frontend-ui/components/Voting";
 import { CommentDialogPaginated } from "@frontend-ui/components/Comment/";
 import { Button, Container, Grid, Stack } from "@mui/material";
 import { Profile } from "@frontend-ui/components/Profile/Profile";
@@ -163,6 +164,11 @@ const RouteProvider = () => {
               )
             }
           />
+          <Route
+            path="/voting"
+            element={isAuthenticated ? <Voting /> : <AuthPageProvider />}
+          />
+
         </Routes>
       </BrowserRouter>
     </RouteContext.Provider>

@@ -1,0 +1,116 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
+
+body,
+.App {
+  font-family: "Montserrat", sans-serif;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+h2 {
+  font-weight: 700;
+  font-size: 2rem;
+  color: #3cb371;
+  margin: 20px 0;
+}
+
+.vote-card {
+  max-width: 600px;
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-item {
+  position: relative;
+  overflow: hidden; /* 确保伪元素不会超出卡片 */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #f0f0f0;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.card-item::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0%; /* 开始时宽度为0 */
+  height: 100%;
+  background-color: #3cb371; /* 您选择的填充颜色 */
+  z-index: 0;
+  transition: width 0.5s ease; /* 平滑过渡效果 */
+}
+.card-item.voted {
+  background-color: #e6ffe6; /* A light green background to indicate voted */
+}
+.card-item.voted::before {
+  width: 100%; /* 被点击时宽度变为100% */
+}
+.card-item:hover {
+  transform: translateY(-2px);
+  background-color: #e0e0e0; /* A slight grey background on hover */
+}
+.card-item h3,
+.card-item .vote-count,
+.card-item .btn {
+  position: relative;
+  z-index: 1; /* 确保文本和按钮在伪元素之上 */
+}
+.vote-count {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-right: 20px;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: box-shadow 0.2s ease;
+  outline: none;
+  background-color: #ddd; /* Default background */
+  color: #333; /* Default text color */
+}
+
+.btn:hover,
+.btn:focus {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Specific button hover colors */
+.btn-php:hover {
+  color: #784f9e;
+}
+.btn-python:hover {
+  color: #f0e000;
+}
+.btn-react:hover {
+  color: #44c0f1;
+}
+.btn-java:hover {
+  color: #ff895b;
+}
+
+.fab {
+  margin-left: 5px;
+  font-size: 1.2em;
+}
+
+.vote-option{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.vote-option input{
+  display: inline-block;
+  margin-left: 10px;
+  height: 30px;
+  
+}

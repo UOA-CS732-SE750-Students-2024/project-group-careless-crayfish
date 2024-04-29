@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import axios from "axios";
 
@@ -15,7 +15,7 @@ import { useAPI } from "../GlobalProviders";
 
 export const RestaurantRecommendations = () => {
   const { location } = useParams(); // Extract the location parameter from the current route
-
+  const navigate = useNavigate();
   // recommendations is an array of objects, each object represents a restaurant
   const [recommendations, setRecommendations] = useState([]);
 
@@ -58,7 +58,11 @@ export const RestaurantRecommendations = () => {
 
     setChecked(newChecked);
   };
-
+  //link to voting page
+  const handleStartVote = () => {
+    const selectedRestaurants = checked.map((index) => recommendations[index]);
+    navigate("/voting", { state: JSON.stringify(selectedRestaurants) }); // 使用 navigate 进行跳转并传递状态
+  };
   /**
    * Capitalizes the first letter of each word in a string.
    *
@@ -123,11 +127,12 @@ export const RestaurantRecommendations = () => {
         <Button
           variant="contained"
           disableElevation
-          onClick={() => {
-            checked.sort().map((index) => {
-              console.log(index, recommendations[index].name);
-            });
-          }}
+          // onClick={() => {
+          //   checked.sort().map((index) => {
+          //     console.log(index, recommendations[index].name);
+          //   });
+          // }}
+          onClick={handleStartVote}
         >
           Start a vote (currently just log to console)
         </Button>
