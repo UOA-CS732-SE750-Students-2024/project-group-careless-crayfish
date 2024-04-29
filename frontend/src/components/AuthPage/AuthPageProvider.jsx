@@ -11,7 +11,6 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { Navigate } from "react-router-dom";
 import { useAPI, useAuth, useLocalStorage } from "../GlobalProviders";
-import { GoogleAuth } from "@codetrix-studio/capacitor-google-auth";
 import { createContext, useContext, useEffect, useState } from "react";
 import { IconButton } from "@mui/material";
 import GitHubIcon from "@mui/icons-material/GitHub";
