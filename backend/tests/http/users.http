@@ -1,4 +1,3 @@
-@uuid = {{$random.uuid}}
 @email = {{$random.email}}
 
 ### Create user
@@ -8,7 +7,7 @@ Accept: application/json
 Content-Type: application/json
 
 {
-    "userId": "{{uuid}}",
+    "userName": "xqc",
     "email": "{{email}}"
 }
 
@@ -21,9 +20,11 @@ Content-Type: application/json
 ## Example of response body 
 ## {
 ##     "userId": "123e4567-e89b-12d3-a456-426614174000",
-##     "email": "random@rmail.com"
+##     "email": "random@rmail.com",
+##     "userName": "xqc"
 ## }
-?? js response.parsedBody.userId == {{uuid}}
+?? js response.parsedBody.email == {{newUser.email}}
+?? js response.parsedBody.userName == {{newUser.userName}}
 
 ### Query newly created user
 # @ref newUser
@@ -33,5 +34,5 @@ Accept: application/json
 
 ## Verify http response status code and response body
 ?? status = 200
-?? js response.parsedBody.userId == {{newUser.userId}}
 ?? js response.parsedBody.email == {{newUser.email}}
+?? js response.parsedBody.userName == {{newUser.userName}}

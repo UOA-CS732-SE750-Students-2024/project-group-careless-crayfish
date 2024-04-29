@@ -20,8 +20,6 @@ const userService = require("../services/userService.js");
  *                 type: string
  *             email:
  *                 type: string
- *             password:
- *                 type: string
  *     responses:
  *       '200':
  *         description: User created successfully
@@ -30,12 +28,9 @@ const userService = require("../services/userService.js");
  */
 router.post("/", async function createUser(req, res) {
   try {
-    const { userName, email, password } = req.body;
-  console.log('Received userName:', userName);
-  console.log('Received email:', email);
-  console.log('Received password:', password);
-  const user= await userService.createUser(req.body);
-   // const user = await userService.createUser(req.body);
+    const { userName, email } = req.body;
+
+    const user = await userService.createUser({userName, email});
     res.status(201).json(user);
   } catch (error) {
     res.status(500).json(error);
