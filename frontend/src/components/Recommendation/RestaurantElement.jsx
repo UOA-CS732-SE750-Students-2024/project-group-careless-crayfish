@@ -1,26 +1,15 @@
 import React, { useMemo } from "react";
-import Container from "@mui/material/Container";
-import ListItemText from "@mui/material/ListItemText";
-import ListItemButton from "@mui/material/ListItemButton";
-import Collapse from "@mui/material/Collapse";
-import ExpandMore from "@mui/icons-material/ExpandMore";
-import ExpandLess from "@mui/icons-material/ExpandLess";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import Checkbox from "@mui/material/Checkbox";
-import ListItem from "@mui/material/ListItem";
-import RestaurantIcon from "@mui/icons-material/Restaurant";
-import { Card, CardMedia, CardContent, Typography, CardHeader, CardActions, IconButton } from '@mui/material';
+
+import { Checkbox, ListItem, Card, CardMedia, CardContent, Typography, CardHeader, CardActions, IconButton, Collapse } from '@mui/material';
 import MapIcon from '@mui/icons-material/Map';
 import HomeIcon from '@mui/icons-material/Home';
-import PlaceIcon from '@mui/icons-material/Place';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const RestaurantElement = ({ restaurant }) => {
-  // State for the expanded details
-  const [open, setOpen] = React.useState(false);
+  const [expanded, setExpanded] = React.useState(false);
 
-// Function to handle the expand button
-  const handleFoldUnFoldDetails = () => {
-    setOpen(!open);
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
   };
 
   const randomImageNumber = useMemo(() => Math.floor(Math.random() * 20) + 1, [restaurant.name]);
@@ -33,7 +22,7 @@ const RestaurantElement = ({ restaurant }) => {
       <ListItem
         key={restaurant.index}
         className="restaurant-element"
-        onClick={restaurant.handleToggleRestaurant(restaurant.index)}
+        // onClick={restaurant.handleToggleRestaurant(restaurant.index)}
         secondaryAction={
           <Checkbox
             edge="end"
@@ -49,8 +38,8 @@ const RestaurantElement = ({ restaurant }) => {
           className="restaurant-element-button"
           selected={restaurant.selected === restaurant.index}
           onClick={(event) => {
+            restaurant.handleToggleRestaurant(restaurant.index);
             restaurant.handleListItemClick(event, restaurant.index);
-            handleFoldUnFoldDetails(event);
           }}
         >
           <CardHeader
@@ -81,7 +70,29 @@ const RestaurantElement = ({ restaurant }) => {
             >
               <HomeIcon />
             </IconButton>
+            <IconButton
+              onClick={handleExpandClick}
+              aria-expanded={expanded}
+              aria-label="show more"
+            >
+              <ExpandMoreIcon />
+            </IconButton>
           </CardActions>
+          <Collapse in={expanded} timeout="auto" unmountOnExit>
+            <CardContent>
+              <Typography paragraph>Open Hours</Typography>
+              <Typography paragraph>
+                {
+                  Object.keys(restaurant.openHours).map((key) => (
+                    <div key={key}>
+                      {key} : {restaurant.openHours[key]}
+                    </div>
+                  ))
+                
+                }
+              </Typography>
+            </CardContent>
+          </Collapse>
         </Card>
 
       </ListItem>
