@@ -18,7 +18,7 @@ async function fetchRestaurantRecommendations(location) {
       {
         parts: [
           {
-            text: `recommend me some restaurants around ${location}, return me in json format [(name, location, description, priceRange)]`,
+            text: `recommend me some restaurants around ${location}, return it in JSON format [(name, location, description, priceRange, websiteUrl, briefIntroduction, mapUrl)]`,
           },
         ],
       },
@@ -38,6 +38,7 @@ async function fetchRestaurantRecommendations(location) {
   }
 
   const data = await response.json();
+  // console.log(JSON.stringify(data));
 
   if (
     !data.candidates ||
@@ -50,7 +51,7 @@ async function fetchRestaurantRecommendations(location) {
 
   const recommendations = data.candidates[0].content.parts[0].text
     .replace(/```/g, "")
-    .replace(/^json/g, "")
+    .replace(/^json/gi, "")
     .trim()
     .replace(/\n/g, "");
   return recommendations;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import Container from "@mui/material/Container";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -9,6 +9,10 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import Checkbox from "@mui/material/Checkbox";
 import ListItem from "@mui/material/ListItem";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
+import { Card, CardMedia, CardContent, Typography, CardHeader, CardActions, IconButton } from '@mui/material';
+import MapIcon from '@mui/icons-material/Map';
+import HomeIcon from '@mui/icons-material/Home';
+import PlaceIcon from '@mui/icons-material/Place';
 
 const RestaurantElement = ({ restaurant }) => {
   // State for the expanded details
@@ -19,12 +23,16 @@ const RestaurantElement = ({ restaurant }) => {
     setOpen(!open);
   };
 
+  const randomImageNumber = useMemo(() => Math.floor(Math.random() * 20) + 1, [restaurant.name]);
+  restaurant.imageUrl = `/public/restaurants/${randomImageNumber}.jpeg`;
+
   return (
     <>
       {/* 1. Restaurant element */}
       <ListItem
         key={restaurant.index}
         className="restaurant-element"
+        onClick={restaurant.handleToggleRestaurant(restaurant.index)}
         secondaryAction={
           <Checkbox
             edge="end"
@@ -36,8 +44,7 @@ const RestaurantElement = ({ restaurant }) => {
           />
         }
       >
-        {/* 1.1 Clickable */}
-        <ListItemButton
+        <Card
           className="restaurant-element-button"
           selected={restaurant.selected === restaurant.index}
           onClick={(event) => {
@@ -45,34 +52,38 @@ const RestaurantElement = ({ restaurant }) => {
             handleFoldUnFoldDetails(event);
           }}
         >
-          <ListItemIcon>
-            <RestaurantIcon />
-          </ListItemIcon>
-
-          {/* Restaurant details */}
-          <ListItemText
-            className="restaurant-element-text"
-            primary={`${restaurant.name} (${restaurant.priceRange})`}
-            secondary={
-              <span style={{ whiteSpace: "pre-line" }}>
-                {`Description: ${restaurant.description}\nLocation: ${restaurant.location}`}
-              </span>
-            }
+          <CardHeader
+            title={restaurant.name}
+            subheader={restaurant.location}
           />
+          <CardMedia
+            component="img"
+            height="140"
+            image={restaurant.imageUrl}
+            alt={restaurant.name}
+          />
+          <CardContent>
+            <Typography variant="body2" color="text.secondary">
+              {restaurant.briefIntroduction}
+            </Typography>
+          </CardContent>
+          <CardActions disableSpacing>
+            <IconButton 
+              aria-label="open map"
+              onClick = {() => window.open(restaurant.mapUrl)}
+            >
+              <MapIcon />
+            </IconButton>
+            <IconButton 
+              aria-label="open website"
+              onClick = {() => window.open(restaurant.websiteUrl)}
+            >
+              <HomeIcon />
+            </IconButton>
+          </CardActions>
+        </Card>
 
-          {/* Expand button */}
-          {open ? <ExpandLess /> : <ExpandMore />}
-        </ListItemButton>
       </ListItem>
-
-      {/* Collapsed details */}
-      <Collapse in={open} timeout="auto" unmountOnExit>
-        <Container maxWidth="lg">
-          {`${restaurant.name} details`}
-          <br />
-          {`place holder for image, map, and other details`}
-        </Container>
-      </Collapse>
     </>
   );
 };
