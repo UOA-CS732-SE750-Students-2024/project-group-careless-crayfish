@@ -42,6 +42,14 @@ const HeaderProvider = () => {
   const handleMenuToggle = (event) => {
     setAnchorEl(event.currentTarget);
   };
+  //personInfo 
+  const [userName, setUserName] = useState(null);
+  useEffect(() => {
+    const userName = localStorage.getItem('gn');
+    if (userName) {
+      setUserName(userName);
+    }
+  }, [])
   const navigate = useNavigate();
 
   const handleProfileClick = (event) => {
@@ -61,6 +69,11 @@ const HeaderProvider = () => {
               </Box>
             </Slide>
           </Box>
+          <Box flexGrow={0}>
+            <Typography variant="h6" noWrap>
+              {userName} {/* Displaying the user's name */}
+            </Typography>
+          </Box>
           <Box>
             <Tooltip
               title={`Toggle light/dark mode - Currently ${theme} mode.`}
@@ -77,7 +90,7 @@ const HeaderProvider = () => {
 
           <Grid>
             <Box display="flex">
-              <Tooltip title={`account`}>
+              <Tooltip >
                 <ListItemButton
                   id="demo-positioned-button"
                   aria-controls={

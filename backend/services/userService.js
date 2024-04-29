@@ -1,24 +1,31 @@
 const userDao = require("../daos/userDao.js");
-const UserDto = require("../dtos/user-dto.js");
+const { randomUUID } = require("crypto");
+const logger = require("../utils/logger.js");
 
-async function createUser(userData) {
-  const user = await userDao.createUser(userData);
+async function createUser({ userName, email }) {
+  const userId = randomUUID();
+  logger.info(
+    `Creating user with userName=${userName} email=${email} userId=${userId}`
+  );
+  const user = await userDao.createUser({
+    userName,
+    email,
+    userId,
+  });
 
-  if (user == null) {
-    return null;
-  }
-
-  return new UserDto(user.userId, user.email);
+  logger.info(`Created user: ${JSON.stringify(user)}`);
+  return user;
 }
 
 async function getUserById(userId) {
+  logger.info(`Getting user by userId=${userId}`);
   const user = await userDao.getUserById(userId);
-  
+
   if (user == null) {
     return null;
   }
-  
-  return new UserDto(user.userId, user.email);
+
+  return user;
 }
 
 // Add other service functions as needed
