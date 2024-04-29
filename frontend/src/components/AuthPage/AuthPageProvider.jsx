@@ -17,7 +17,8 @@ import { createContext, useContext, useState } from "react";
 import { IconButton } from "@mui/material";
 import GitHubIcon from "@mui/icons-material/GitHub";
 GoogleAuth.initialize({
-  clientId: "1072715892589-79a0l62lbjqr0cl6bvsij2t53n3hb1oj",
+  clientId:
+    "1083292527788-2ehr1pss5tjac6156qk7likrbu4eps58.apps.googleusercontent.com",
   scopes: ["profile", "email"],
   grantOfflineAccess: true,
 });
