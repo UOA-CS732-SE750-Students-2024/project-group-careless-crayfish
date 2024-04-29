@@ -1,6 +1,5 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState,useEffect } from "react";
 import { useAPI } from "../APIProvider";
-
 const AuthContext = createContext({});
 
 export const useAuth = () => useContext(AuthContext);
@@ -9,18 +8,19 @@ const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const { get, post } = useAPI();
 
-  const login = () => {
-    setIsAuthenticated(true);
-  };
-  const logout = () => {
-    setIsAuthenticated(false);
-  };
+  useEffect(() => {
+    const storedAuthState = localStorage.getItem('isAuthenticated') === 'true';
+    setIsAuthenticated(storedAuthState);
+  }, []);
+  const login = async() => {
+      setIsAuthenticated(true);
+      localStorage.setItem("isAuthenticated", String(true));
 
-  const createUser = async () => {
-    return await post("http://localhost:3000/api/users", {
-      userId: "xqc",
-      email: "xqc@gmail.com",
-    });
+  };
+  const logout = async() => {
+    setIsAuthenticated(false);
+    localStorage.setItem("isAuthenticated", String(false));
+   
   };
 
   const getUserById = async (userId) => {
@@ -28,7 +28,7 @@ const AuthProvider = ({ children }) => {
   };
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, login, logout, createUser, getUserById }}
+      value={{ isAuthenticated, login, logout, getUserById }}
     >
       {children}
     </AuthContext.Provider>

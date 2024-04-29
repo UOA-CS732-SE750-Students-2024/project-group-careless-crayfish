@@ -2,12 +2,14 @@ import { createContext, useContext } from "react";
 import { HeaderProvider } from "../Header";
 import { Grid, Paper } from "@mui/material";
 
+
 const AuthenticatedContext = createContext({});
 
 export const useAuthenticated = () => useContext(AuthenticatedContext);
 const AuthenticatedProvider = () => {
   return (
     <AuthenticatedContext.Provider value={{}}>
+   
       <Grid
         container
         direction="column"

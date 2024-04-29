@@ -11,7 +11,7 @@ async function connect() {
   }
 
   await mongoose.connect(
-    `mongodb://${username}:${password}@${address}:27017/`,
+   `mongodb://${username}:${password}@${address}:27017/`,
     {
       // mongoose automatically does connection pooling and by default max pool size is 100.
       // We want this to be smaller to reduce load on server.
