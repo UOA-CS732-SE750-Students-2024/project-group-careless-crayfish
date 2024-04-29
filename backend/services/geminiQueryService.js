@@ -3,7 +3,7 @@ const logger = require("../utils/logger.js");
 
 const commentService = require("./commentService.js");
 
-async function fetchRestaurantRecommendations(location) {
+async function fetchRestaurantRecommendations({location, ageGroup, cuisine}) {
   // eslint-disable-next-line no-undef
   const apiUrl = process.env.API_URL;
   // eslint-disable-next-line no-undef
@@ -13,12 +13,19 @@ async function fetchRestaurantRecommendations(location) {
     "Content-Type": "application/json",
   };
 
+  ageGroup = ageGroup ? ageGroup : "random";
+  cuisine = cuisine ? cuisine : "random";
+  location = location ? location : "University Of Auckland";
+
+  const queryStr = `recommend me 7 ${cuisine} restaurants around ${location} for ${ageGroup} age group, return it in JSON format [(name, location, description, priceRange, websiteUrl, detailIntroduction, openHours)]`;
+  console.log(`gemini query str: ${queryStr}`);
+
   const body = {
     contents: [
       {
         parts: [
           {
-            text: `recommend me some restaurants around ${location}, return it in JSON format [(name, location, description, priceRange, websiteUrl, briefIntroduction, mapUrl)]`,
+            text: queryStr,
           },
         ],
       },
@@ -51,7 +58,8 @@ async function fetchRestaurantRecommendations(location) {
 
   const recommendations = data.candidates[0].content.parts[0].text
     .replace(/```/g, "")
-    .replace(/^json/gi, "")
+    .replace(/^json/g, "") // seem like 'ig' flag is not working
+    .replace(/^JSON/g, "")
     .trim()
     .replace(/\n/g, "");
   return recommendations;
