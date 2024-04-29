@@ -1,23 +1,20 @@
-import React from "react";
-import Container from "@mui/material/Container";
-import ListItemText from "@mui/material/ListItemText";
-import ListItemButton from "@mui/material/ListItemButton";
-import Collapse from "@mui/material/Collapse";
-import ExpandMore from "@mui/icons-material/ExpandMore";
-import ExpandLess from "@mui/icons-material/ExpandLess";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import Checkbox from "@mui/material/Checkbox";
-import ListItem from "@mui/material/ListItem";
-import RestaurantIcon from "@mui/icons-material/Restaurant";
+import React, { useMemo } from "react";
+
+import { Checkbox, ListItem, Card, CardMedia, CardContent, Typography, CardHeader, CardActions, IconButton, Collapse } from '@mui/material';
+import MapIcon from '@mui/icons-material/Map';
+import HomeIcon from '@mui/icons-material/Home';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const RestaurantElement = ({ restaurant }) => {
-  // State for the expanded details
-  const [open, setOpen] = React.useState(false);
+  const [expanded, setExpanded] = React.useState(false);
 
-// Function to handle the expand button
-  const handleFoldUnFoldDetails = () => {
-    setOpen(!open);
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
   };
+
+  const randomImageNumber = useMemo(() => Math.floor(Math.random() * 20) + 1, [restaurant.name]);
+  restaurant.imageUrl = `/public/restaurants/${randomImageNumber}.jpeg`;
+  restaurant.mapUrl = `https://www.google.com/maps/search/?api=1&query=${restaurant.location}`;
 
   return (
     <>
@@ -25,6 +22,7 @@ const RestaurantElement = ({ restaurant }) => {
       <ListItem
         key={restaurant.index}
         className="restaurant-element"
+        // onClick={restaurant.handleToggleRestaurant(restaurant.index)}
         secondaryAction={
           <Checkbox
             edge="end"
@@ -36,43 +34,68 @@ const RestaurantElement = ({ restaurant }) => {
           />
         }
       >
-        {/* 1.1 Clickable */}
-        <ListItemButton
+        <Card
           className="restaurant-element-button"
           selected={restaurant.selected === restaurant.index}
           onClick={(event) => {
+            restaurant.handleToggleRestaurant(restaurant.index);
             restaurant.handleListItemClick(event, restaurant.index);
-            handleFoldUnFoldDetails(event);
           }}
         >
-          <ListItemIcon>
-            <RestaurantIcon />
-          </ListItemIcon>
-
-          {/* Restaurant details */}
-          <ListItemText
-            className="restaurant-element-text"
-            primary={`${restaurant.name} (${restaurant.priceRange})`}
-            secondary={
-              <span style={{ whiteSpace: "pre-line" }}>
-                {`Description: ${restaurant.description}\nLocation: ${restaurant.location}`}
-              </span>
-            }
+          <CardHeader
+            title={restaurant.name}
+            subheader={restaurant.location}
           />
+          <CardMedia
+            component="img"
+            height="140"
+            image={restaurant.imageUrl}
+            alt={restaurant.name}
+          />
+          <CardContent>
+            <Typography variant="body2" color="text.secondary">
+              {restaurant.detailIntroduction}
+            </Typography>
+          </CardContent>
+          <CardActions disableSpacing>
+            <IconButton 
+              aria-label="open map"
+              onClick = {() => window.open(restaurant.mapUrl)}
+            >
+              <MapIcon />
+            </IconButton>
+            <IconButton 
+              aria-label="open website"
+              onClick = {() => window.open(restaurant.websiteUrl)}
+            >
+              <HomeIcon />
+            </IconButton>
+            <IconButton
+              onClick={handleExpandClick}
+              aria-expanded={expanded}
+              aria-label="show more"
+            >
+              <ExpandMoreIcon />
+            </IconButton>
+          </CardActions>
+          <Collapse in={expanded} timeout="auto" unmountOnExit>
+            <CardContent>
+              <Typography paragraph>Open Hours</Typography>
+              <Typography paragraph>
+                {
+                  Object.keys(restaurant.openHours).map((key) => (
+                    <div key={key}>
+                      {key} : {restaurant.openHours[key]}
+                    </div>
+                  ))
+                
+                }
+              </Typography>
+            </CardContent>
+          </Collapse>
+        </Card>
 
-          {/* Expand button */}
-          {open ? <ExpandLess /> : <ExpandMore />}
-        </ListItemButton>
       </ListItem>
-
-      {/* Collapsed details */}
-      <Collapse in={open} timeout="auto" unmountOnExit>
-        <Container maxWidth="lg">
-          {`${restaurant.name} details`}
-          <br />
-          {`place holder for image, map, and other details`}
-        </Container>
-      </Collapse>
     </>
   );
 };

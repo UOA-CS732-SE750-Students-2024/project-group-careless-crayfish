@@ -20,7 +20,7 @@ export const RestaurantOptions = () => {
   const navigateTo = useNavigate();
   const { pageTitle, setPageTitle } = useRoute();
   useEffect(() => {
-    setPageTitle("Choose Restuarant options");
+    setPageTitle("Select Dining Preferences");
   });
   const handleSubmit = (event) => {
     event.preventDefault();
