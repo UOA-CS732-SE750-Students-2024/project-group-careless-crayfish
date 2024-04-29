@@ -1,5 +1,7 @@
+@uuid = {{$random.uuid}}
 @email = {{$random.email}}
-
+@userName = {{$random.userName}}
+@imageUrl = {{$random.imageUrl}}
 ### Create user
 # @name newUser
 POST {{host}}/api/users
@@ -7,8 +9,10 @@ Accept: application/json
 Content-Type: application/json
 
 {
-    "userName": "xqc",
-    "email": "{{email}}"
+    "userId": "{{uuid}}",
+    "email": "{{email}}",
+    "imageUrl": "{{imageUrl}}",
+    "userName": "{{userName}}"
 }
 
 ## ====
@@ -20,12 +24,14 @@ Content-Type: application/json
 ## Example of response body 
 ## {
 ##     "userId": "123e4567-e89b-12d3-a456-426614174000",
-##     "email": "random@rmail.com",
-##     "userName": "xqc"
+##     "imageUrl": "https://bla.com",
+##     "userName": "asd",
+##     "email": "random@email.com"
 ## }
-?? js response.parsedBody.email == {{newUser.email}}
-?? js response.parsedBody.userName == {{newUser.userName}}
-
+?? js response.parsedBody.userId == {{uuid}}
+?? js response.parsedBody.email == {{email}}
+?? js response.parsedBody.userName == {{userName}}
+?? js response.parsedBody.imageUrl == {{imageUrl}}
 ### Query newly created user
 # @ref newUser
 # "@ref" reference to the "@name" in the previous request
@@ -34,5 +40,7 @@ Accept: application/json
 
 ## Verify http response status code and response body
 ?? status = 200
+?? js response.parsedBody.userId == {{newUser.userId}}
 ?? js response.parsedBody.email == {{newUser.email}}
+?? js response.parsedBody.imageUrl == {{newUser.imageUrl}}
 ?? js response.parsedBody.userName == {{newUser.userName}}

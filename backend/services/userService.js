@@ -1,17 +1,11 @@
 const userDao = require("../daos/userDao.js");
-const { randomUUID } = require("crypto");
 const logger = require("../utils/logger.js");
 
-async function createUser({ userName, email }) {
-  const userId = randomUUID();
+async function createUser({ userName, email, userId, imageUrl }) {
   logger.info(
-    `Creating user with userName=${userName} email=${email} userId=${userId}`
+    `Creating user with userName=${userName} email=${email} userId=${userId} imageUrl=${imageUrl}`
   );
-  const user = await userDao.createUser({
-    userName,
-    email,
-    userId,
-  });
+  const user = await userDao.createUser({ userName, email, userId, imageUrl });
 
   logger.info(`Created user: ${JSON.stringify(user)}`);
   return user;

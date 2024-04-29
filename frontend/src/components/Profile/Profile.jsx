@@ -7,11 +7,15 @@ import {
   CardContent,
   CardHeader,
   CardMedia,
+  Checkbox,
+  CircularProgress,
   Collapse,
   Container,
   Dialog,
   DialogContent,
   DialogTitle,
+  FormControlLabel,
+  Grid,
   IconButton,
   Tooltip,
   Typography,
@@ -26,12 +30,143 @@ import { ExpandMore } from "@mui/icons-material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CommentIcon from "@mui/icons-material/Comment";
+
+const vr = {
+  userId: "string",
+  votes: [
+    {
+      voteId: "string",
+      winner: {
+        votingItemId: "uid",
+        occurence: 2,
+        name: "winning restaurant",
+        description: "bla",
+        pictureUrl: "",
+      },
+      candidates: [
+        {
+          votingItemId: "uid",
+          occurence: 2,
+          name: "restaurant 1",
+          description: "bla",
+          pictureUrl: "",
+        },
+        {
+          votingItemId: "uid",
+          occurence: 5,
+          name: "restaurant 2",
+          description: "bla",
+          pictureUrl: "",
+        },
+        {
+          votingItemId: "uid",
+          occurence: 10,
+          name: "restaurant 3",
+          description: "bla",
+          pictureUrl: "",
+        },
+      ],
+      complete_date: "ISO 8601", // 2024-04-23T07:55:26Z
+    },
+    {
+      voteId: "string1",
+      winner: {
+        votingItemId: "uid",
+        occurence: 2,
+        name: "winning restaurant 2",
+        description: "bla",
+        pictureUrl: "",
+      },
+      candidates: [
+        {
+          votingItemId: "uid",
+          occurence: 2,
+          name: "restaurant 1",
+          description: "bla",
+          pictureUrl: "",
+        },
+        {
+          votingItemId: "uid",
+          occurence: 5,
+          name: "restaurant 2",
+          description: "bla",
+          pictureUrl: "",
+        },
+      ],
+      complete_date: "ISO 8601", // 2024-04-23T07:55:26Z
+    },
+  ],
+};
+
 export const Profile = () => {
   const { pageTitle, setPageTitle } = useRoute();
+  const { get } = useAPI();
   useEffect(() => {
     setPageTitle("Profile");
   });
+  const [votes, setVotes] = useState([]);
 
+  const [page, setPage] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+  const [isLoadingVotes, setIsLoadingComments] = useState(false);
+  const limit = 5;
+  const handleHasMoreButtonClick = () => {
+    fetchNextVotes(page);
+  };
+
+  const userId = vr.userId;
+  const fetchLatestVotes = async () => {
+    try {
+      setIsLoadingComments(true);
+      const totalNumRecordsResp = await get(
+        `${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/votes/totalNumRecords/${userId}`,
+      );
+
+      const lastPageIndex = Number.isInteger(totalNumRecordsResp.data / limit)
+        ? totalNumRecordsResp.data / limit - 1
+        : Math.floor(totalNumRecordsResp.data / limit);
+      const response = await get(
+        `${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/votes/${userId}?page=${lastPageIndex}&limit=${limit}`,
+      );
+      setPage(lastPageIndex);
+      setHasMore(true);
+      setVotes(response.data);
+    } finally {
+      setIsLoadingComments(false);
+    }
+  };
+
+  const fetchNextVotes = async (page) => {
+    try {
+      const nextPage = page + 1;
+      setPage(nextPage);
+
+      if (nextPage <= 0) {
+        setHasMore(false);
+        return;
+      }
+
+      setIsLoadingComments(true);
+
+      const response = await get(
+        `${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/votes/${userId}?page=${nextPage}&limit=${limit}`,
+      );
+
+      if (response && response.data.length > 0) {
+        const map = new Map(
+          [...response.data, ...votes].map((obj) => [obj._id, obj]),
+        );
+        const deduplicatedComments = Array.from(map.values());
+        setVotes(deduplicatedComments);
+        setHasMore(true);
+      }
+    } finally {
+      setIsLoadingComments(false);
+    }
+  };
+  useEffect(() => {
+    fetchLatestVotes();
+  }, []);
   const [openComments, setOpenComments] = useState(false);
   const [expanded, setExpanded] = useState({});
   const [currVoteId, setCurrVoteId] = useState("");
@@ -42,75 +177,7 @@ export const Profile = () => {
     }));
   };
 
-  const votingResults = {
-    userId: "string",
-    votes: [
-      {
-        voteId: "string",
-        winner: {
-          votingItemId: "uid",
-          occurence: 2,
-          name: "winning restaurant",
-          description: "bla",
-          pictureUrl: "",
-        },
-        candidates: [
-          {
-            votingItemId: "uid",
-            occurence: 2,
-            name: "restaurant 1",
-            description: "bla",
-            pictureUrl: "",
-          },
-          {
-            votingItemId: "uid",
-            occurence: 5,
-            name: "restaurant 2",
-            description: "bla",
-            pictureUrl: "",
-          },
-          {
-            votingItemId: "uid",
-            occurence: 10,
-            name: "restaurant 3",
-            description: "bla",
-            pictureUrl: "",
-          },
-        ],
-        complete_date: "ISO 8601", // 2024-04-23T07:55:26Z
-      },
-      {
-        voteId: "string1",
-        winner: {
-          votingItemId: "uid",
-          occurence: 2,
-          name: "winning restaurant 2",
-          description: "bla",
-          pictureUrl: "",
-        },
-        candidates: [
-          {
-            votingItemId: "uid",
-            occurence: 2,
-            name: "restaurant 1",
-            description: "bla",
-            pictureUrl: "",
-          },
-          {
-            votingItemId: "uid",
-            occurence: 5,
-            name: "restaurant 2",
-            description: "bla",
-            pictureUrl: "",
-          },
-        ],
-        complete_date: "ISO 8601", // 2024-04-23T07:55:26Z
-      },
-    ],
-  };
-
   const handleToggleCommentsDialog = (voteId) => {
-    console.log(false);
     setOpenComments(!openComments);
     setCurrVoteId(voteId);
   };
@@ -118,7 +185,7 @@ export const Profile = () => {
   return (
     <Box mt={10} textAlign="center">
       <Container maxWidth="md">
-        {votingResults.votes.map((vote) => (
+        {vr.votes.map((vote) => (
           <Card key={vote.voteId + v4()} sx={{ marginBottom: 2 }}>
             <CardHeader
               title={vote.winner.name}
@@ -131,7 +198,7 @@ export const Profile = () => {
               </Typography>
             </CardContent>
             <CardActions disableSpacing>
-              <Tooltip title={"Open comments dialog"}>
+              <Tooltip title={"Open votes dialog"}>
                 <IconButton
                   variant="contained"
                   color="primary"
@@ -159,11 +226,19 @@ export const Profile = () => {
             </Collapse>
           </Card>
         ))}
-
+        <Box textAlign="center">
+          {hasMore ? (
+            <Button onClick={handleHasMoreButtonClick}>
+              {isLoadingVotes ? <CircularProgress /> : "Previous Page"}
+            </Button>
+          ) : (
+            <Typography>No more votes</Typography>
+          )}
+        </Box>
         <CommentDialogPaginated
           openComments={openComments}
           setOpenComments={setOpenComments}
-          userId={votingResults.userId}
+          userId={userId}
           voteId={currVoteId}
         />
       </Container>

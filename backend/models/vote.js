@@ -22,5 +22,6 @@ const voteSchema = new mongoose.Schema({
     default: [],
   },
 });
+voteSchema.index({ endDate: -1 }); // create an index for getting comments backwards by end date.
 
 module.exports = mongoose.model("Vote", voteSchema);

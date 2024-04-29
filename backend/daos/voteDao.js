@@ -8,7 +8,11 @@ async function getVoteById(userId, voteId) {
   return await Vote.findOne({ userId, voteId });
 }
 
-async function getVotingResultsBy(userId, page, limit) {
+async function getTotalNumRecords({ userId }) {
+  return await Vote.countDocuments({ userId });
+}
+
+async function getVotesBy({ userId }, page, limit) {
   return await Vote.find({ userId })
     .skip(page * limit)
     .limit(limit)
@@ -18,7 +22,8 @@ async function getVotingResultsBy(userId, page, limit) {
 // Add other CRUD operations as needed
 
 module.exports = {
-  getVotingResultsBy,
+  getVotesBy,
   createVote,
   getVoteById,
+  getTotalNumRecords,
 };

@@ -64,6 +64,7 @@ export const CommentDialogPaginated = ({
     }
   };
 
+  
   const fetchPreviousPageComments = async (page) => {
     try {
       if (!voteId || !openComments || !userId) {

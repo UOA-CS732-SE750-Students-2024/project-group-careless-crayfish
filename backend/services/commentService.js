@@ -1,7 +1,7 @@
 const commentDao = require("../daos/commentDao");
 const { randomUUID } = require("crypto");
 const logger = require("../utils/logger.js");
-async function getCommentsBy({ userId, voteId, commentId, page, limit }) {
+async function getCommentsBy({ userId, voteId, commentId }, page, limit) {
   if (commentId) {
     logger.info(`Getting comments by commentId=${commentId}`);
     return [await commentDao.getCommentsById(commentId)];
