@@ -13,6 +13,6 @@ const commentSchema = new mongoose.Schema({
   default: [],
 });
 
-commentSchema.index({ creationDate: -1 }); // 1 means descending order
+commentSchema.index({ creationDate: -1 }); // create an index for getting comments backwards by creation date.
 
 module.exports = mongoose.model("Comment", commentSchema);
