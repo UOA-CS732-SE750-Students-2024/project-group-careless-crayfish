@@ -39,6 +39,13 @@ services:
       - "8080:8081"
     networks:
       - MONGO
+  wiremock:
+    image: rodolpheche/wiremock
+    ports:
+      - "8081:8080" #host port:container port
+    volumes:
+      - ./wiremock/mappings:/home/wiremock/mappings
+      - ./wiremock/__files:/home/wiremock/__files
 networks:
   MONGO:
     name: MONGO

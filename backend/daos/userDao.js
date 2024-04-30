@@ -1,7 +1,7 @@
 const User = require("../models/user.js");
 
-async function createUser(userData) {
-  return await User.create(userData);
+async function createUser({ userName, email, userId, imageUrl }) {
+  return await User.create({ userName, email, userId, imageUrl });
 }
 
 async function getUserById(userId) {

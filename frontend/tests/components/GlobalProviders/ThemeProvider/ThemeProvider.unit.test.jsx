@@ -1,7 +1,10 @@
 import { describe, expect, test } from "vitest";
 import { findByText, render } from "@testing-library/react";
 import { ThemeProviderDebug } from "tests/testUtils";
-import { MuiTheme, ThemeProvider } from "@frontend-ui/components/GlobalProviders/ThemeProvider";
+import {
+  MuiTheme,
+  ThemeProvider,
+} from "@frontend-ui/components/GlobalProviders/ThemeProvider";
 import { LocalStorageProvider } from "@frontend-ui/components/GlobalProviders/LocalStorageProvider";
 
 describe("ThemeProvider tests.", () => {
@@ -11,7 +14,7 @@ describe("ThemeProvider tests.", () => {
         <ThemeProvider>
           <ThemeProviderDebug />
         </ThemeProvider>
-      </LocalStorageProvider>
+      </LocalStorageProvider>,
     );
     expect(container).toBeTruthy();
 
@@ -23,7 +26,7 @@ describe("ThemeProvider tests.", () => {
         <ThemeProvider>
           <ThemeProviderDebug themeMode={MuiTheme.Dark} />
         </ThemeProvider>
-      </LocalStorageProvider>
+      </LocalStorageProvider>,
     );
     expect(container).toBeTruthy();
 
@@ -36,7 +39,7 @@ describe("ThemeProvider tests.", () => {
         <ThemeProvider>
           <ThemeProviderDebug themeMode={MuiTheme.Dark} />
         </ThemeProvider>
-      </LocalStorageProvider>
+      </LocalStorageProvider>,
     );
     expect(container).toBeTruthy();
 

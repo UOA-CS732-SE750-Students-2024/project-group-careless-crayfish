@@ -5,63 +5,68 @@ const APIContext = createContext({});
 
 export const useAPI = () => useContext(APIContext);
 
+/**
+ * The APIProvider handles errors from apis. Displays error message on a snackbar.
+ * @returns
+ */
 const APIProvider = ({ children }) => {
-  const [data, setData] = useState(null);
   const [error, setError] = useState(null);
 
   const get = async (url) => {
     try {
       const response = await axios.get(url);
-      setData(response.data);
       setError(null);
+      return response;
     } catch (error) {
+      console.log(error);
       setError({ message: error.message, code: error.response?.status });
-      setData(null);
+      return null;
     }
   };
   const post = async (url, body) => {
     try {
       const response = await axios.post(url, body);
-      setData(response.data);
       setError(null);
+      return response;
     } catch (error) {
+      console.log(error);
       setError({ message: error.message, code: error.response?.status });
-      setData(null);
+      return null;
     }
   };
   const del = async (url) => {
     try {
       const response = await axios.delete(url);
-      setData(response.data);
       setError(null);
+      return response;
     } catch (error) {
       setError({ message: error.message, code: error.response?.status });
-      setData(null);
+      return null;
     }
   };
   const put = async (url, body) => {
     try {
       const response = await axios.put(url, body);
-      setData(response.data);
       setError(null);
+      return response;
     } catch (error) {
       setError({ message: error.message, code: error.response?.status });
-      setData(null);
+      return null;
     }
   };
   const patch = async (url, body) => {
     try {
       const response = await axios.patch(url, body);
-      setData(response.data);
       setError(null);
+      return response;
     } catch (error) {
       setError({ message: error.message, code: error.response?.status });
-      setData(null);
+      return null;
     }
   };
   return (
     <APIContext.Provider
-      value={{ data, error, get, post, del, put, patch, setError }}
+      value={{ error, get, post, del, put, patch, setError }}
     >
       {children}
     </APIContext.Provider>

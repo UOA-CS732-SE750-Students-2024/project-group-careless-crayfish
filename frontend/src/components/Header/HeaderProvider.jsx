@@ -1,7 +1,14 @@
-import { createContext, useContext, useState } from "react";
-import { MuiTheme, useAuth, useMuiTheme } from "../GlobalProviders";
+import { createContext, useContext, useEffect, useState } from "react";
+import {
+  MuiTheme,
+  useAuth,
+  useLocalStorage,
+  useMuiTheme,
+  useRoute,
+} from "../GlobalProviders";
 import {
   AppBar,
+  Avatar,
   Grid,
   ListItemButton,
   Menu,
@@ -15,18 +22,23 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import Person2Icon from "@mui/icons-material/Person2";
+import { Navigate, useNavigate } from "react-router-dom";
 const HeaderContext = createContext({});
 
 export const useHeader = () => useContext(HeaderContext);
 
 const HeaderProvider = () => {
   const { toggleLightDarkTheme, theme } = useMuiTheme();
+
+  const { getItem } = useLocalStorage();
+  const { pageTitle, setPageTitle } = useRoute();
+
   const handleThemeSwitchClick = () => {
     toggleLightDarkTheme();
   };
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   const isMenuOpen = Boolean(anchorEl);
   const handleLogoutLinkCLick = (event) => {
     handleMenuClose(event);
@@ -38,6 +50,12 @@ const HeaderProvider = () => {
   const handleMenuToggle = (event) => {
     setAnchorEl(event.currentTarget);
   };
+  const navigate = useNavigate();
+
+  const handleProfileClick = (event) => {
+    handleMenuClose();
+    navigate("/authenticated/profile");
+  };
   return (
     <HeaderContext.Provider value={{}}>
       <AppBar>
@@ -47,12 +65,11 @@ const HeaderProvider = () => {
 
             <Slide direction="right" in={true} timeout={500}>
               <Box display="flex" flexDirection="row" alignItems="center">
-                <Typography>
-                  Put acommodations and voting logic below
-                </Typography>
+                <Typography>{pageTitle}</Typography>
               </Box>
             </Slide>
           </Box>
+
           <Box>
             <Tooltip
               title={`Toggle light/dark mode - Currently ${theme} mode.`}
@@ -66,10 +83,14 @@ const HeaderProvider = () => {
               />
             </Tooltip>
           </Box>
-
+          <Box flexGrow={0}>
+            <Typography variant="h6" noWrap>
+              {user.userName} {/* Displaying the user's name */}
+            </Typography>
+          </Box>
           <Grid>
             <Box display="flex">
-              <Tooltip title={`account`}>
+              <Tooltip>
                 <ListItemButton
                   id="demo-positioned-button"
                   aria-controls={
@@ -79,7 +100,11 @@ const HeaderProvider = () => {
                   aria-expanded={isMenuOpen ? "true" : undefined}
                   onClick={handleMenuToggle}
                 >
-                  <Person2Icon fontSize="large" />
+                  {user ? (
+                    <Avatar alt={user.userName} src={user.imageUrl} />
+                  ) : (
+                    <Person2Icon fontSize="large" />
+                  )}
                 </ListItemButton>
               </Tooltip>
 
@@ -93,7 +118,7 @@ const HeaderProvider = () => {
                 <MenuList autoFocusItem={isMenuOpen}>
                   <MenuItem
                     aria-label={"menu profile link"}
-                    onClick={handleMenuClose}
+                    onClick={handleProfileClick}
                   >
                     <Typography noWrap>profile</Typography>
                   </MenuItem>
