@@ -1,7 +1,14 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { MuiTheme, useAuth, useMuiTheme, useRoute } from "../GlobalProviders";
+import {
+  MuiTheme,
+  useAuth,
+  useLocalStorage,
+  useMuiTheme,
+  useRoute,
+} from "../GlobalProviders";
 import {
   AppBar,
+  Avatar,
   Grid,
   ListItemButton,
   Menu,
@@ -23,6 +30,7 @@ export const useHeader = () => useContext(HeaderContext);
 const HeaderProvider = () => {
   const { toggleLightDarkTheme, theme } = useMuiTheme();
 
+  const { getItem } = useLocalStorage();
   const { pageTitle, setPageTitle } = useRoute();
 
   const handleThemeSwitchClick = () => {
@@ -30,7 +38,7 @@ const HeaderProvider = () => {
   };
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   const isMenuOpen = Boolean(anchorEl);
   const handleLogoutLinkCLick = (event) => {
     handleMenuClose(event);
@@ -42,14 +50,6 @@ const HeaderProvider = () => {
   const handleMenuToggle = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  //personInfo 
-  const [userName, setUserName] = useState(null);
-  useEffect(() => {
-    const userName = localStorage.getItem('gn');
-    if (userName) {
-      setUserName(userName);
-    }
-  }, [])
   const navigate = useNavigate();
 
   const handleProfileClick = (event) => {
@@ -69,11 +69,7 @@ const HeaderProvider = () => {
               </Box>
             </Slide>
           </Box>
-          <Box flexGrow={0}>
-            <Typography variant="h6" noWrap>
-              {userName} {/* Displaying the user's name */}
-            </Typography>
-          </Box>
+
           <Box>
             <Tooltip
               title={`Toggle light/dark mode - Currently ${theme} mode.`}
@@ -87,10 +83,14 @@ const HeaderProvider = () => {
               />
             </Tooltip>
           </Box>
-
+          <Box flexGrow={0}>
+            <Typography variant="h6" noWrap>
+              {user.userName} {/* Displaying the user's name */}
+            </Typography>
+          </Box>
           <Grid>
             <Box display="flex">
-              <Tooltip >
+              <Tooltip>
                 <ListItemButton
                   id="demo-positioned-button"
                   aria-controls={
@@ -100,7 +100,11 @@ const HeaderProvider = () => {
                   aria-expanded={isMenuOpen ? "true" : undefined}
                   onClick={handleMenuToggle}
                 >
-                  <Person2Icon fontSize="large" />
+                  {user ? (
+                    <Avatar alt={user.userName} src={user.imageUrl} />
+                  ) : (
+                    <Person2Icon fontSize="large" />
+                  )}
                 </ListItemButton>
               </Tooltip>
 

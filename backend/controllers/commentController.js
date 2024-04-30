@@ -78,14 +78,13 @@ router.get("/totalNumRecords/:voteId", async function getCommentsBy(req, res) {
 router.get("/:userId/:voteId", async function getCommentsBy(req, res) {
   try {
     const { userId, voteId } = req.params;
-    const { page = 0, limit = 10 } = req.query;
+    const { page, limit } = req.query;
 
-    const comments = await commentService.getCommentsBy({
-      userId,
-      voteId,
+    const comments = await commentService.getCommentsBy(
+      { userId, voteId, commentId: null },
       page,
-      limit,
-    });
+      limit
+    );
 
     res.json(comments);
   } catch (error) {
