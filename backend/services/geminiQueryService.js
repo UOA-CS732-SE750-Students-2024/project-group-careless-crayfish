@@ -11,12 +11,19 @@ async function fetchRestaurantRecommendations(location) {
     "Content-Type": "application/json",
   };
 
+  ageGroup = ageGroup ? ageGroup : "random";
+  cuisine = cuisine ? cuisine : "random";
+  location = location ? location : "University Of Auckland";
+
+  const queryStr = `recommend me 7 ${cuisine} restaurants around ${location} for ${ageGroup} age group, return it in JSON format [(name, location, description, priceRange, websiteUrl, detailIntroduction, openHours)]`;
+  console.log(`gemini query str: ${queryStr}`);
+
   const body = {
     contents: [
       {
         parts: [
           {
-            text: `recommend me some restaurants around ${location}, return me in json format [(name, location, description, priceRange)]`,
+            text: queryStr,
           },
         ],
       },
@@ -36,6 +43,7 @@ async function fetchRestaurantRecommendations(location) {
   }
 
   const data = await response.json();
+  // console.log(JSON.stringify(data));
 
   if (
     !data.candidates ||
@@ -48,7 +56,8 @@ async function fetchRestaurantRecommendations(location) {
 
   const recommendations = data.candidates[0].content.parts[0].text
     .replace(/```/g, "")
-    .replace(/^json/g, "")
+    .replace(/^json/g, "") // seem like 'ig' flag is not working
+    .replace(/^JSON/g, "")
     .trim()
     .replace(/\n/g, "");
   return recommendations;
@@ -59,13 +68,11 @@ async function getAIComment({ userId, voteId, comment }) {
     `getting AI response for userId=${userId} voteId=${voteId} comment=${comment}`
   );
   // eslint-disable-next-line no-undef
-  // const apiUrl = process.env.API_URL;
+  const apiUrl = process.env.API_URL;
   // eslint-disable-next-line no-undef
-  // const apiKey = process.env.API_KEY || "";
+  const apiKey = process.env.API_KEY || "";
 
-  const apiUrl =
-    "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=";
-  const apiKey = "AIzaSyCa-FGEff49LSRM3ITCnJ6LyhRRWFE9d3s";
+
   const headers = {
     "Content-Type": "application/json",
   };
