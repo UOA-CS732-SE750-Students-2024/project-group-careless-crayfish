@@ -1,8 +1,6 @@
 const fetch = require("node-fetch");
 const logger = require("../utils/logger.js");
 
-const commentService = require("./commentService.js");
-
 async function fetchRestaurantRecommendations(location) {
   // eslint-disable-next-line no-undef
   const apiUrl = process.env.API_URL;
@@ -56,9 +54,9 @@ async function fetchRestaurantRecommendations(location) {
   return recommendations;
 }
 
-async function getAIComment({ userId, voteId, commentId }) {
+async function getAIComment({ userId, voteId, comment }) {
   logger.info(
-    `getting AI response for userId=${userId} voteId=${voteId} commentId=${commentId}`
+    `getting AI response for userId=${userId} voteId=${voteId} comment=${comment}`
   );
   // eslint-disable-next-line no-undef
   // const apiUrl = process.env.API_URL;
@@ -72,17 +70,12 @@ async function getAIComment({ userId, voteId, commentId }) {
     "Content-Type": "application/json",
   };
 
-  const comments = await commentService.getCommentsBy({
-    userId,
-    voteId,
-    commentId,
-  });
   const body = {
     contents: [
       {
         parts: [
           {
-            text: `Reply to this comment:"${comments[0].comment}`,
+            text: `Reply to this comment:"${comment}"`,
           },
         ],
       },
@@ -99,16 +92,10 @@ async function getAIComment({ userId, voteId, commentId }) {
 
   const data = await response.json();
   logger.info(
-    `got AI response for userId=${userId} voteId=${voteId} commentId=${commentId}`
+    `got AI response for userId=${userId} voteId=${voteId} comment=${comment}`
   );
 
-  const createdAIComment = await commentService.createComment({
-    userId,
-    voteId,
-    isAI: true,
-    comment: data.candidates[0].content.parts[0].text,
-  });
-  return createdAIComment;
+  return data.candidates[0].content.parts[0].text;
 }
 
 module.exports = {

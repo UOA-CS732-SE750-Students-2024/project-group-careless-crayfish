@@ -12,6 +12,10 @@ async function getCommentsById(commentId) {
   return await Comment.findOne({ commentId });
 }
 
+async function deleteComment(commentId) {
+  return await await Comment.findOneAndDelete({ commentId });
+}
+
 async function createComment(commentData) {
   return await Comment.create(commentData);
 }
@@ -24,4 +28,5 @@ module.exports = {
   createComment,
   getCommentsById,
   getTotalNumRecords,
+  deleteComment,
 };

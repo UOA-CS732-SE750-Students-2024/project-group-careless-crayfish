@@ -32,10 +32,10 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CommentIcon from "@mui/icons-material/Comment";
 
 const vr = {
-  userId: "string",
+  userId: "106433914132318818488",
   votes: [
     {
-      voteId: "string",
+      voteId: "bla",
       winner: {
         votingItemId: "uid",
         occurence: 2,
@@ -69,7 +69,7 @@ const vr = {
       complete_date: "ISO 8601", // 2024-04-23T07:55:26Z
     },
     {
-      voteId: "string1",
+      voteId: "blabla",
       winner: {
         votingItemId: "uid",
         occurence: 2,
