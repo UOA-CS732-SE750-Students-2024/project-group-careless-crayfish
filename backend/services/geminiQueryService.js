@@ -63,33 +63,26 @@ async function fetchRestaurantRecommendations(location, ageGroup, cuisine) {
   return recommendations;
 }
 
-async function getAIComment({ userId, voteId, commentId }) {
+async function getAIComment({ userId, voteId, comment }) {
   logger.info(
-    `getting AI response for userId=${userId} voteId=${voteId} commentId=${commentId}`
+    `getting AI response for userId=${userId} voteId=${voteId} comment=${comment}`
   );
   // eslint-disable-next-line no-undef
-  // const apiUrl = process.env.API_URL;
+  const apiUrl = process.env.API_URL;
   // eslint-disable-next-line no-undef
-  // const apiKey = process.env.API_KEY || "";
+  const apiKey = process.env.API_KEY || "";
 
-  const apiUrl =
-    "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=";
-  const apiKey = "AIzaSyCa-FGEff49LSRM3ITCnJ6LyhRRWFE9d3s";
+
   const headers = {
     "Content-Type": "application/json",
   };
 
-  const comments = await commentService.getCommentsBy({
-    userId,
-    voteId,
-    commentId,
-  });
   const body = {
     contents: [
       {
         parts: [
           {
-            text: `Reply to this comment:"${comments[0].comment}`,
+            text: `Reply to this comment:"${comment}"`,
           },
         ],
       },
@@ -106,16 +99,10 @@ async function getAIComment({ userId, voteId, commentId }) {
 
   const data = await response.json();
   logger.info(
-    `got AI response for userId=${userId} voteId=${voteId} commentId=${commentId}`
+    `got AI response for userId=${userId} voteId=${voteId} comment=${comment}`
   );
 
-  const createdAIComment = await commentService.createComment({
-    userId,
-    voteId,
-    isAI: true,
-    comment: data.candidates[0].content.parts[0].text,
-  });
-  return createdAIComment;
+  return data.candidates[0].content.parts[0].text;
 }
 
 module.exports = {

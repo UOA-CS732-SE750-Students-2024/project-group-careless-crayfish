@@ -5,6 +5,7 @@ const commentSchema = new mongoose.Schema({
   commentId: { type: String, required: true },
   voteId: { type: String, required: true },
   userId: { type: String, required: true },
+  userName: { type: String, required: true },
   isAI: { type: Boolean },
   comment: { type: String, required: true },
   creationDate: { type: Date, required: true },

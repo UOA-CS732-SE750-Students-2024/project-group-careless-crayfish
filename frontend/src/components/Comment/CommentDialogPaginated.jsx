@@ -13,11 +13,13 @@ import {
   FormControl,
   FormControlLabel,
   Grid,
+  IconButton,
   TextField,
   Typography,
 } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import React, { useEffect, useState } from "react";
-import { useAPI } from "../GlobalProviders";
+import { useAPI, useAuth } from "../GlobalProviders";
 import { v4 } from "uuid";
 import _ from "lodash";
 import SmartToyIcon from "@mui/icons-material/SmartToy";
@@ -37,7 +39,8 @@ export const CommentDialogPaginated = ({
   const [isLoadingComments, setIsLoadingComments] = useState(false);
   const [isGeneratingAIResponse, setIsGeneratingAIResponse] = useState(false);
   const limit = 5;
-  const { get, post } = useAPI();
+  const { get, post, del } = useAPI();
+  const { user } = useAuth();
 
   const fetchLatestComments = async () => {
     try {
@@ -49,12 +52,16 @@ export const CommentDialogPaginated = ({
         `${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/comments/totalNumRecords/${voteId}`,
       );
 
-      const lastPageIndex = Number.isInteger(totalNumRecordsResp.data / limit)
+      let lastPageIndex = Number.isInteger(totalNumRecordsResp.data / limit)
         ? totalNumRecordsResp.data / limit - 1
         : Math.floor(totalNumRecordsResp.data / limit);
+      if (lastPageIndex == -1) {
+        lastPageIndex = 0;
+      }
       const response = await get(
         `${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/comments/${userId}/${voteId}?page=${lastPageIndex}&limit=${limit}`,
       );
+      console.log(response.data);
       setPage(lastPageIndex);
       setHasMore(true);
       setComments(response.data);
@@ -64,7 +71,6 @@ export const CommentDialogPaginated = ({
     }
   };
 
-  
   const fetchPreviousPageComments = async (page) => {
     try {
       if (!voteId || !openComments || !userId) {
@@ -127,39 +133,35 @@ export const CommentDialogPaginated = ({
         { userId, voteId, isAI: false, comment: input },
       );
 
-      if (response && response.data) {
-        createdComment = response.data;
+      console.log(response);
+      const comment = response.data.comment;
 
-        await fetchLatestComments();
+      if (isAICheckbox) {
+        setIsGeneratingAIResponse(true);
+        setIsSubmittingComment(true);
+        const aiResp = await post(
+          `${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/comments`,
+          { userId, voteId, comment: comment, isAI: true },
+        );
+
+        if (aiResp && aiResp.data) {
+          await fetchLatestComments();
+        }
       }
-
-      setIsSubmittingComment(false);
-    } catch (err) {
-      setIsSubmittingComment(false);
-    }
-    if (isAICheckbox) {
-      processAIResponse(createdComment);
-    }
-  };
-
-  const processAIResponse = async (createdComment) => {
-    try {
-      setIsGeneratingAIResponse(true);
-      setIsSubmittingComment(true);
-      const response = await post(
-        `${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/comments/ai`,
-        { userId, voteId, commentId: createdComment.commentId },
-      );
-
       if (response && response.data) {
         await fetchLatestComments();
       }
-
-      setIsSubmittingComment(false);
-    } catch (err) {
+    } finally {
       setIsGeneratingAIResponse(false);
       setIsSubmittingComment(false);
     }
+  };
+
+  const handleDelete = async (commentId) => {
+    const response = await del(
+      `${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/comments/${commentId}`,
+    );
+    await fetchLatestComments();
   };
   return (
     <Dialog open={openComments} onClose={handleClose} fullScreen>
@@ -175,21 +177,34 @@ export const CommentDialogPaginated = ({
           )}
         </Box>
         {comments.map((comment) => (
-          <Card key={comment.commentId + v4()} sx={{ marginBottom: 2 }}>
+          <Card
+            key={comment.commentId + v4()}
+            sx={{ marginBottom: 2, position: "relative" }}
+          >
             <CardHeader
               avatar={
                 comment.isAI ? (
                   <SmartToyIcon />
                 ) : (
-                  <Avatar src={comment.avatarUrl} />
+                  <Avatar alt={user.userName} src={comment.userAvatarUrl} />
                 )
               }
-              title={comment.userId}
+              title={comment.userName}
               subheader={comment.lastModifiedDate}
             />
             <CardContent>
               <p>{comment.comment}</p>
             </CardContent>
+            <IconButton
+              style={{
+                position: "absolute",
+                bottom: 8,
+                right: 8,
+              }}
+              onClick={() => handleDelete(comment.commentId)}
+            >
+              <CloseIcon />
+            </IconButton>
           </Card>
         ))}
 
