@@ -15,11 +15,17 @@ const AuthProvider = ({ children }) => {
 
   const [accessToken, setAccessToken] = useState(null);
 
+  const [isLoadingExistingUser, setIsLoadingExistingUser] = useState(false);
+
   const login = async () => {
     setIsAuthenticated(true);
+    setItem("isAuthenticated", true);
   };
   const logout = async () => {
     setIsAuthenticated(false);
+    setAccessToken(null);
+    setItem("accessToken", "");
+    setItem("isAuthenticated", false);
   };
 
   const getUserById = async (userId) => {
@@ -60,7 +66,12 @@ const AuthProvider = ({ children }) => {
     }
   };
   useEffect(() => {
-    !user && !accessToken && refreshUserSession();
+    const isAuthenticated = getItem("isAuthenticated") == "true";
+    if (!user && !accessToken && isAuthenticated) {
+      refreshUserSession();
+    } else {
+      setItem("isAuthenticated", false);
+    }
   }, [getItem]);
 
   const processLogin = async (personInfo) => {
@@ -94,6 +105,7 @@ const AuthProvider = ({ children }) => {
       },
     );
     const googleUser = googleUserResp.data;
+    console.log(googleUser);
     const personInfo = {
       email: googleUser.email,
       name: googleUser.name,
