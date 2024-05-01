@@ -1,8 +1,6 @@
 const fetch = require("node-fetch");
 const logger = require("../utils/logger.js");
 
-const commentService = require("./commentService.js");
-
 async function fetchRestaurantRecommendations(location, ageGroup, cuisine) {
   // eslint-disable-next-line no-undef
   const apiUrl = process.env.API_URL;
