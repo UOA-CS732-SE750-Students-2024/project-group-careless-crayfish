@@ -12,9 +12,7 @@ async function fetchRestaurantRecommendations({location, ageGroup, cuisine}) {
   const headers = {
     "Content-Type": "application/json",
   };
-
-  ageGroup = ageGroup ? ageGroup : "random";
-  cuisine = cuisine ? cuisine : "random";
+  
   location = location ? location : "University Of Auckland";
 
   const queryStr = `recommend me 7 ${cuisine} restaurants around ${location} for ${ageGroup} age group, return it in JSON format [(name, location, description, priceRange, websiteUrl, detailIntroduction, openHours)]`;
