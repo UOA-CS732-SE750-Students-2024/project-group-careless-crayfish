@@ -1,7 +1,7 @@
 const fetch = require("node-fetch");
 const logger = require("../utils/logger.js");
 
-async function fetchRestaurantRecommendations(location) {
+async function fetchRestaurantRecommendations(location, ageGroup, cuisine) {
   // eslint-disable-next-line no-undef
   const apiUrl = process.env.API_URL;
   // eslint-disable-next-line no-undef
@@ -10,9 +10,7 @@ async function fetchRestaurantRecommendations(location) {
   const headers = {
     "Content-Type": "application/json",
   };
-
-  ageGroup = ageGroup ? ageGroup : "random";
-  cuisine = cuisine ? cuisine : "random";
+  
   location = location ? location : "University Of Auckland";
 
   const queryStr = `recommend me 7 ${cuisine} restaurants around ${location} for ${ageGroup} age group, return it in JSON format [(name, location, description, priceRange, websiteUrl, detailIntroduction, openHours)]`;
