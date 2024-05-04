@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const logger = require("../utils/logger.js");
 const commentService = require("../services/commentService.js");
-const geminiQueryService = require("../services/geminiQueryService");
 
 /**
  * @swagger
@@ -78,14 +77,13 @@ router.get("/totalNumRecords/:voteId", async function getCommentsBy(req, res) {
 router.get("/:userId/:voteId", async function getCommentsBy(req, res) {
   try {
     const { userId, voteId } = req.params;
-    const { page = 0, limit = 10 } = req.query;
+    const { page, limit } = req.query;
 
-    const comments = await commentService.getCommentsBy({
-      userId,
-      voteId,
+    const comments = await commentService.getCommentsBy(
+      { userId, voteId, commentId: null },
       page,
-      limit,
-    });
+      limit
+    );
 
     res.json(comments);
   } catch (error) {
@@ -131,59 +129,61 @@ router.get("/:userId/:voteId", async function getCommentsBy(req, res) {
  *         description: Internal server error
  */
 router.post("/", async function createComment(req, res) {
+  const { userId, voteId, comment, isAI } = req.body;
   try {
-    const comment = await commentService.createComment(req.body);
-    res.status(201).json(comment);
+    const createdComment = await commentService.createComment({
+      userId,
+      voteId,
+      comment,
+      isAI,
+    });
+    res.status(201).json(createdComment);
   } catch (error) {
-    logger.error(JSON.stringify(error));
+    console.log(error);
+    logger.error(error);
     res.status(500).json(error);
   }
 });
 
 /**
  * @swagger
- * /api/comments/ai:
- *   post:
+ * /api/comments/{commentId}:
+ *   delete:
  *     tags:
  *     - Comment Controller
- *     summary: Save an AI comment to a user comment on one of the voting results.
+ *     summary: Delete a comment by ID
  *     parameters:
- *       - in: body
- *         name: body
+ *       - in: path
+ *         name: commentId
+ *         required: true
+ *         description: ID of the comment to delete
  *         schema:
- *           type: object
- *           properties:
- *             userId:
- *                 type: string
- *             voteId:
- *                 type: boolean
- *             commentId:
- *                 type: string
+ *           type: string
  *     responses:
- *       '201':
- *         description: Comment created successfully
+ *       '204':
+ *         description: Comment deleted successfully
  *       '401':
  *         description: Unauthenticated
  *       '403':
  *         description: Unauthorized
+ *       '404':
+ *         description: Comment not found
  *       '500':
  *         description: Internal server error
  */
-router.post("/ai", async (req, res) => {
+router.delete("/:commentId", async function deleteComment(req, res) {
+  const { commentId } = req.params;
   try {
-    const { userId, voteId, commentId } = req.body;
-
-    const createdAIComment = await geminiQueryService.getAIComment({
-      userId,
-      voteId,
-      commentId,
-    });
-    res.json(createdAIComment);
+    const deletedComment = await commentService.deleteComment(commentId);
+    if (!deletedComment) {
+      return res.status(404).json({ message: "Comment not found" });
+    }
+    res.status(204).send();
   } catch (error) {
-    logger.info(error);
-    console.log(error);
-    logger.error(JSON.stringify(error));
-    res.status(500).json({ error: error.message });
+    console.error(error);
+    logger.error(error);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
+
 module.exports = router;

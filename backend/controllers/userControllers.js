@@ -16,9 +16,13 @@ const userService = require("../services/userService.js");
  *         schema:
  *           type: object
  *           properties:
+ *             userId:
+ *                 type: string
  *             userName:
  *                 type: string
  *             email:
+ *                 type: string
+ *             imageUrl:
  *                 type: string
  *     responses:
  *       '200':
@@ -28,9 +32,9 @@ const userService = require("../services/userService.js");
  */
 router.post("/", async function createUser(req, res) {
   try {
-    const { userName, email } = req.body;
+    const { userName, email, userId, imageUrl } = req.body;
 
-    const user = await userService.createUser({ userName, email });
+    const user = await userService.createUser({ userName, email, userId, imageUrl });
     res.status(201).json(user);
   } catch (error) {
     res.status(500).json(error);
@@ -63,9 +67,7 @@ router.get("/:userId", async function getUserById(req, res) {
   try {
     const userId = req.params.userId;
     const user = await userService.getUserById(userId);
-    if (!user) {
-      return res.status(404).json({ message: "user not found" });
-    }
+    
     return res.json(user);
   } catch (error) {
     return res.status(500).json(error);

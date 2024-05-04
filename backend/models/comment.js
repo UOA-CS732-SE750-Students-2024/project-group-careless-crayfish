@@ -5,6 +5,7 @@ const commentSchema = new mongoose.Schema({
   commentId: { type: String, required: true },
   voteId: { type: String, required: true },
   userId: { type: String, required: true },
+  userName: { type: String, required: true },
   isAI: { type: Boolean },
   comment: { type: String, required: true },
   creationDate: { type: Date, required: true },
@@ -13,6 +14,6 @@ const commentSchema = new mongoose.Schema({
   default: [],
 });
 
-commentSchema.index({ creationDate: -1 }); // 1 means descending order
+commentSchema.index({ creationDate: -1 }); // create an index for getting comments backwards by creation date.
 
 module.exports = mongoose.model("Comment", commentSchema);

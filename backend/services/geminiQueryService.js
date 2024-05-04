@@ -1,9 +1,7 @@
 const fetch = require("node-fetch");
 const logger = require("../utils/logger.js");
 
-const commentService = require("./commentService.js");
-
-async function fetchRestaurantRecommendations(location) {
+async function fetchRestaurantRecommendations(location, ageGroup, cuisine) {
   // eslint-disable-next-line no-undef
   const apiUrl = process.env.API_URL;
   // eslint-disable-next-line no-undef
@@ -12,13 +10,18 @@ async function fetchRestaurantRecommendations(location) {
   const headers = {
     "Content-Type": "application/json",
   };
+  
+  location = location ? location : "University Of Auckland";
+
+  const queryStr = `recommend me 5 ${cuisine} restaurants around ${location} for ${ageGroup} age group, return it in JSON format [(name, location, priceRange, websiteUrl, detailIntroduction, openHours)]`;
+  console.log(`gemini query str: ${queryStr}`);
 
   const body = {
     contents: [
       {
         parts: [
           {
-            text: `recommend me some restaurants around ${location}, return me in json format [(name, location, description, priceRange)]`,
+            text: queryStr,
           },
         ],
       },
@@ -38,6 +41,7 @@ async function fetchRestaurantRecommendations(location) {
   }
 
   const data = await response.json();
+  // console.log(JSON.stringify(data));
 
   if (
     !data.candidates ||
@@ -50,39 +54,32 @@ async function fetchRestaurantRecommendations(location) {
 
   const recommendations = data.candidates[0].content.parts[0].text
     .replace(/```/g, "")
-    .replace(/^json/g, "")
+    .replace(/\n/g, "")
     .trim()
-    .replace(/\n/g, "");
+    .replace(/^json/gi, "");
   return recommendations;
 }
 
-async function getAIComment({ userId, voteId, commentId }) {
+async function getAIComment({ userId, voteId, comment }) {
   logger.info(
-    `getting AI response for userId=${userId} voteId=${voteId} commentId=${commentId}`
+    `getting AI response for userId=${userId} voteId=${voteId} comment=${comment}`
   );
   // eslint-disable-next-line no-undef
-  // const apiUrl = process.env.API_URL;
+  const apiUrl = process.env.API_URL;
   // eslint-disable-next-line no-undef
-  // const apiKey = process.env.API_KEY || "";
+  const apiKey = process.env.API_KEY || "";
 
-  const apiUrl =
-    "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=";
-  const apiKey = "AIzaSyCa-FGEff49LSRM3ITCnJ6LyhRRWFE9d3s";
+
   const headers = {
     "Content-Type": "application/json",
   };
 
-  const comments = await commentService.getCommentsBy({
-    userId,
-    voteId,
-    commentId,
-  });
   const body = {
     contents: [
       {
         parts: [
           {
-            text: `Reply to this comment:"${comments[0].comment}`,
+            text: `Reply to this comment:"${comment}"`,
           },
         ],
       },
@@ -99,16 +96,10 @@ async function getAIComment({ userId, voteId, commentId }) {
 
   const data = await response.json();
   logger.info(
-    `got AI response for userId=${userId} voteId=${voteId} commentId=${commentId}`
+    `got AI response for userId=${userId} voteId=${voteId} comment=${comment}`
   );
 
-  const createdAIComment = await commentService.createComment({
-    userId,
-    voteId,
-    isAI: true,
-    comment: data.candidates[0].content.parts[0].text,
-  });
-  return createdAIComment;
+  return data.candidates[0].content.parts[0].text;
 }
 
 module.exports = {

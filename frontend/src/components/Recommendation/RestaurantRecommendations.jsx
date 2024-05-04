@@ -9,9 +9,11 @@ import Button from "@mui/material/Button";
 import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 import Box from "@mui/material/Box";
+import LinearProgress from "@mui/material/LinearProgress";
 
 import RestaurantElement from "./RestaurantElement";
-import { useAPI } from "../GlobalProviders";
+import { useAPI, useRoute } from "../GlobalProviders";
+
 
 export const RestaurantRecommendations = () => {
   const { location } = useParams(); // Extract the location parameter from the current route
@@ -21,6 +23,11 @@ export const RestaurantRecommendations = () => {
 
   // selectedIndex is the index of the selected restaurant to display details
   const [selectedIndex, setSelectedIndex] = React.useState(0);
+
+  // is the component loading
+  const [isLoading, setIsLoading] = useState(true);
+
+  const { pageTitle, setPageTitle } = useRoute();
 
   /**
    * Handles the click event of a restaurant.
@@ -83,6 +90,8 @@ export const RestaurantRecommendations = () => {
   }
 
   useEffect(() => {
+    setPageTitle("Our Recommendations");
+    setIsLoading(true);
     // Fetch recommendations from the API
     const fetchRecommendations = async () => {
       try {
@@ -93,11 +102,34 @@ export const RestaurantRecommendations = () => {
         setRecommendations(response.data); // Assuming the API returns an array of recommendations
       } catch (error) {
         console.error("Error fetching recommendations:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchRecommendations();
   }, []);
+
+  if (isLoading) {
+    return (
+      <Box 
+        mt={10} 
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Container maxWidth="md">
+          <Typography variant="h4" component="h1" gutterBottom>
+            Restaurant Recommendations for {capitalizeEveryWord(location)}
+          </Typography>
+          <br/>
+          <br/>
+          <h4>Loading restaurant details ...</h4>
+          <LinearProgress />
+          </Container>
+      </Box>
+    );
+  }
 
   return (
     <Box mt={10}>

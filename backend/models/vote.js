@@ -14,6 +14,7 @@ const voteSchema = new mongoose.Schema({
   expires: { type: String },
   status: { type: Boolean },
 });
+voteSchema.index({ endDate: -1 }); // create an index for getting votes backwards by end date.
 
 const Vote = mongoose.model("Vote", voteSchema, "votes");
 module.exports = Vote;

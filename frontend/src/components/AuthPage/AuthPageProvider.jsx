@@ -11,81 +11,21 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { Navigate } from "react-router-dom";
 import { useAPI, useAuth, useLocalStorage } from "../GlobalProviders";
-import { GoogleLoginButton } from "react-social-login-buttons";
-import { GoogleAuth } from "@codetrix-studio/capacitor-google-auth";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { IconButton } from "@mui/material";
 import GitHubIcon from "@mui/icons-material/GitHub";
-GoogleAuth.initialize({
-  clientId:
-    "1083292527788-2ehr1pss5tjac6156qk7likrbu4eps58.apps.googleusercontent.com",
-  scopes: ["profile", "email"],
-  grantOfflineAccess: true,
-});
+import {
+  GoogleLogin,
+  GoogleOAuthProvider,
+  useGoogleLogin,
+} from "@react-oauth/google";
+
 const AuthPageContext = createContext({});
 
 export const useAuthPage = () => useContext(AuthPageContext);
 
 const AuthPageProvider = () => {
-  const { get, post } = useAPI();
-  const { isAuthenticated, login, getUserById } = useAuth();
-  const { setItem } = useLocalStorage();
-  const [formData, setFormData] = useState({
-    userName: "",
-    email: "",
-    password: "",
-  });
-
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
-  };
-
-  const handleGoogleLogin = async () => {
-    const response = await GoogleAuth.signIn();
-    if (!response) {
-      return;
-    }
-    await handleLogin("google", response);
-  };
-
-  const handleUserEmail = (email) => {
-    return email.includes("privaterelay.appleid.com") ? "" : email;
-  };
-  const handleLogin = async (loginType, response) => {
-    console.log(response);
-    const personInfo = {
-      email: response.email,
-      givenName: response.givenName,
-      familyName: response.familyName,
-      name: response.name,
-      imageUrl: response.imageUrl,
-      token: response.authentication.accessToken,
-    };
-    setItem("lt", loginType);
-    setItem("ue", handleUserEmail(personInfo.email));
-    setItem("gn", personInfo.givenName);
-    setItem("token", personInfo.token);
-    login();
-  };
-
-  const [isToggled, setToggled] = useState(false);
-  const [isActive, setActive] = useState(false);
-
-  const preventDefault = (e) => {
-    e.preventDefault();
-  };
-
-  const changeForm = () => {
-    setActive(true);
-    setToggled(!isToggled);
-    setTimeout(() => {
-      setActive(false);
-    }, 1500);
-  };
+  const { googleLogin } = useAuth();
 
   return (
     <AuthPageContext.Provider value={{}}>
@@ -122,7 +62,7 @@ const AuthPageProvider = () => {
               fontSize="large"
               size="large"
               variant="contained"
-              onClick={handleGoogleLogin}
+              onClick={googleLogin}
               startIcon={<GitHubIcon fontSize="large" />}
             >
               Google SSO Sign In

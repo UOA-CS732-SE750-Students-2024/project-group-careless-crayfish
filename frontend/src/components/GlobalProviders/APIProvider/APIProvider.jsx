@@ -5,6 +5,10 @@ const APIContext = createContext({});
 
 export const useAPI = () => useContext(APIContext);
 
+/**
+ * The APIProvider handles errors from apis. Displays error message on a snackbar.
+ * @returns
+ */
 const APIProvider = ({ children }) => {
   const [error, setError] = useState(null);
 
