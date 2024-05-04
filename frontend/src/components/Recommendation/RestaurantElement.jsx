@@ -12,7 +12,7 @@ const RestaurantElement = ({ restaurant }) => {
     setExpanded(!expanded);
   };
 
-  const randomImageNumber = useMemo(() => Math.floor(Math.random() * 70) + 1, [restaurant.name]);
+  const randomImageNumber = useMemo(() => Math.floor(Math.random() * 30) + 1, [restaurant.name]);
   restaurant.imageUrl = `/restaurants/${randomImageNumber}.jpg`;
   restaurant.mapUrl = `https://www.google.com/maps/search/?api=1&query=${restaurant.location}`;
 
@@ -48,7 +48,7 @@ const RestaurantElement = ({ restaurant }) => {
           />
           <CardMedia
             component="img"
-            height="140"
+            height="300"
             image={restaurant.imageUrl}
             alt={restaurant.name}
           />
