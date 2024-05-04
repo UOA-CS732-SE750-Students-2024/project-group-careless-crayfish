@@ -13,7 +13,7 @@ const RestaurantElement = ({ restaurant }) => {
   };
 
   const randomImageNumber = useMemo(() => Math.floor(Math.random() * 20) + 1, [restaurant.name]);
-  restaurant.imageUrl = `/public/restaurants/${randomImageNumber}.jpeg`;
+  restaurant.imageUrl = `/restaurants/${randomImageNumber}.jpeg`;
   restaurant.mapUrl = `https://www.google.com/maps/search/?api=1&query=${restaurant.location}`;
 
   return (

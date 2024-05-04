@@ -33,7 +33,7 @@ export const Landing = () => {
           <CardActionArea>
             <CardMedia
               sx={{ height: 180 }}
-              image="/public/landing/restaurant.png"
+              image="/landing/restaurant.png"
               title="Restaurant to go"
             />
             <CardContent>
@@ -51,7 +51,7 @@ export const Landing = () => {
           <CardActionArea>
             <CardMedia
               sx={{ height: 180 }}
-              image="/public/landing/club.png"
+              image="/landing/club.png"
               title="Club to go"
             />
             <CardContent>
@@ -69,7 +69,7 @@ export const Landing = () => {
           <CardActionArea>
             <CardMedia
               sx={{ height: 180 }}
-              image="/public/landing/museum.png"
+              image="/landing/museum.png"
               title="art"
             />
             <CardContent>
@@ -87,7 +87,7 @@ export const Landing = () => {
           <CardActionArea>
             <CardMedia
               sx={{ height: 180 }}
-              image="/public/landing/outdoor.png"
+              image="/landing/outdoor.png"
               title="outdoor"
             />
             <CardContent>
@@ -105,7 +105,7 @@ export const Landing = () => {
           <CardActionArea>
             <CardMedia
               sx={{ height: 180 }}
-              image="/public/landing/theater.png"
+              image="/landing/theater.png"
               title="theater"
             />
             <CardContent>
@@ -123,7 +123,7 @@ export const Landing = () => {
           <CardActionArea>
             <CardMedia
               sx={{ height: 180 }}
-              image="/public/landing/sports.png"
+              image="/landing/sports.png"
               title="art"
             />
             <CardContent>
