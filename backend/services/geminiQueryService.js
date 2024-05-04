@@ -13,7 +13,7 @@ async function fetchRestaurantRecommendations(location, ageGroup, cuisine) {
   
   location = location ? location : "University Of Auckland";
 
-  const queryStr = `recommend me 7 ${cuisine} restaurants around ${location} for ${ageGroup} age group, return it in JSON format [(name, location, description, priceRange, websiteUrl, detailIntroduction, openHours)]`;
+  const queryStr = `recommend me 5 ${cuisine} restaurants around ${location} for ${ageGroup} age group, return it in JSON format [(name, location, priceRange, websiteUrl, detailIntroduction, openHours)]`;
   console.log(`gemini query str: ${queryStr}`);
 
   const body = {
@@ -54,10 +54,9 @@ async function fetchRestaurantRecommendations(location, ageGroup, cuisine) {
 
   const recommendations = data.candidates[0].content.parts[0].text
     .replace(/```/g, "")
-    .replace(/^json/g, "") // seem like 'ig' flag is not working
-    .replace(/^JSON/g, "")
+    .replace(/\n/g, "")
     .trim()
-    .replace(/\n/g, "");
+    .replace(/^json/gi, "");
   return recommendations;
 }
 
