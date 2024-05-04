@@ -283,8 +283,8 @@ export const Voting = () => {
         <p>
           Share this link:{" "}
           <a
-            href={`${window.location.origin}/voting/voteId=${voteId}`}
-          >{`${window.location.origin}/voting/?voteId=${voteId}`}</a>
+            href={`${window.location.origin}/voting?voteId=${voteId}`}
+          >{`${window.location.origin}/voting?voteId=${voteId}`}</a>
         </p>
       )}
     </div>
