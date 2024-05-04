@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-
-import axios from "axios";
+import { useTheme } from '@mui/material/styles';
+import { useAPI, useRoute } from "../GlobalProviders";
 
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
@@ -12,7 +12,7 @@ import Box from "@mui/material/Box";
 import LinearProgress from "@mui/material/LinearProgress";
 
 import RestaurantElement from "./RestaurantElement";
-import { useAPI, useRoute } from "../GlobalProviders";
+
 
 
 export const RestaurantRecommendations = () => {
@@ -27,7 +27,11 @@ export const RestaurantRecommendations = () => {
   // is the component loading
   const [isLoading, setIsLoading] = useState(true);
 
+  // set page title
   const { pageTitle, setPageTitle } = useRoute();
+
+  // use theme
+  const theme = useTheme();
 
   /**
    * Handles the click event of a restaurant.
@@ -109,10 +113,14 @@ export const RestaurantRecommendations = () => {
   if (isLoading) {
     return (
       <Box 
-        mt={10} 
+        pt={10} 
+        pb={10}
         display="flex"
         alignItems="center"
         justifyContent="center"
+        sx = {{
+          background: theme.palette.mode === 'light' ? "linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.99)), url('/landing/restaurant.png')" : theme.palette.background.default,
+        }}
       >
         <Container maxWidth="md">
           <Typography variant="h4" component="h1" gutterBottom>
@@ -128,7 +136,12 @@ export const RestaurantRecommendations = () => {
   }
 
   return (
-    <Box mt={10}>
+    <Box 
+      pt={10}
+      pb={10}
+      sx = {{
+        background: theme.palette.mode === 'light' ? "linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.99)), url('/landing/restaurant.png')" : theme.palette.background.default,
+    }}>
       <Container maxWidth="md">
         <Typography variant="h4" component="h1" gutterBottom>
           Restaurant Recommendations for {capitalizeEveryWord(location)}

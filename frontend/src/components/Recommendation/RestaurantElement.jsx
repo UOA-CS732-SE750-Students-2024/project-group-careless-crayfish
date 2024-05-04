@@ -12,8 +12,8 @@ const RestaurantElement = ({ restaurant }) => {
     setExpanded(!expanded);
   };
 
-  const randomImageNumber = useMemo(() => Math.floor(Math.random() * 20) + 1, [restaurant.name]);
-  restaurant.imageUrl = `/restaurants/${randomImageNumber}.jpeg`;
+  const randomImageNumber = useMemo(() => Math.floor(Math.random() * 70) + 1, [restaurant.name]);
+  restaurant.imageUrl = `/restaurants/${randomImageNumber}.jpg`;
   restaurant.mapUrl = `https://www.google.com/maps/search/?api=1&query=${restaurant.location}`;
 
   return (
