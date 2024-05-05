@@ -21,7 +21,7 @@ const RestaurantElement = ({ restaurant }) => {
     <>
       {/* 1. Restaurant element */}
       <ListItem
-        sx = {{padding: 0}}
+        sx = {{paddingLeft: 0, paddingRight: 0}}
         key={restaurant.index}
         className="restaurant-element"
       >
