@@ -49,7 +49,7 @@ export const Voting = () => {
     }
 
     if (voteId) {
-      fetch(`http://localhost:3000/api/votes/getDetail?voteId=${voteId}`, {
+      fetch(`${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/votes/getDetail?voteId=${voteId}`, {
         method: "get",
         headers: {
           "Content-Type": "application/json",
@@ -91,7 +91,7 @@ export const Voting = () => {
       voteId,
       recommend: selectedRestaurants,
     };
-    fetch("http://localhost:3000/api/votes/update", {
+    fetch(`${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/votes/update`, {
       method: "put",
       body: JSON.stringify(sendData),
       headers: {
@@ -116,7 +116,7 @@ export const Voting = () => {
       voteId,
       status: true,
     };
-    fetch("http://localhost:3000/api/votes/update", {
+    fetch(`${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/votes/update`, {
       method: "put",
       body: JSON.stringify(sendData),
       headers: {
@@ -143,7 +143,7 @@ export const Voting = () => {
       recommend: selectedRestaurants,
       title,
     };
-    fetch("http://localhost:3000/api/votes/create", {
+    fetch(`${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/votes/create`, {
       method: "post",
       body: JSON.stringify(sendData),
       headers: {
