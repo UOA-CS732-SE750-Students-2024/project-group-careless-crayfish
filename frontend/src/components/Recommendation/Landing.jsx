@@ -8,10 +8,19 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
+import { useMediaQuery } from '@mui/material';
 
 
 export const Landing = () => {
   const navigate = useNavigate();
+
+  // mobile view check
+  const isMobile = useMediaQuery('(max-width:600px)');
+  let cardLayout = { maxWidth: 500, margin: '4px' };
+  if (isMobile) {
+    cardLayout = { width: 500, margin: '4px' };
+  }
+  console.log(isMobile, cardLayout);
 
   const handleRestaurantClick = () => {
     navigate("/authenticated/recommend/restaurant-options");
@@ -29,7 +38,7 @@ export const Landing = () => {
         </Typography>
         <br/><br/>
         <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-          <Card mt={4} sx={{ maxWidth: 500, margin: '4px' }} onClick = {handleRestaurantClick}>
+          <Card mt={4} sx={ cardLayout } onClick = {handleRestaurantClick}>
           <CardActionArea>
             <CardMedia
               sx={{ height: 180 }}
@@ -47,7 +56,7 @@ export const Landing = () => {
           </CardActionArea>
           </Card>
 
-          <Card mt={4} sx={{ maxWidth: 500, margin: '4px' }}>
+          <Card mt={4} sx={ cardLayout }>
           <CardActionArea>
             <CardMedia
               sx={{ height: 180 }}
@@ -65,7 +74,7 @@ export const Landing = () => {
           </CardActionArea>
           </Card>
 
-          <Card mt={4} sx={{ maxWidth: 500, margin: '4px' }} >
+          <Card mt={4} sx={ cardLayout } >
           <CardActionArea>
             <CardMedia
               sx={{ height: 180 }}
@@ -83,7 +92,7 @@ export const Landing = () => {
           </CardActionArea>
           </Card>
 
-          <Card mt={4} sx={{ maxWidth: 500, margin: '4px' }} >
+          <Card mt={4} sx={ cardLayout } >
           <CardActionArea>
             <CardMedia
               sx={{ height: 180 }}
@@ -101,7 +110,7 @@ export const Landing = () => {
           </CardActionArea>
           </Card>
 
-          <Card mt={4} sx={{ maxWidth: 500, margin: '4px' }} >
+          <Card mt={4} sx={ cardLayout } >
           <CardActionArea>
             <CardMedia
               sx={{ height: 180 }}
@@ -119,7 +128,7 @@ export const Landing = () => {
           </CardActionArea>
           </Card>
           
-          <Card mt={4} sx={{ maxWidth: 500, margin: '4px' }} >
+          <Card mt={4} sx={ cardLayout } >
           <CardActionArea>
             <CardMedia
               sx={{ height: 180 }}
