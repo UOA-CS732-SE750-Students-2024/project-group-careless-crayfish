@@ -32,9 +32,9 @@ export const RestaurantOptions = () => {
   return (
     <Box
         sx={{
+          p: 3,
           pt: 10,
           pb: 10,
-          p: 3,
           display: 'flex',
           gap: '20px',
           alignItems: 'center',
@@ -44,7 +44,7 @@ export const RestaurantOptions = () => {
       <Container maxWidth="md" sx={{opacity: '1'}}>
         <Typography variant="h4" sx={{ marginBottom: 2 }}>Choose Your Dining Options</Typography>
         <form onSubmit={handleSubmit}>
-          <FormControl variant="outlined" fullWidth margin="normal" sx={{ width: '60%' }}>
+          <FormControl variant="outlined" fullWidth margin="normal">
             <InputLabel id="age-group-label">Age Group</InputLabel>
             <Select
                 label="Age Group"
@@ -63,7 +63,7 @@ export const RestaurantOptions = () => {
               <MenuItem value="random">Random</MenuItem>
             </Select>
           </FormControl>
-          <FormControl fullWidth margin="normal" sx={{ width: '60%' }}>
+          <FormControl fullWidth margin="normal">
             <InputLabel id="cuisine-label">Cuisine</InputLabel>
             <Select
                 label="Cuisine"
@@ -87,7 +87,7 @@ export const RestaurantOptions = () => {
               label="Where do you want to eat?"
               value={location}
               onChange={(event) => setLocation(event.target.value)}
-              sx={{ width: '60%', marginTop: 2 }}
+              sx={{ marginTop: 2 }}
           />
 
           <Button type="submit" variant="contained" color="primary" sx={{ display: 'block', width: 'auto', marginTop: 2 }}>
