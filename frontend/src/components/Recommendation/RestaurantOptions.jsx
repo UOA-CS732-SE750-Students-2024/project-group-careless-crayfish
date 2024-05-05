@@ -55,7 +55,6 @@ export const RestaurantOptions = () => {
                 onChange={(event) => setAgeGroup(event.target.value)}
             >
               {/* eslint-disable-next-line react/jsx-no-comment-textnodes */}
-              <MenuItem value="">None</MenuItem>  // Added None option
               <MenuItem value="child">Child</MenuItem>
               <MenuItem value="teen">Teen</MenuItem>
               <MenuItem value="adult">Adult</MenuItem>
@@ -74,7 +73,6 @@ export const RestaurantOptions = () => {
                 onChange={(event) => setCuisine(event.target.value)}
             >
               {/* eslint-disable-next-line react/jsx-no-comment-textnodes */}
-              <MenuItem value="">None</MenuItem>  // Added None option
               <MenuItem value="asian">Asian</MenuItem>
               <MenuItem value="european">European</MenuItem>
               <MenuItem value="american">American</MenuItem>
