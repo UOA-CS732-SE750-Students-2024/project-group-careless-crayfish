@@ -2,37 +2,46 @@ const express = require("express");
 const router = express.Router();
 const voteService = require("../services/voteService.js");
 const Response = require("../utils/response.js");
+const logger = require("../utils/logger.js");
 /**
  * @swagger
- * /api/votes:
+ * /api/votes/create:
  *   post:
  *     tags:
- *     - Vote Controller
- *     consumes: application/json
+ *       - Vote Controller
+ *     consumes:
+ *       - application/json
  *     summary: Create a new vote
+ *     description: Allows users to create a new voting session with a title and multiple options.
  *     parameters:
  *       - in: body
  *         name: body
+ *         description: The title and options for the new vote.
+ *         required: true
  *         schema:
  *           type: object
  *           properties:
  *             title:
  *               type: string
+ *               description: Title of the vote.
  *             options:
  *               type: array
+ *               description: Different options that can be voted on.
  *               items:
  *                 type: object
  *                 properties:
  *                   option:
  *                     type: string
+ *                     description: Description of the option.
  *                   count:
  *                     type: integer
  *                     default: 0
+ *                     description: Initial vote count for the option.
  *     responses:
- *       '201':
- *         description: Vote created successfully
- *       '500':
- *         description: Internal server error
+ *       201:
+ *         description: Vote created successfully.
+ *       500:
+ *         description: Internal server error, unable to create vote.
  */
 router.post("/create", async (req, res) => {
   try {
@@ -45,25 +54,26 @@ router.post("/create", async (req, res) => {
 
 /**
  * @swagger
- * /api/votes/getDetail:
+ * /api/votes/getDetail/{voteId}:
  *   get:
  *     tags:
- *     - Vote Controller
+ *       - Vote Controller
  *     summary: Get vote by voteId
+ *     description: Retrieve detailed information of a vote by its ID.
  *     parameters:
  *       - in: path
  *         name: voteId
+ *         required: true
  *         schema:
  *           type: string
- *         required: true
- *         description: Vote ID
+ *         description: Unique identifier of the vote.
  *     responses:
- *       '200':
- *         description: Vote found
- *       '404':
- *         description: Vote not found
- *       '500':
- *         description: Internal server error
+ *       200:
+ *         description: Vote found successfully.
+ *       404:
+ *         description: Vote not found.
+ *       500:
+ *         description: Internal server error, unable to retrieve vote.
  */
 router.get("/getDetail", async (req, res) => {
   try {
@@ -83,44 +93,56 @@ router.get("/getDetail", async (req, res) => {
 
 /**
  * @swagger
- * /api/votes/{voteId}:
+ * /api/votes/update/{voteId}:
  *   put:
  *     tags:
- *     - Vote Controller
+ *       - Vote Controller
  *     summary: Update a vote
+ *     description: Update vote details including options or end the vote.
  *     parameters:
  *       - in: path
  *         name: voteId
  *         required: true
  *         schema:
  *           type: string
+ *         description: Unique identifier of the vote to be updated.
  *       - in: body
  *         name: body
+ *         required: true
  *         schema:
  *           type: object
  *           properties:
  *             votes:
  *               type: array
+ *               description: Array of vote changes.
  *               items:
  *                 type: object
  *                 properties:
  *                   option:
  *                     type: string
+ *                     description: The voting option.
  *                   count:
  *                     type: integer
+ *                     description: Updated count of votes.
  *     responses:
- *       '200':
- *         description: Vote updated successfully
- *       '404':
- *         description: Vote not found
- *       '500':
- *         description: Internal server error
+ *       200:
+ *         description: Vote updated successfully.
+ *       404:
+ *         description: Vote not found.
+ *       500:
+ *         description: Internal server error, unable to update vote.
  */
-router.post("/update", async (req, res) => {
+router.put("/update", async (req, res) => {
   try {
     const voteId = req.body.voteId;
     const recommend = req.body.recommend;
-    const updatedVote = await voteService.updateVote(voteId, recommend);
+    const endVote = req.body.status;
+    var updatedVote;
+    if (recommend != undefined) {
+      updatedVote = await voteService.updateVote(voteId, recommend);
+    } else {
+      updatedVote = await voteService.endVote(voteId, endVote);
+    }
     if (!updatedVote) {
       return res
         .status(200)
@@ -136,25 +158,6 @@ router.post("/update", async (req, res) => {
   }
 });
 
-router.post("/endVote", async (req, res) => {
-  try {
-    const voteId = req.body.voteId;
-    const status = req.body.status;
-    const endVote = await voteService.endVote(voteId, status);
-    if (!endVote) {
-      return res
-        .status(200)
-        .json({ code: 40400, data: null, message: "not found" });
-    }
-    return res
-      .status(200)
-      .json({ code: 20000, data: null, message: "update successfully" });
-  } catch (error) {
-    return res
-      .status(500)
-      .json({ code: 50000, data: null, error: error.message });
-  }
-});
 // Add other routes as needed
 
 module.exports = router;
