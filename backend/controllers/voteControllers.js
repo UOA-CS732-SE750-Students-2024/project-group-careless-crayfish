@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const voteService = require("../services/voteService.js");
 const Response = require("../utils/response.js");
-const logger = require("../utils/logger.js");
 /**
  * @swagger
  * /api/votes/create:
