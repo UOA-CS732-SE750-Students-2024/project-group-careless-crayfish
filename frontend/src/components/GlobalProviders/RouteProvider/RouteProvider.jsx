@@ -166,7 +166,16 @@ const RouteProvider = () => {
           />
           <Route
             path="/voting"
-            element={isAuthenticated ? <Voting /> : <AuthPageProvider />}
+            element={
+              isAuthenticated ? (
+                <> 
+                  <AuthenticatedProvider />
+                  <Voting /> 
+                </>
+              ) : (
+                <Navigate to="/auth" />
+              )
+            }
           />
 
         </Routes>

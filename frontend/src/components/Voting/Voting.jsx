@@ -9,6 +9,8 @@ import {
   Alert,
 } from "@mui/material";
 import Stack from "@mui/material/Stack";
+import { useTheme } from '@mui/material/styles';
+import { useRoute } from '../GlobalProviders';
 
 export const Voting = () => {
   const navigate = useNavigate();
@@ -23,6 +25,10 @@ export const Voting = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("info");
+  // use theme
+  const theme = useTheme();
+  // use page title
+  const { pageTitle, setPageTitle } = useRoute();
 
   const showMessage = (message, severity = "info") => {
     setSnackbarMessage(message);
@@ -34,6 +40,8 @@ export const Voting = () => {
     const url = new URL(window.location);
     const params = new URLSearchParams(url.search);
     const voteId = params.get("voteId");
+
+    setPageTitle("Voting your favorite restaurant");
 
     if (location.state) {
       setSelectedRestaurants(JSON.parse(location.state));
@@ -156,7 +164,7 @@ export const Voting = () => {
   };
 
   return (
-    <Box sx={{ maxWidth: 600, m: "auto", p: 2 }}>
+    <Box sx={{ maxWidth: 600, m: "auto", p: 2, pt: 10 }}>
       <Snackbar
         open={openSnackbar}
         autoHideDuration={6000}
@@ -213,11 +221,12 @@ export const Voting = () => {
             margin="normal"
           />
           <Button variant="contained" color="primary" onClick={createVote}>
-            Create Vote!
+            Create Vote With the following Options!
           </Button>
         </Box>
       )}
 
+      <br/>
       {selectedRestaurants.map((restaurant, index) => (
         <Stack
           key={restaurant.name}
