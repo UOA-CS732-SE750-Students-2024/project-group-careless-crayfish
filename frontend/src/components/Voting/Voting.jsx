@@ -7,6 +7,7 @@ import {
   Typography,
   Snackbar,
   Alert,
+  Container,
 } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import { useTheme } from '@mui/material/styles';
@@ -164,7 +165,13 @@ export const Voting = () => {
   };
 
   return (
-    <Box sx={{ maxWidth: 600, m: "auto", p: 2, pt: 10 }}>
+    <Box 
+      pt={10}
+      pb={10}
+      sx = {{
+        background: theme.palette.mode === 'light' ? "linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.99)), url('/landing/restaurant.png')" : theme.palette.background.default,
+    }}>
+      <Container maxWidth="md">
       <Snackbar
         open={openSnackbar}
         autoHideDuration={6000}
@@ -270,6 +277,7 @@ export const Voting = () => {
           >{`${window.location.origin}/voting?voteId=${voteId}`}</a>
         </p>
       )}
+    </Container>
     </Box>
   );
 };
