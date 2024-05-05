@@ -247,7 +247,7 @@ export const Voting = () => {
         >
           <Box sx={{ flexGrow: 1 }}>
             <Typography variant="h6">{restaurant.name}</Typography>
-            <Typography>{restaurant.description}</Typography>
+            <Typography>{restaurant.detailIntroduction}</Typography>
             <Typography>{`${restaurant.location} - ${restaurant.priceRange}`}</Typography>
             {voted && <Typography>Votes: {restaurant.count}</Typography>}
           </Box>
