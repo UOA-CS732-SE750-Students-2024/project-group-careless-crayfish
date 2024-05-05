@@ -1,9 +1,10 @@
 import React, { useMemo } from "react";
 
-import { Checkbox, ListItem, Card, CardMedia, CardContent, Typography, CardHeader, CardActions, IconButton, Collapse } from '@mui/material';
+import { Checkbox, ListItem, Card, CardMedia, CardContent, Typography, CardHeader, CardActions, IconButton, Collapse, Stack } from '@mui/material';
 import MapIcon from '@mui/icons-material/Map';
 import HomeIcon from '@mui/icons-material/Home';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import PollIcon from '@mui/icons-material/Poll';
 
 const RestaurantElement = ({ restaurant }) => {
   const [expanded, setExpanded] = React.useState(false);
@@ -22,17 +23,6 @@ const RestaurantElement = ({ restaurant }) => {
       <ListItem
         key={restaurant.index}
         className="restaurant-element"
-        // onClick={restaurant.handleToggleRestaurant(restaurant.index)}
-        secondaryAction={
-          <Checkbox
-            edge="end"
-            checked={restaurant.checked.indexOf(restaurant.index) !== -1}
-            onChange={restaurant.handleToggleRestaurant(restaurant.index)}
-            tabIndex={-1}
-            disableRipple
-            inputProps={{ "aria-labelledby": restaurant.labelId }}
-          />
-        }
       >
         <Card
           className="restaurant-element-button"
@@ -45,6 +35,23 @@ const RestaurantElement = ({ restaurant }) => {
           <CardHeader
             title={restaurant.name}
             subheader={restaurant.location}
+            action={
+              <Stack
+                direction="row"
+                alignItems="center"
+              >
+                <PollIcon/>
+                <Checkbox
+                  sx = {{paddingLeft: 0}}
+                  edge="end"
+                  checked={restaurant.checked.indexOf(restaurant.index) !== -1}
+                  onChange={restaurant.handleToggleRestaurant(restaurant.index)}
+                  tabIndex={-1}
+                  disableRipple
+                  inputProps={{ "aria-labelledby": restaurant.labelId }}
+                />
+              </Stack>
+            }
           />
           <CardMedia
             component="img"
