@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FormControl, InputLabel, Select, MenuItem, TextField, Button, Container, Box, Typography } from '@mui/material';
 import { useRoute } from '../GlobalProviders';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 
 export const RestaurantOptions = () => {
   const [ageGroup, setAgeGroup] = useState("");
@@ -10,6 +10,8 @@ export const RestaurantOptions = () => {
   const [location, setLocation] = useState("Auckland City");
   const navigateTo = useNavigate();
   const { pageTitle, setPageTitle } = useRoute();
+  const theme = useTheme();
+
   useEffect(() => {
     setPageTitle("Select Dining Preferences");
   });
@@ -30,16 +32,16 @@ export const RestaurantOptions = () => {
   return (
     <Box
         sx={{
-          mt: 10,
+          pt: 10,
+          pb: 10,
           p: 3,
-          backgroundColor: '#f0f0f0', // Light grey background
-          color: '#1976d2',  // Blue text color
           display: 'flex',
           gap: '20px',
-          alignItems: 'center'
+          alignItems: 'center',
+          background: theme.palette.mode === 'light' ? "linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.99)), url('/landing/restaurant.png')" : theme.palette.background.default,
         }}
     >
-      <Container maxWidth="md">
+      <Container maxWidth="md" sx={{opacity: '1'}}>
         <Typography variant="h4" sx={{ marginBottom: 2 }}>Choose Your Dining Options</Typography>
         <form onSubmit={handleSubmit}>
           <FormControl variant="outlined" fullWidth margin="normal" sx={{ width: '60%' }}>
