@@ -4,7 +4,7 @@ const voteSchema = new mongoose.Schema({
   title: { type: String, required: true },
   recommend: [
     {
-      description: { type: String, required: true },
+      detailIntroduction: { type: String, required: true },
       location: { type: String, required: true },
       name: { type: String, required: true },
       priceRange: { type: String, required: true },
