@@ -1,24 +1,9 @@
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import { Navigate } from "react-router-dom";
-import { useAPI, useAuth, useLocalStorage } from "../GlobalProviders";
+
+import { useAuth, } from "../GlobalProviders";
 import { createContext, useContext, useEffect, useState } from "react";
-import { IconButton } from "@mui/material";
-import GitHubIcon from "@mui/icons-material/GitHub";
-import {
-  GoogleLogin,
-  GoogleOAuthProvider,
-  useGoogleLogin,
-} from "@react-oauth/google";
+import GoogleIcon from '@mui/icons-material/Google';
+import React from 'react';
+import { TextField, Button, Container, Box, Typography, Grid, CssBaseline } from '@mui/material';
 
 const AuthPageContext = createContext({});
 
@@ -29,46 +14,77 @@ const AuthPageProvider = () => {
 
   return (
     <AuthPageContext.Provider value={{}}>
-      <Grid container component="main" sx={{ height: "100vh" }}>
-        <Grid
-          item
-          xs={0}
-          sm={4}
-          md={7}
-          sx={{
-            backgroundImage:
-              "url(https://source.unsplash.com/random?wallpapers)",
-            backgroundRepeat: "no-repeat",
-            backgroundColor: (t) =>
-              t.palette.mode === "light"
-                ? t.palette.grey[50]
-                : t.palette.grey[900],
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        />
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+
+      <Grid
+        container
+        component="main"
+        sx={{
+          height: '100vh',
+          backgroundImage: 'url("/background/background_image.png")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      >
+        <CssBaseline />
+        <Container component="main" maxWidth="xs" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <Box
             sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              height: "100%", // Ensure the Box takes up the full height of its parent
+              marginTop: 8,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              backgroundColor: 'rgba(255, 255, 255, 0.8)', // Optional: Add a slight white overlay for better readability
+              padding: 3,
+              borderRadius: 2,
+              boxShadow: 3
             }}
           >
-            <Button
-              component="label"
-              fontSize="large"
-              size="large"
-              variant="contained"
-              onClick={googleLogin}
-              startIcon={<GitHubIcon fontSize="large" />}
-            >
-              Google SSO Sign In
-            </Button>
+            <Typography component="h1" variant="h5">
+              VOTE
+            </Typography>
+            <Box component="form" noValidate sx={{ mt: 1 }}>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="username"
+                label="Email"
+                name="username"
+                autoComplete="username"
+                autoFocus
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                SIGN IN
+              </Button>
+              <Button
+                fullWidth
+                variant="contained"
+                color="primary"
+                onClick={googleLogin}
+                startIcon={< GoogleIcon />}
+                sx={{ mt: 1, fontSize: '1rem' }}
+              >
+                Google SSO Sign In
+              </Button>
+            </Box>
           </Box>
-        </Grid>
+        </Container>
       </Grid>
     </AuthPageContext.Provider>
   );
