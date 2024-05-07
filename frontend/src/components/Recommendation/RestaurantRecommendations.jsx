@@ -135,7 +135,7 @@ export const RestaurantRecommendations = () => {
           </Typography>
           <br/>
           <br/>
-          <h4>Loading restaurant details ...</h4>
+          <h4>{`Loading ${cuisine} restaurants for ${ageGroup}`}</h4>
           <LinearProgress />
           </Container>
       </Box>
