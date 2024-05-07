@@ -60,7 +60,7 @@ export const Profile = () => {
       setIsLoadingVotes(true);
 
       const response = await get(
-        `${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/votes/${user.userId}`,
+        `${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/users/${user.userId}/votes`,
       );
       setVotes(response.data);
       setExpanded(new Array(response.data.length).fill(false));

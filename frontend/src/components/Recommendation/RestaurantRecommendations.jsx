@@ -78,9 +78,7 @@ export const RestaurantRecommendations = () => {
   //link to voting page
   const handleStartVote = () => {
     const selectedRestaurants = checked.map((index) => recommendations[index]);
-    navigate("/voting", {
-      state: JSON.stringify(selectedRestaurants),
-    }); // 使用 navigate 进行跳转并传递状态
+    navigate("/voting", { state: JSON.stringify(selectedRestaurants) }); // 使用 navigate 进行跳转并传递状态
   };
   /**
    * Capitalizes the first letter of each word in a string.
@@ -130,6 +128,12 @@ export const RestaurantRecommendations = () => {
         display="flex"
         alignItems="center"
         justifyContent="center"
+        sx={{
+          background:
+            theme.palette.mode === "light"
+              ? "linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.99)), url('/landing/restaurant.png')"
+              : theme.palette.background.default,
+        }}
       >
         <Container maxWidth="md">
           <Typography variant="h4" component="h1" gutterBottom>
@@ -145,7 +149,16 @@ export const RestaurantRecommendations = () => {
   }
 
   return (
-    <Box pt={10} pb={10}>
+    <Box
+      pt={10}
+      pb={10}
+      sx={{
+        background:
+          theme.palette.mode === "light"
+            ? "linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.99)), url('/landing/restaurant.png')"
+            : theme.palette.background.default,
+      }}
+    >
       <Container maxWidth="md">
         <Typography variant="h4" component="h1" gutterBottom>
           Restaurant Recommendations for {capitalizeEveryWord(location)}
@@ -172,9 +185,14 @@ export const RestaurantRecommendations = () => {
         <Button
           variant="contained"
           disableElevation
+          // onClick={() => {
+          //   checked.sort().map((index) => {
+          //     console.log(index, recommendations[index].name);
+          //   });
+          // }}
           onClick={handleStartVote}
         >
-          Start a vote
+          Start a vote (currently just log to console)
         </Button>
       </Container>
     </Box>
