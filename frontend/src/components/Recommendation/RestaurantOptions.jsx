@@ -71,6 +71,10 @@ export const RestaurantOptions = () => {
         display: "flex",
         gap: "20px",
         alignItems: "center",
+        background:
+          theme.palette.mode === "light"
+            ? "linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.99)), url('/landing/restaurant.png')"
+            : theme.palette.background.default,
       }}
     >
       <Container maxWidth="md" sx={{ opacity: "1" }}>
