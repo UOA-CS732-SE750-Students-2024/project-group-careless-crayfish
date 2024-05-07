@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTheme } from '@mui/material/styles';
 import { useAPI, useRoute } from "../GlobalProviders";
+import { useLocation } from 'react-router-dom';
 
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
@@ -18,6 +19,13 @@ import RestaurantElement from "./RestaurantElement";
 export const RestaurantRecommendations = () => {
   const { location } = useParams(); // Extract the location parameter from the current route
   const navigate = useNavigate();
+
+  // cuisine and ageGroup are query parameters
+  const loc = useLocation();
+  const queryParams = new URLSearchParams(loc.search);
+  const cuisine = queryParams.get("cuisine") || "Random";
+  const ageGroup = queryParams.get("ageGroup") || "Random";
+
   // recommendations is an array of objects, each object represents a restaurant
   const [recommendations, setRecommendations] = useState([]);
 
@@ -99,7 +107,7 @@ export const RestaurantRecommendations = () => {
     // Fetch recommendations from the API
     const fetchRecommendations = async () => {
       try {
-        const url = `${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/recommendations/restaurant/${location}`;
+        const url = `${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/recommendations/restaurant/${location}?cuisine=${cuisine}&ageGroup=${ageGroup}`;
         console.log("Fetching recommendations from: ", url);
         const response = await get(url);
         console.log("recommendation response: ", response);
