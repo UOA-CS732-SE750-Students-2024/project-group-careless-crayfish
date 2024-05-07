@@ -43,13 +43,17 @@ export const Voting = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("info");
-  const [expanded, setExpanded] = React.useState(false);
+  const [expanded, setExpanded] = useState([]);
   const [link, setLink] = useState(
     `${window.location.origin}/voting?voteId=${voteId}`,
   );
   const { user } = useAuth();
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
+  const handleExpandClick = (index) => {
+    setExpanded((prevState) => {
+      const newState = [...prevState];
+      newState[index] = !newState[index];
+      return newState;
+    });
   };
   // use theme
   const theme = useTheme();
@@ -332,14 +336,14 @@ export const Voting = () => {
                     <HomeIcon />
                   </IconButton>
                   <IconButton
-                    onClick={handleExpandClick}
-                    aria-expanded={expanded}
+                    onClick={() => handleExpandClick(index)}
+                    aria-expanded={expanded[index]}
                     aria-label="show more"
                   >
                     <ExpandMoreIcon />
                   </IconButton>
                 </CardActions>
-                <Collapse in={expanded} timeout="auto" unmountOnExit>
+                <Collapse in={expanded[index]} timeout="auto" unmountOnExit>
                   <CardContent>
                     <Typography paragraph>Open Hours</Typography>
                     {Object.keys(restaurant.openHours).map((key) => (

@@ -44,9 +44,13 @@ export const Profile = () => {
     setPageTitle("Profile");
   });
   const [votes, setVotes] = useState([]);
-  const [expanded, setExpanded] = React.useState(false);
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
+  const [expanded, setExpanded] = useState([]);
+  const handleExpandClick = (index) => {
+    setExpanded((prevExpanded) => {
+      const newExpanded = [...prevExpanded];
+      newExpanded[index] = !newExpanded[index];
+      return newExpanded;
+    });
   };
   const [isLoadingVotes, setIsLoadingVotes] = useState(false);
   const limit = 5;
@@ -59,6 +63,7 @@ export const Profile = () => {
         `${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/votes/${user.userId}`,
       );
       setVotes(response.data);
+      setExpanded(new Array(response.data.length).fill(false));
     } finally {
       setIsLoadingVotes(false);
     }
@@ -81,7 +86,7 @@ export const Profile = () => {
         <Typography variant="h4" component="h1" gutterBottom>
           Voting history for {user.userName}
         </Typography>
-        {votes.map((vote) => {
+        {votes.map((vote, index) => {
           const recommend = vote.recommend;
 
           return (
@@ -89,7 +94,7 @@ export const Profile = () => {
               <Typography variant="h4" component="h1" gutterBottom>
                 Vote title: {vote.title}
               </Typography>
-              {recommend.map((restaurant, index) => (
+              {recommend.map((restaurant, idx) => (
                 <ListItem
                   sx={{ paddingLeft: 0, paddingRight: 0 }}
                   key={restaurant.name + v4()}
@@ -133,14 +138,14 @@ export const Profile = () => {
                         <HomeIcon />
                       </IconButton>
                       <IconButton
-                        onClick={handleExpandClick}
-                        aria-expanded={expanded}
+                        onClick={() => handleExpandClick(index)}
+                        aria-expanded={expanded[index]}
                         aria-label="show more"
                       >
                         <ExpandMoreIcon />
                       </IconButton>
                     </CardActions>
-                    <Collapse in={expanded} timeout="auto" unmountOnExit>
+                    <Collapse in={expanded[index]} timeout="auto" unmountOnExit>
                       <CardContent>
                         <Typography paragraph>Open Hours</Typography>
                         {Object.keys(restaurant.openHours).map((key) => (
