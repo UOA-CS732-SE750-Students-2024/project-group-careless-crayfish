@@ -1,8 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { FormControl, InputLabel, Select, MenuItem, TextField, Button, Container, Box, Typography, Stack } from '@mui/material';
-import { useRoute } from '../GlobalProviders';
-import { useTheme } from '@mui/material/styles';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  TextField,
+  Button,
+  Container,
+  Box,
+  Typography,
+  Stack,
+} from "@mui/material";
+import { useRoute } from "../GlobalProviders";
+import { useTheme } from "@mui/material/styles";
 
 import PlaceIcon from '@mui/icons-material/Place';
 
@@ -51,31 +62,31 @@ export const RestaurantOptions = () => {
     );
   };
 
-
   return (
     <Box
-        sx={{
-          p: 3,
-          pt: 10,
-          pb: 10,
-          display: 'flex',
-          gap: '20px',
-          alignItems: 'center',
-          background: theme.palette.mode === 'light' ? "linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.99)), url('/landing/restaurant.png')" : theme.palette.background.default,
-        }}
+      sx={{
+        p: 3,
+        pt: 10,
+        pb: 10,
+        display: "flex",
+        gap: "20px",
+        alignItems: "center",
+      }}
     >
-      <Container maxWidth="md" sx={{opacity: '1'}}>
-        <Typography variant="h4" sx={{ marginBottom: 2 }}>Choose Your Dining Options</Typography>
+      <Container maxWidth="md" sx={{ opacity: "1" }}>
+        <Typography variant="h4" sx={{ marginBottom: 2 }}>
+          Choose Your Dining Options
+        </Typography>
         <form onSubmit={handleSubmit}>
           <FormControl variant="outlined" fullWidth margin="normal">
             <InputLabel id="age-group-label">Age Group</InputLabel>
             <Select
-                label="Age Group"
-                labelId="age-group-label"
-                id="age-group"
-                name="age-group"
-                value={ageGroup}
-                onChange={(event) => setAgeGroup(event.target.value)}
+              label="Age Group"
+              labelId="age-group-label"
+              id="age-group"
+              name="age-group"
+              value={ageGroup}
+              onChange={(event) => setAgeGroup(event.target.value)}
             >
               {/* eslint-disable-next-line react/jsx-no-comment-textnodes */}
               <MenuItem value="child">Child</MenuItem>
@@ -88,12 +99,12 @@ export const RestaurantOptions = () => {
           <FormControl fullWidth margin="normal">
             <InputLabel id="cuisine-label">Cuisine</InputLabel>
             <Select
-                label="Cuisine"
-                labelId="cuisine-label"
-                id="cuisine"
-                name="cuisine"
-                value={cuisine}
-                onChange={(event) => setCuisine(event.target.value)}
+              label="Cuisine"
+              labelId="cuisine-label"
+              id="cuisine"
+              name="cuisine"
+              value={cuisine}
+              onChange={(event) => setCuisine(event.target.value)}
             >
               {/* eslint-disable-next-line react/jsx-no-comment-textnodes */}
               <MenuItem value="asian">Asian</MenuItem>
@@ -119,7 +130,12 @@ export const RestaurantOptions = () => {
             </Button>
           </Stack>
 
-          <Button type="submit" variant="contained" color="primary" sx={{ display: 'block', width: 'auto', marginTop: 2 }}>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            sx={{ display: "block", width: "auto", marginTop: 2 }}
+          >
             Get Recommended Restaurant
           </Button>
         </form>

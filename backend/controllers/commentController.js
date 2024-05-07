@@ -5,15 +5,21 @@ const commentService = require("../services/commentService.js");
 
 /**
  * @swagger
- * /api/comments/totalNumRecords:
+ * /api/comments/{voteId}:
  *   get:
  *     tags:
  *       - Comment Controller
  *     summary: Get total num records
  *     parameters:
+ *       - in: path
  *         name: voteId
  *         schema:
  *           type: string
+ *       - in: query
+ *         name: isTotalCount
+ *         schema:
+ *           type: boolean
+ *         description: are we getting the count of comments for the voteId.
  *     responses:
  *       '200':
  *         description: Comments retrieved successfully
@@ -24,10 +30,14 @@ const commentService = require("../services/commentService.js");
  *       '500':
  *         description: Internal server error - Something went wrong on the server side
  */
-router.get("/totalNumRecords/:voteId", async function getCommentsBy(req, res) {
+router.get("/:voteId", async function getCommentsBy(req, res) {
   try {
     const { voteId } = req.params;
-    res.status(200).json(await commentService.getTotalNumRecords({ voteId }));
+    const { isTotalCount } = req.query;
+    if (isTotalCount) {
+      res.status(200).json(await commentService.getTotalNumRecords({ voteId }));
+      return;
+    }
   } catch (error) {
     logger.error(JSON.stringify(error));
     if (error.response?.status) {
@@ -98,13 +108,23 @@ router.get("/:userId/:voteId", async function getCommentsBy(req, res) {
 
 /**
  * @swagger
- * /api/comments:
+ * /api/comments/{userId}/{voteId}:
  *   post:
  *     tags:
  *     - Comment Controller
  *     consumes: application/json
  *     summary: Create a new comment
  *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: voteId
+ *         required: true
+ *         schema:
+ *           type: string
  *       - in: body
  *         name: body
  *         schema:
@@ -128,8 +148,9 @@ router.get("/:userId/:voteId", async function getCommentsBy(req, res) {
  *       '500':
  *         description: Internal server error
  */
-router.post("/", async function createComment(req, res) {
-  const { userId, voteId, comment, isAI } = req.body;
+router.post("/:userId/:voteId", async function createComment(req, res) {
+  const { comment, isAI } = req.body;
+  const { userId, voteId } = req.params;
   try {
     const createdComment = await commentService.createComment({
       userId,
@@ -139,7 +160,6 @@ router.post("/", async function createComment(req, res) {
     });
     res.status(201).json(createdComment);
   } catch (error) {
-    console.log(error);
     logger.error(error);
     res.status(500).json(error);
   }

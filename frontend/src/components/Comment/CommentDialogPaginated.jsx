@@ -49,7 +49,7 @@ export const CommentDialogPaginated = ({
       }
       setIsLoadingComments(true);
       const totalNumRecordsResp = await get(
-        `${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/comments/totalNumRecords/${voteId}`,
+        `${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/comments/${voteId}?isTotalCount=true`,
       );
 
       let lastPageIndex = Number.isInteger(totalNumRecordsResp.data / limit)
@@ -61,7 +61,6 @@ export const CommentDialogPaginated = ({
       const response = await get(
         `${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/comments/${userId}/${voteId}?page=${lastPageIndex}&limit=${limit}`,
       );
-      console.log(response.data);
       setPage(lastPageIndex);
       setHasMore(true);
       setComments(response.data);
@@ -78,7 +77,7 @@ export const CommentDialogPaginated = ({
       }
       setPage(page - 1);
       const prevPage = page - 1;
-      if (prevPage <= 0) {
+      if (prevPage < 0) {
         setHasMore(false);
         return;
       }
@@ -129,19 +128,18 @@ export const CommentDialogPaginated = ({
     try {
       setIsSubmittingComment(true);
       const response = await post(
-        `${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/comments`,
-        { userId, voteId, isAI: false, comment: input },
+        `${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/comments/${userId}/${voteId}`,
+        { isAI: false, comment: input },
       );
 
-      console.log(response);
       const comment = response.data.comment;
 
       if (isAICheckbox) {
         setIsGeneratingAIResponse(true);
         setIsSubmittingComment(true);
         const aiResp = await post(
-          `${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/comments`,
-          { userId, voteId, comment: comment, isAI: true },
+          `${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/comments/${userId}/${voteId}`,
+          { comment: comment, isAI: true },
         );
 
         if (aiResp && aiResp.data) {
