@@ -85,7 +85,7 @@ const HeaderProvider = () => {
           </Box>
           <Box flexGrow={0}>
             <Typography variant="h6" noWrap>
-              {user.userName} {/* Displaying the user's name */}
+              {user && user.userName} {/* Displaying the user's name */}
             </Typography>
           </Box>
           <Grid>

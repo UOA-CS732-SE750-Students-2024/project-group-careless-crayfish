@@ -278,10 +278,16 @@ We deploy by using Github Actions to archive source code and ssh into ec2. See `
 
 Q & A
 
-### 1. sh command not found running `npm run start:dep` for backend
+### 1. sh command not found running npm commands
 
 ##### A: Please make sure you use Git Bash to run the command if you are on Windows
 
 ### 2. For AWS CDK code getting error when running `npm run deploy-dev`
 
 ##### A: See `testing AWS CDK infrastructure as code` section for details
+
+### 3. How do I access latest deployed website
+
+##### A: We provision new EC2 instances if we have infrastructure change. Need to go to github actions to grab the latest working public DNS
+![image](https://github.com/UOA-CS732-SE750-Students-2024/project-group-careless-crayfish/assets/29388401/6aa34ed0-1479-48f9-89a5-ea07a2cd48cb)
+

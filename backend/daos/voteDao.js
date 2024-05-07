@@ -1,29 +1,52 @@
+// dao/voteDao.js
+const { ObjectId } = require("mongodb");
 const Vote = require("../models/vote.js");
 
-async function createVote(voteData) {
-  return await Vote.create(voteData);
+async function createVote({
+  title,
+  recommend,
+  userId,
+  startDate,
+  endDate,
+  status,
+}) {
+  const createdVote = await Vote.create({
+    title,
+    recommend,
+    userId,
+    startDate,
+    endDate,
+    status,
+  });
+  console.log(createdVote);
+
+  return createdVote;
 }
 
-async function getVoteById(userId, voteId) {
-  return await Vote.findOne({ userId, voteId });
+async function getVoteById(id) {
+  console.log(id);
+  return await Vote.findById(new ObjectId(id));
 }
 
-async function getTotalNumRecords({ userId }) {
-  return await Vote.countDocuments({ userId });
+async function updateVote(id, recommend) {
+  console.log(recommend, "recommend");
+  console.log(id, "id");
+  return await Vote.findByIdAndUpdate(id, { recommend });
 }
 
-async function getVotesBy({ userId }, page, limit) {
-  return await Vote.find({ userId })
-    .skip(page * limit)
-    .limit(limit)
-    .exec();
+async function endVote(id, status) {
+  console.log(status, "status");
+  console.log(id, "id");
+  return await Vote.findByIdAndUpdate(id, { status });
 }
 
-// Add other CRUD operations as needed
-
+async function getAllVotes(userId) {
+  return await Vote.find({ userId });
+}
 module.exports = {
-  getVotesBy,
   createVote,
   getVoteById,
-  getTotalNumRecords,
+  updateVote,
+  endVote,
+  getAllVotes,
 };

@@ -24,7 +24,7 @@ const AuthProvider = ({ children }) => {
   const logout = async () => {
     setIsAuthenticated(false);
     setAccessToken(null);
-    setItem("accessToken", "");
+    setItem("accessToken", "null");
     setItem("isAuthenticated", false);
   };
 
@@ -43,26 +43,32 @@ const AuthProvider = ({ children }) => {
 
   const refreshUserSession = async () => {
     const accessToken = getItem("accessToken");
-    if (accessToken) {
-      const googleUserResp = await get(
-        `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${accessToken}`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            Accept: "application/json",
-          },
-        },
-      );
-      const googleUser = googleUserResp.data;
-      const personInfo = {
-        email: googleUser.email,
-        name: googleUser.name,
-        imageUrl: googleUser.picture,
-        accessToken: accessToken,
-        userId: googleUser.id,
-      };
 
-      await processLogin(personInfo);
+    if (accessToken != '"null"') {
+      try {
+        const googleUserResp = await get(
+          `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${accessToken}`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              Accept: "application/json",
+            },
+          },
+        );
+        const googleUser = googleUserResp.data;
+        const personInfo = {
+          email: googleUser.email,
+          name: googleUser.name,
+          imageUrl: googleUser.picture,
+          accessToken: accessToken,
+          userId: googleUser.id,
+        };
+
+        await processLogin(personInfo);
+      } catch (err) {
+        setAccessToken(null);
+        setItem("accessToken", "null");
+      }
     }
   };
   useEffect(() => {
