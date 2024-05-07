@@ -129,7 +129,7 @@ export const RestaurantOptions = () => {
                 onChange={(event) => setLocation(event.target.value)}
                 sx={{ marginTop: 2 }}
             />
-            <Button variant="contained" color="primary" onClick={getLocation} size="small" sx={{mt: 2}}>
+            <Button variant="contained" color="primary" onClick={getLocation} size="small" sx={{mt: 2, ml: 1}}>
               <PlaceIcon />
             </Button>
           </Stack>
