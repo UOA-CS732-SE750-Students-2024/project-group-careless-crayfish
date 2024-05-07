@@ -2,15 +2,30 @@
 const { ObjectId } = require("mongodb");
 const Vote = require("../models/vote.js");
 
-async function createVote(voteData) {
-  console.log(Vote, "Vote");
-  return await Vote.create(voteData);
+async function createVote({
+  title,
+  recommend,
+  userId,
+  startDate,
+  endDate,
+  status,
+}) {
+  const createdVote = await Vote.create({
+    title,
+    recommend,
+    userId,
+    startDate,
+    endDate,
+    status,
+  });
+  console.log(createdVote);
+
+  return createdVote;
 }
 
 async function getVoteById(id) {
-  return await Vote.findById({
-    _id: new ObjectId(id),
-  }).exec();
+  console.log(id);
+  return await Vote.findById(new ObjectId(id));
 }
 
 async function updateVote(id, recommend) {
@@ -24,9 +39,14 @@ async function endVote(id, status) {
   console.log(id, "id");
   return await Vote.findByIdAndUpdate(id, { status });
 }
+
+async function getAllVotes(userId) {
+  return await Vote.find({ userId });
+}
 module.exports = {
   createVote,
   getVoteById,
   updateVote,
   endVote,
+  getAllVotes,
 };

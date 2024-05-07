@@ -6,13 +6,30 @@ import {
   Box,
   Typography,
   Snackbar,
-  Alert,
   Container,
+  List,
+  CardMedia,
 } from "@mui/material";
-import Stack from "@mui/material/Stack";
-import { useTheme } from '@mui/material/styles';
-import { useRoute } from '../GlobalProviders';
-
+import {
+  Checkbox,
+  ListItem,
+  Card,
+  CardContent,
+  CardHeader,
+  CardActions,
+  IconButton,
+  Collapse,
+  Stack,
+} from "@mui/material";
+import MapIcon from "@mui/icons-material/Map";
+import HomeIcon from "@mui/icons-material/Home";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import PollIcon from "@mui/icons-material/Poll";
+import { useTheme } from "@mui/material/styles";
+import { useAPI, useAuth, useRoute } from "../GlobalProviders";
+import { v4 } from "uuid";
+import MuiAlert from "@mui/material/Alert";
+import CloseIcon from "@mui/icons-material/Close";
 export const Voting = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -26,10 +43,21 @@ export const Voting = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("info");
+  const [expanded, setExpanded] = React.useState(false);
+  const [link, setLink] = useState(
+    `${window.location.origin}/voting?voteId=${voteId}`,
+  );
+  const { user } = useAuth();
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
   // use theme
   const theme = useTheme();
   // use page title
   const { pageTitle, setPageTitle } = useRoute();
+  const Alert = (props) => {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  };
 
   const showMessage = (message, severity = "info") => {
     setSnackbarMessage(message);
@@ -41,7 +69,6 @@ export const Voting = () => {
     const url = new URL(window.location);
     const params = new URLSearchParams(url.search);
     const voteId = params.get("voteId");
-
     setPageTitle("Voting your favorite restaurant");
 
     if (location.state) {
@@ -49,26 +76,29 @@ export const Voting = () => {
     }
 
     if (voteId) {
-      fetch(`${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/votes/getDetail?voteId=${voteId}`, {
-        method: "get",
-        headers: {
-          "Content-Type": "application/json",
+      setLink(`${window.location.origin}/voting?voteId=${voteId}`);
+      fetch(
+        `${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/votes/${voteId}`,
+        {
+          method: "get",
+          headers: {
+            "Content-Type": "application/json",
+          },
         },
-      })
+      )
         .then((res) => res.json())
         .then((res) => {
           setSelectedRestaurants([...res.recommend]);
+          console.log(res);
           setStatus(res.status);
+
           if (
-            new Date(res.expires).getTime() < new Date().getTime() ||
+            new Date(res.endDate).getTime() < new Date().getTime() ||
             res.status
           ) {
             setVoted(true);
             showMessage("Session Expired", "error");
           }
-        })
-        .catch(() => {
-          showMessage("Failed to fetch data", "error");
         });
     }
     setVoteId(voteId);
@@ -139,21 +169,27 @@ export const Voting = () => {
   const createVote = async () => {
     const sendData = {
       status,
-      expires: expiryTime,
+      endDate: new Date(expiryTime),
       recommend: selectedRestaurants,
       title,
+      startDate: new Date(),
     };
-    fetch(`${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/votes/create`, {
-      method: "post",
-      body: JSON.stringify(sendData),
-      headers: {
-        "Content-Type": "application/json",
+
+    const currUserId = user ? user.userId : "anonymous";
+    fetch(
+      `${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/votes/${user.userId}`,
+      {
+        method: "post",
+        body: JSON.stringify(sendData),
+        headers: {
+          "Content-Type": "application/json",
+        },
       },
-    })
+    )
       .then((res) => res.json())
       .then((res) => {
         if (res.code === 20000) {
-          navigate(`/voting?voteId=${res.data._id}`);
+          navigate(`/authenticated/voting?voteId=${res.data._id}`);
           showMessage("Vote created successfully!", "success");
         } else {
           showMessage(res.data, "error");
@@ -164,120 +200,196 @@ export const Voting = () => {
       });
   };
 
-  return (
-    <Box 
-      pt={10}
-      pb={10}
-      sx = {{
-        background: theme.palette.mode === 'light' ? "linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.99)), url('/landing/restaurant.png')" : theme.palette.background.default,
-    }}>
-      <Container maxWidth="md">
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={6000}
-        onClose={() => setOpenSnackbar(false)}
-      >
-        <Alert
-          onClose={() => setOpenSnackbar(false)}
-          severity={snackbarSeverity}
-          sx={{ width: "100%" }}
-        >
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
+  const handleClose = () => {
+    setSnackbarMessage(null);
+    setOpenSnackbar(false);
+  };
 
-      {voteId ? (
-        status ? (
-          <Typography variant="h4" gutterBottom>
-            Voting session Ended
-          </Typography>
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(link);
+      alert("Link copied to clipboard!");
+    } catch (error) {
+      console.error("Failed to copy link: ", error);
+    }
+  };
+  return (
+    <Box pt={10} pb={10}>
+      <Container maxWidth="md">
+        <Snackbar
+          ClickAwayListenerProps={{ mouseEvent: false }}
+          open={openSnackbar}
+          onClose={handleClose}
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+          action={
+            <Box display="flex" flexDirection="row" width="100%">
+              <IconButton
+                aria-label="Snackbar close icon"
+                color="inherit"
+                size="small"
+                onClick={handleClose}
+              >
+                <CloseIcon fontSize="large" />
+              </IconButton>
+            </Box>
+          }
+        >
+          <div>
+            <Alert onClose={handleClose} severity={snackbarSeverity}>
+              {snackbarMessage}
+            </Alert>
+          </div>
+        </Snackbar>
+
+        {voteId ? (
+          status ? (
+            <Typography variant="h4" gutterBottom>
+              Voting session Ended
+            </Typography>
+          ) : (
+            <Box>
+              <Typography variant="h4" gutterBottom>
+                Vote title: {title}
+              </Typography>
+            </Box>
+          )
         ) : (
           <Box>
-            <Typography variant="h4" gutterBottom>
-              {title}: Please vote!
-            </Typography>
-            <Button
-              variant="contained"
-              color="error"
-              //onClick={() => setStatus(true)}
-              onClick={endVote}
-            >
-              End now
+            <TextField
+              label="Vote Title"
+              variant="outlined"
+              fullWidth
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              margin="normal"
+            />
+
+            <TextField
+              label="Expiry Time"
+              type="datetime-local"
+              fullWidth
+              value={expiryTime}
+              onChange={(e) => setExpiryTime(e.target.value)}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              margin="normal"
+            />
+            <Button variant="contained" color="primary" onClick={createVote}>
+              Create Vote With the above Options!
             </Button>
           </Box>
-        )
-      ) : (
-        <Box>
-          <TextField
-            label="Vote Title"
-            variant="outlined"
-            fullWidth
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            margin="normal"
-          />
-          <TextField
-            label="Expiry Time"
-            type="datetime-local"
-            fullWidth
-            value={expiryTime}
-            onChange={(e) => setExpiryTime(e.target.value)}
-            InputLabelProps={{
-              shrink: true,
-            }}
-            margin="normal"
-          />
-          <Button variant="contained" color="primary" onClick={createVote}>
-            Create Vote With the following Options!
-          </Button>
+        )}
+
+        <Box pt={2}>
+          <Typography variant="h4" component="h1" gutterBottom>
+            Selected Recommendations
+          </Typography>
         </Box>
-      )}
+        <List>
+          {selectedRestaurants.map((restaurant, index) => (
+            <ListItem
+              sx={{ paddingLeft: 0, paddingRight: 0 }}
+              key={restaurant.name + v4()}
+            >
+              <Card>
+                <CardHeader
+                  title={restaurant.name}
+                  subheader={restaurant.location}
+                />
+                <CardMedia
+                  component="img"
+                  height="200"
+                  image={restaurant.imageUrl}
+                  alt={restaurant.name}
+                />
+                <CardContent>
+                  <Typography variant="body2" color="text.secondary">
+                    {restaurant.detailIntroduction}
+                  </Typography>
+                </CardContent>
+                <CardActions disableSpacing>
+                  {voteId && !status && (
+                    <Button
+                      variant="contained"
+                      onClick={() => incrementVote(index)}
+                      disabled={!voteId || status || voted}
+                    >
+                      {index === votedIndex ? "Voted" : "Vote"}{" "}
+                      {restaurant.count}
+                    </Button>
+                  )}
+                  <IconButton
+                    aria-label="open map"
+                    onClick={() => window.open(restaurant.mapUrl)}
+                  >
+                    <MapIcon />
+                  </IconButton>
+                  <IconButton
+                    aria-label="open website"
+                    onClick={() => window.open(restaurant.websiteUrl)}
+                  >
+                    <HomeIcon />
+                  </IconButton>
+                  <IconButton
+                    onClick={handleExpandClick}
+                    aria-expanded={expanded}
+                    aria-label="show more"
+                  >
+                    <ExpandMoreIcon />
+                  </IconButton>
+                </CardActions>
+                <Collapse in={expanded} timeout="auto" unmountOnExit>
+                  <CardContent>
+                    <Typography paragraph>Open Hours</Typography>
+                    {Object.keys(restaurant.openHours).map((key) => (
+                      <div key={key}>
+                        {key} : {restaurant.openHours[key]}
+                      </div>
+                    ))}
+                  </CardContent>
+                </Collapse>
+              </Card>
+            </ListItem>
+          ))}
+        </List>
 
-      <br/>
-      {selectedRestaurants.map((restaurant, index) => (
-        <Stack
-          key={restaurant.name}
-          direction="row"
-          spacing={2}
-          sx={{
-            mb: 2,
-            p: 2,
-            bgcolor: index === votedIndex && voted ? "#e6ffe6" : "#f0f0f0",
-          }}
-        >
-          <Box sx={{ flexGrow: 1 }}>
-            <Typography variant="h6">{restaurant.name}</Typography>
-            <Typography>{restaurant.detailIntroduction}</Typography>
-            <Typography>{`${restaurant.location} - ${restaurant.priceRange}`}</Typography>
-            {voted && <Typography>Votes: {restaurant.count}</Typography>}
-          </Box>
-          {voteId && !status && (
+        <Box display="flex" justifyContent="center" alignItems="center">
+          <Stack direction="row" spacing={1}>
+            {voteId && !status && (
+              <Button onClick={handleVote} variant="contained" color="success">
+                {voted ? "Voted" : "Confirm Vote"}
+              </Button>
+            )}
+            {voteId && !status && (
+              <Button variant="contained" color="error" onClick={endVote}>
+                End now
+              </Button>
+            )}
+          </Stack>
+        </Box>
+
+        {voteId && link && (
+          <Box display="flex" alignItems="center">
+            <TextField
+              label="Share this link with friends"
+              variant="outlined"
+              fullWidth
+              value={`${window.location.origin}/authenticated/voting?voteId=${voteId}`}
+              margin="normal"
+            />
+
             <Button
               variant="contained"
-              onClick={() => incrementVote(index)}
-              disabled={voted}
+              color="primary"
+              onClick={copyToClipboard}
+              sx={{ marginLeft: "10px" }}
             >
-              {index === votedIndex ? "Voted" : "Vote"}
+              Copy
             </Button>
-          )}
-        </Stack>
-      ))}
-
-      {voteId && !status && (
-        <Button onClick={handleVote} variant="contained" color="success">
-          {voted ? "Voted" : "Confirm Vote"}
-        </Button>
-      )}
-
-      {voteId && (
-        <p>
-          Share this link:{" "}
-          <a
-            href={`${window.location.origin}/voting?voteId=${voteId}`}
-          >{`${window.location.origin}/voting?voteId=${voteId}`}</a>
-        </p>
-      )}
-    </Container>
+          </Box>
+        )}
+      </Container>
     </Box>
   );
 };

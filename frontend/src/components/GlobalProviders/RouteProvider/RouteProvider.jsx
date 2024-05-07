@@ -101,7 +101,7 @@ const RouteProvider = () => {
                     display="flex"
                     justifyContent="center"
                     alignItems="center"
-                    minHeight="30vh"
+                    minHeight="10vh"
                   >
                     <Stack direction="row" spacing={2}>
                       <GoBackButton />
@@ -126,7 +126,7 @@ const RouteProvider = () => {
                     display="flex"
                     justifyContent="center"
                     alignItems="center"
-                    minHeight="30vh"
+                    minHeight="10vh"
                   >
                     <Stack direction="row" spacing={2}>
                       <GoBackButton />
@@ -151,7 +151,7 @@ const RouteProvider = () => {
                     display="flex"
                     justifyContent="center"
                     alignItems="center"
-                    minHeight="30vh"
+                    minHeight="10vh"
                   >
                     <Stack direction="row" spacing={2}>
                       <GoBackButton />
@@ -165,19 +165,29 @@ const RouteProvider = () => {
             }
           />
           <Route
-            path="/voting"
+            path="/authenticated/voting"
             element={
               isAuthenticated ? (
-                <> 
+                <>
                   <AuthenticatedProvider />
-                  <Voting /> 
+                  <Voting />
+                  <Box
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    minHeight="10vh"
+                  >
+                    <Stack direction="row" spacing={2}>
+                      <GoBackButton />
+                      <GoForwardButton />
+                    </Stack>
+                  </Box>
                 </>
               ) : (
                 <Navigate to="/auth" />
               )
             }
           />
-
         </Routes>
       </BrowserRouter>
     </RouteContext.Provider>

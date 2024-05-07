@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useTheme } from '@mui/material/styles';
+import { useTheme } from "@mui/material/styles";
 import { useAPI, useRoute } from "../GlobalProviders";
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
@@ -13,8 +13,6 @@ import Box from "@mui/material/Box";
 import LinearProgress from "@mui/material/LinearProgress";
 
 import RestaurantElement from "./RestaurantElement";
-
-
 
 export const RestaurantRecommendations = () => {
   const { location } = useParams(); // Extract the location parameter from the current route
@@ -80,7 +78,9 @@ export const RestaurantRecommendations = () => {
   //link to voting page
   const handleStartVote = () => {
     const selectedRestaurants = checked.map((index) => recommendations[index]);
-    navigate("/voting", { state: JSON.stringify(selectedRestaurants) }); // 使用 navigate 进行跳转并传递状态
+    navigate("/authenticated/voting", {
+      state: JSON.stringify(selectedRestaurants),
+    }); // 使用 navigate 进行跳转并传递状态
   };
   /**
    * Capitalizes the first letter of each word in a string.
@@ -124,36 +124,28 @@ export const RestaurantRecommendations = () => {
 
   if (isLoading) {
     return (
-      <Box 
-        pt={10} 
+      <Box
+        pt={10}
         pb={10}
         display="flex"
         alignItems="center"
         justifyContent="center"
-        sx = {{
-          background: theme.palette.mode === 'light' ? "linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.99)), url('/landing/restaurant.png')" : theme.palette.background.default,
-        }}
       >
         <Container maxWidth="md">
           <Typography variant="h4" component="h1" gutterBottom>
             Restaurant Recommendations for {capitalizeEveryWord(location)}
           </Typography>
-          <br/>
-          <br/>
+          <br />
+          <br />
           <h4>Loading restaurant details ...</h4>
           <LinearProgress />
-          </Container>
+        </Container>
       </Box>
     );
   }
 
   return (
-    <Box 
-      pt={10}
-      pb={10}
-      sx = {{
-        background: theme.palette.mode === 'light' ? "linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.99)), url('/landing/restaurant.png')" : theme.palette.background.default,
-    }}>
+    <Box pt={10} pb={10}>
       <Container maxWidth="md">
         <Typography variant="h4" component="h1" gutterBottom>
           Restaurant Recommendations for {capitalizeEveryWord(location)}
@@ -180,14 +172,9 @@ export const RestaurantRecommendations = () => {
         <Button
           variant="contained"
           disableElevation
-          // onClick={() => {
-          //   checked.sort().map((index) => {
-          //     console.log(index, recommendations[index].name);
-          //   });
-          // }}
           onClick={handleStartVote}
         >
-          Start a vote (currently just log to console)
+          Start a vote
         </Button>
       </Container>
     </Box>

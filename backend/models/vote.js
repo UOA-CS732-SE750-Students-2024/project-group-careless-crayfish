@@ -8,13 +8,18 @@ const voteSchema = new mongoose.Schema({
       location: { type: String, required: true },
       name: { type: String, required: true },
       priceRange: { type: String, required: true },
+      openHours: { type: Object, required: true },
+      mapUrl: { type: String, required: true },
+      imageUrl: { type: String, required: true },
       count: { type: Number, required: true, default: 0 },
+      websiteUrl: { type: String, required: true },
     },
   ],
-  expires: { type: String },
+  startDate: { type: Date, required: true },
+  endDate: { type: Date, required: true },
   status: { type: Boolean },
+  userId: { type: String, require: true },
 });
-voteSchema.index({ endDate: -1 }); // create an index for getting votes backwards by end date.
 
 const Vote = mongoose.model("Vote", voteSchema, "votes");
 module.exports = Vote;

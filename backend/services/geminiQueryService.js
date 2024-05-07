@@ -10,7 +10,7 @@ async function fetchRestaurantRecommendations(location, ageGroup, cuisine) {
   const headers = {
     "Content-Type": "application/json",
   };
-  
+
   location = location ? location : "University Of Auckland";
 
   const queryStr = `recommend me 5 ${cuisine} restaurants around ${location} for ${ageGroup} age group, return it in JSON format [(name, location, priceRange, websiteUrl, detailIntroduction, openHours)]`;
@@ -69,11 +69,11 @@ async function getAIComment({ userId, voteId, comment }) {
   // eslint-disable-next-line no-undef
   const apiKey = process.env.API_KEY || "";
 
-
   const headers = {
     "Content-Type": "application/json",
   };
 
+  console.log(comment);
   const body = {
     contents: [
       {

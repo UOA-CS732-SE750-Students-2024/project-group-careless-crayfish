@@ -89,7 +89,6 @@ const RestaurantElement = ({ restaurant }) => {
           <Collapse in={expanded} timeout="auto" unmountOnExit>
             <CardContent>
               <Typography paragraph>Open Hours</Typography>
-              <Typography paragraph>
                 {
                   Object.keys(restaurant.openHours).map((key) => (
                     <div key={key}>
@@ -98,7 +97,6 @@ const RestaurantElement = ({ restaurant }) => {
                   ))
                 
                 }
-              </Typography>
             </CardContent>
           </Collapse>
         </Card>
