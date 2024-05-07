@@ -70,14 +70,15 @@ router.post("/:userId", async (req, res) => {
 
 /**
  * @swagger
- * /api/votes/{userId}:
+ * /api/votes/{voteId}:
  *   get:
  *     tags:
  *       - Vote Controller
- *     summary: Get all votes by userId
+ *     summary: Get vote by voteId
+ *     description: Retrieve detailed information of a vote by its ID.
  *     parameters:
  *       - in: path
- *         name: userId
+ *         name: voteId
  *         required: true
  *         schema:
  *           type: string
@@ -89,19 +90,19 @@ router.post("/:userId", async (req, res) => {
  *       500:
  *         description: Internal server error, unable to retrieve vote.
  */
-router.get("/:userId", async (req, res) => {
+router.get("/:voteId", async (req, res) => {
   try {
-    const { userId } = req.params;
-    const votes = await voteService.getAllVotes(userId);
-    if (!votes) {
+    const { voteId } = req.params;
+    const vote = await voteService.getVote(voteId);
+    if (!vote) {
       return res
         .status(200)
         .json({ code: 40400, data: null, message: "not found" });
     }
-    return res.json(votes);
+    return res.json(vote);
   } catch (error) {
     logger.error(error);
-    res.status(500).json(error);
+    return res.status(500).json({ code: 5000, data: null, msg: error.message });
   }
 });
 /**

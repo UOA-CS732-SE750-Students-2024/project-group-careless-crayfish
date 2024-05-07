@@ -78,7 +78,7 @@ export const RestaurantRecommendations = () => {
   //link to voting page
   const handleStartVote = () => {
     const selectedRestaurants = checked.map((index) => recommendations[index]);
-    navigate("/authenticated/voting", {
+    navigate("/voting", {
       state: JSON.stringify(selectedRestaurants),
     }); // 使用 navigate 进行跳转并传递状态
   };

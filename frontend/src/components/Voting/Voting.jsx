@@ -179,7 +179,6 @@ export const Voting = () => {
       startDate: new Date(),
     };
 
-    const currUserId = user ? user.userId : "anonymous";
     fetch(
       `${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/votes/${user.userId}`,
       {
@@ -193,7 +192,7 @@ export const Voting = () => {
       .then((res) => res.json())
       .then((res) => {
         if (res.code === 20000) {
-          navigate(`/authenticated/voting?voteId=${res.data._id}`);
+          navigate(`/voting?voteId=${res.data._id}`);
           showMessage("Vote created successfully!", "success");
         } else {
           showMessage(res.data, "error");
@@ -379,7 +378,7 @@ export const Voting = () => {
               label="Share this link with friends"
               variant="outlined"
               fullWidth
-              value={`${window.location.origin}/authenticated/voting?voteId=${voteId}`}
+              value={`${window.location.origin}/voting?voteId=${voteId}`}
               margin="normal"
             />
 

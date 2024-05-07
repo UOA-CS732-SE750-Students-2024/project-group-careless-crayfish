@@ -8,7 +8,6 @@ import {
   useNavigate,
 } from "react-router-dom";
 import { useAuth } from "../AuthProvider";
-import { AuthenticatedProvider } from "@frontend-ui/components/Authenticated";
 import AuthPageProvider from "@frontend-ui/components/AuthPage/AuthPageProvider";
 import {
   RestaurantRecommendations,
@@ -20,6 +19,7 @@ import { CommentDialogPaginated } from "@frontend-ui/components/Comment/";
 import { Button, Container, Grid, Stack } from "@mui/material";
 import { Profile } from "@frontend-ui/components/Profile/Profile";
 import { Box } from "@mui/system";
+import { HeaderProvider } from "@frontend-ui/components/Header";
 const RouteContext = createContext({});
 
 export const useRoute = () => useContext(RouteContext);
@@ -80,7 +80,7 @@ const RouteProvider = () => {
             element={
               isAuthenticated ? (
                 <>
-                  <AuthenticatedProvider />
+                  <HeaderProvider />
 
                   <Landing />
                 </>
@@ -95,7 +95,7 @@ const RouteProvider = () => {
             element={
               isAuthenticated ? (
                 <>
-                  <AuthenticatedProvider />
+                  <HeaderProvider />
                   <RestaurantOptions />
                   <Box
                     display="flex"
@@ -120,7 +120,7 @@ const RouteProvider = () => {
             element={
               isAuthenticated ? (
                 <>
-                  <AuthenticatedProvider />
+                  <HeaderProvider />
                   <RestaurantRecommendations />
                   <Box
                     display="flex"
@@ -145,7 +145,7 @@ const RouteProvider = () => {
             element={
               isAuthenticated ? (
                 <>
-                  <AuthenticatedProvider />
+                  <HeaderProvider />
                   <Profile />
                   <Box
                     display="flex"
@@ -165,27 +165,23 @@ const RouteProvider = () => {
             }
           />
           <Route
-            path="/authenticated/voting"
+            path="/voting"
             element={
-              isAuthenticated ? (
-                <>
-                  <AuthenticatedProvider />
-                  <Voting />
-                  <Box
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                    minHeight="10vh"
-                  >
-                    <Stack direction="row" spacing={2}>
-                      <GoBackButton />
-                      <GoForwardButton />
-                    </Stack>
-                  </Box>
-                </>
-              ) : (
-                <Navigate to="/auth" />
-              )
+              <>
+                <HeaderProvider />
+                <Voting />
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  minHeight="10vh"
+                >
+                  <Stack direction="row" spacing={2}>
+                    <GoBackButton />
+                    <GoForwardButton />
+                  </Stack>
+                </Box>
+              </>
             }
           />
         </Routes>

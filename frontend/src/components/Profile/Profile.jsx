@@ -80,6 +80,13 @@ export const Profile = () => {
     setCurrVoteId(voteId);
   };
 
+  if (!user) {
+    return (
+      <Typography variant="h4" component="h1" gutterBottom>
+        You need to login to see this page.
+      </Typography>
+    );
+  }
   return (
     <Box mt={10} textAlign="center">
       <Container maxWidth="md">
