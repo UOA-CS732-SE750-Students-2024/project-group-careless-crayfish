@@ -61,7 +61,6 @@ export const CommentDialogPaginated = ({
       const response = await get(
         `${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/comments/${userId}/${voteId}?page=${lastPageIndex}&limit=${limit}`,
       );
-      console.log(response.data);
       setPage(lastPageIndex);
       setHasMore(true);
       setComments(response.data);
@@ -133,7 +132,6 @@ export const CommentDialogPaginated = ({
         { isAI: false, comment: input },
       );
 
-      console.log(response);
       const comment = response.data.comment;
 
       if (isAICheckbox) {
