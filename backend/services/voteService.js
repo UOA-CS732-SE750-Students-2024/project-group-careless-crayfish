@@ -1,17 +1,45 @@
-const voteDao = require("../daos/voteDao");
+// services/voteService.js
+const voteDao = require("../daos/voteDao.js");
 const logger = require("../utils/logger.js");
 
-async function getVotesBy({ userId }, page, limit) {
-  const votes = await voteDao.getVotesBy({ userId }, page, limit);
-  return votes;
+async function createVote({
+  title,
+  recommend,
+  userId,
+  startDate,
+  endDate,
+  status,
+}) {
+  return await voteDao.createVote({
+    title,
+    recommend,
+    userId,
+    startDate,
+    endDate,
+    status,
+  });
 }
 
-async function getTotalNumRecords({ userId }) {
-  const totalNumRecords = await voteDao.getTotalNumRecords({ userId });
-  logger.info(
-    `got total number of votes for userId=${userId} totalNumRecords = ${totalNumRecords}`
-  );
-
-  return totalNumRecords;
+async function getAllVotes(userId) {
+  logger.info(`getting all votes for userId=${userId}`);
+  return await voteDao.getAllVotes(userId);
 }
-module.exports = { getVotesBy, getTotalNumRecords };
+
+async function getVote(id) {
+  return await voteDao.getVoteById(id);
+}
+
+async function updateVote(id, recommend) {
+  return await voteDao.updateVote(id, recommend);
+}
+
+async function endVote(id, status) {
+  return await voteDao.endVote(id, status);
+}
+module.exports = {
+  createVote,
+  getVote,
+  updateVote,
+  endVote,
+  getAllVotes,
+};

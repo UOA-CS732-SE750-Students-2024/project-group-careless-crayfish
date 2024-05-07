@@ -17,11 +17,15 @@ import {
   FormControlLabel,
   Grid,
   IconButton,
+  List,
+  ListItem,
   Tooltip,
   Typography,
 } from "@mui/material";
+import MapIcon from "@mui/icons-material/Map";
+import HomeIcon from "@mui/icons-material/Home";
 import React, { useEffect, useState } from "react";
-import { useAPI, useRoute } from "../GlobalProviders";
+import { useAPI, useAuth, useRoute } from "../GlobalProviders";
 import { v4 } from "uuid";
 import _ from "lodash";
 import SmartToyIcon from "@mui/icons-material/SmartToy";
@@ -31,214 +35,144 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CommentIcon from "@mui/icons-material/Comment";
 
-const vr = {
-  userId: "106433914132318818488",
-  votes: [
-    {
-      voteId: "bla",
-      winner: {
-        votingItemId: "uid",
-        occurence: 2,
-        name: "winning restaurant",
-        description: "bla",
-        pictureUrl: "",
-      },
-      candidates: [
-        {
-          votingItemId: "uid",
-          occurence: 2,
-          name: "restaurant 1",
-          description: "bla",
-          pictureUrl: "",
-        },
-        {
-          votingItemId: "uid",
-          occurence: 5,
-          name: "restaurant 2",
-          description: "bla",
-          pictureUrl: "",
-        },
-        {
-          votingItemId: "uid",
-          occurence: 10,
-          name: "restaurant 3",
-          description: "bla",
-          pictureUrl: "",
-        },
-      ],
-      complete_date: "ISO 8601", // 2024-04-23T07:55:26Z
-    },
-    {
-      voteId: "blabla",
-      winner: {
-        votingItemId: "uid",
-        occurence: 2,
-        name: "winning restaurant 2",
-        description: "bla",
-        pictureUrl: "",
-      },
-      candidates: [
-        {
-          votingItemId: "uid",
-          occurence: 2,
-          name: "restaurant 1",
-          description: "bla",
-          pictureUrl: "",
-        },
-        {
-          votingItemId: "uid",
-          occurence: 5,
-          name: "restaurant 2",
-          description: "bla",
-          pictureUrl: "",
-        },
-      ],
-      complete_date: "ISO 8601", // 2024-04-23T07:55:26Z
-    },
-  ],
-};
-
 export const Profile = () => {
   const { pageTitle, setPageTitle } = useRoute();
   const { get } = useAPI();
+  const { user } = useAuth();
+
   useEffect(() => {
     setPageTitle("Profile");
   });
   const [votes, setVotes] = useState([]);
-
-  const [page, setPage] = useState(0);
-  const [hasMore, setHasMore] = useState(true);
-  const [isLoadingVotes, setIsLoadingComments] = useState(false);
+  const [expanded, setExpanded] = useState([]);
+  const handleExpandClick = (index) => {
+    setExpanded((prevExpanded) => {
+      const newExpanded = [...prevExpanded];
+      newExpanded[index] = !newExpanded[index];
+      return newExpanded;
+    });
+  };
+  const [isLoadingVotes, setIsLoadingVotes] = useState(false);
   const limit = 5;
-  const handleHasMoreButtonClick = () => {
-    fetchNextVotes(page);
-  };
 
-  const userId = vr.userId;
-  const fetchLatestVotes = async () => {
+  const fetchAllVotes = async () => {
     try {
-      setIsLoadingComments(true);
-      const totalNumRecordsResp = await get(
-        `${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/votes/totalNumRecords/${userId}`,
-      );
+      setIsLoadingVotes(true);
 
-      const lastPageIndex = Number.isInteger(totalNumRecordsResp.data / limit)
-        ? totalNumRecordsResp.data / limit - 1
-        : Math.floor(totalNumRecordsResp.data / limit);
       const response = await get(
-        `${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/votes/${userId}?page=${lastPageIndex}&limit=${limit}`,
+        `${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/votes/${user.userId}`,
       );
-      setPage(lastPageIndex);
-      setHasMore(true);
       setVotes(response.data);
+      setExpanded(new Array(response.data.length).fill(false));
     } finally {
-      setIsLoadingComments(false);
+      setIsLoadingVotes(false);
     }
   };
 
-  const fetchNextVotes = async (page) => {
-    try {
-      const nextPage = page + 1;
-      setPage(nextPage);
-
-      if (nextPage <= 0) {
-        setHasMore(false);
-        return;
-      }
-
-      setIsLoadingComments(true);
-
-      const response = await get(
-        `${import.meta.env.VITE_BACKEND_API_BASE_URL}/api/votes/${userId}?page=${nextPage}&limit=${limit}`,
-      );
-
-      if (response && response.data.length > 0) {
-        const map = new Map(
-          [...response.data, ...votes].map((obj) => [obj._id, obj]),
-        );
-        const deduplicatedComments = Array.from(map.values());
-        setVotes(deduplicatedComments);
-        setHasMore(true);
-      }
-    } finally {
-      setIsLoadingComments(false);
-    }
-  };
   useEffect(() => {
-    fetchLatestVotes();
+    fetchAllVotes();
   }, []);
   const [openComments, setOpenComments] = useState(false);
-  const [expanded, setExpanded] = useState({});
   const [currVoteId, setCurrVoteId] = useState("");
-  const handleExpandClick = (voteId) => {
-    setExpanded((prevExpanded) => ({
-      ...prevExpanded,
-      [voteId]: !prevExpanded[voteId],
-    }));
-  };
 
   const handleToggleCommentsDialog = (voteId) => {
     setOpenComments(!openComments);
     setCurrVoteId(voteId);
   };
 
+  if (!user) {
+    return (
+      <Typography variant="h4" component="h1" gutterBottom>
+        You need to login to see this page.
+      </Typography>
+    );
+  }
   return (
     <Box mt={10} textAlign="center">
       <Container maxWidth="md">
-        {vr.votes.map((vote) => (
-          <Card key={vote.voteId + v4()} sx={{ marginBottom: 2 }}>
-            <CardHeader
-              title={vote.winner.name}
-              subheader={`${vote.candidates.length} candidates`}
-            />
+        <Typography variant="h4" component="h1" gutterBottom>
+          Voting history for {user.userName}
+        </Typography>
+        {votes.map((vote, index) => {
+          const recommend = vote.recommend;
 
-            <CardContent>
-              <Typography variant="body2" color="text.secondary">
-                {vote.winner.description}
+          return (
+            <List key={vote._id + v4()}>
+              <Typography variant="h4" component="h1" gutterBottom>
+                Vote title: {vote.title}
               </Typography>
-            </CardContent>
-            <CardActions disableSpacing>
-              <Tooltip title={"Open votes dialog"}>
-                <IconButton
-                  variant="contained"
-                  color="primary"
-                  onClick={() => handleToggleCommentsDialog(vote.voteId)}
+              {recommend.map((restaurant, idx) => (
+                <ListItem
+                  sx={{ paddingLeft: 0, paddingRight: 0 }}
+                  key={restaurant.name + v4()}
                 >
-                  <CommentIcon />
-                </IconButton>
-              </Tooltip>
-              <IconButton
-                onClick={() => handleExpandClick(vote.voteId)}
-                aria-expanded={expanded[vote.voteId] || false}
-                aria-label="show more"
-              >
-                <ExpandMoreIcon />
-              </IconButton>
-            </CardActions>
-            <Collapse in={expanded[vote.voteId]} timeout="auto" unmountOnExit>
-              <CardContent>
-                {vote.candidates.map((candidate) => (
-                  <Typography key={candidate.votingItem1Id + v4()} paragraph>
-                    {candidate.name}
-                  </Typography>
-                ))}
-              </CardContent>
-            </Collapse>
-          </Card>
-        ))}
-        <Box textAlign="center">
-          {hasMore ? (
-            <Button onClick={handleHasMoreButtonClick}>
-              {isLoadingVotes ? <CircularProgress /> : "Previous Page"}
-            </Button>
-          ) : (
-            <Typography>No more votes</Typography>
-          )}
-        </Box>
+                  <Card>
+                    <CardHeader
+                      title={restaurant.name}
+                      subheader={restaurant.location}
+                    />
+                    <CardMedia
+                      component="img"
+                      height="200"
+                      image={restaurant.imageUrl}
+                      alt={restaurant.name}
+                    />
+                    <CardContent>
+                      <Typography variant="body2" color="text.secondary">
+                        {restaurant.detailIntroduction}
+                      </Typography>
+                    </CardContent>
+                    <CardActions disableSpacing>
+                      <Tooltip title={"Open votes dialog"}>
+                        <IconButton
+                          variant="contained"
+                          color="primary"
+                          onClick={() => handleToggleCommentsDialog(vote._id)}
+                        >
+                          <CommentIcon />
+                        </IconButton>
+                      </Tooltip>
+                      <IconButton
+                        aria-label="open map"
+                        onClick={() => window.open(restaurant.mapUrl)}
+                      >
+                        <MapIcon />
+                      </IconButton>
+                      <IconButton
+                        aria-label="open website"
+                        onClick={() => window.open(restaurant.websiteUrl)}
+                      >
+                        <HomeIcon />
+                      </IconButton>
+                      <IconButton
+                        onClick={() => handleExpandClick(index)}
+                        aria-expanded={expanded[index]}
+                        aria-label="show more"
+                      >
+                        <ExpandMoreIcon />
+                      </IconButton>
+                    </CardActions>
+                    <Collapse in={expanded[index]} timeout="auto" unmountOnExit>
+                      <CardContent>
+                        <Typography paragraph>Open Hours</Typography>
+                        {Object.keys(restaurant.openHours).map((key) => (
+                          <div key={key}>
+                            {key} : {restaurant.openHours[key]}
+                          </div>
+                        ))}
+                      </CardContent>
+                    </Collapse>
+                  </Card>
+                </ListItem>
+              ))}
+            </List>
+          );
+        })}
+
         <CommentDialogPaginated
           openComments={openComments}
           setOpenComments={setOpenComments}
-          userId={userId}
+          userId={user.userId}
           voteId={currVoteId}
         />
       </Container>

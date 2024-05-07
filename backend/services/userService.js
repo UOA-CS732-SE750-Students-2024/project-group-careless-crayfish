@@ -1,4 +1,5 @@
 const userDao = require("../daos/userDao.js");
+const voteService = require("../services/voteService.js");
 const logger = require("../utils/logger.js");
 
 async function createUser({ userName, email, userId, imageUrl }) {
@@ -11,6 +12,10 @@ async function createUser({ userName, email, userId, imageUrl }) {
   return user;
 }
 
+async function getAllVotes(userId) {
+  logger.info(`Getting all votes for userId=${userId}`);
+  return voteService.getAllVotes(userId);
+}
 async function getUserById(userId) {
   logger.info(`Getting user by userId=${userId}`);
   const user = await userDao.getUserById(userId);
@@ -27,5 +32,6 @@ async function getUserById(userId) {
 module.exports = {
   createUser,
   getUserById,
+  getAllVotes,
   // Export other functions
 };

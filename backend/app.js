@@ -6,7 +6,7 @@ const logger = require("./utils/logger.js");
 
 var userController = require("./controllers/userControllers");
 var recommendationController = require("./controllers/recommendationController");
-var voteController = require("./controllers/voteController");
+var voteController = require("./controllers/voteControllers");
 var commentController = require("./controllers/commentController");
 
 const { connect } = require("./daos/mongodbClient");

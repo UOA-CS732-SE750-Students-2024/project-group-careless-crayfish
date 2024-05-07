@@ -1,27 +1,25 @@
 const mongoose = require("mongoose");
 
 const voteSchema = new mongoose.Schema({
-  userId: { type: String, required: true },
-  voteId: { type: String, required: true },
-  votingType: { type: String, required: true, enum: ["RESTAURANT"] },
+  title: { type: String, required: true },
+  recommend: [
+    {
+      detailIntroduction: { type: String, required: true },
+      location: { type: String, required: true },
+      name: { type: String, required: true },
+      priceRange: { type: String, required: true },
+      openHours: { type: Object, required: true },
+      mapUrl: { type: String, required: true },
+      imageUrl: { type: String, required: true },
+      count: { type: Number, required: true, default: 0 },
+      websiteUrl: { type: String, required: true },
+    },
+  ],
   startDate: { type: Date, required: true },
   endDate: { type: Date, required: true },
-  candidates: {
-    type: Array,
-    votingItem1Id: String,
-    description: String,
-    required: true,
-    pictureUrl: String,
-    occurence: Int16Array,
-    default: [],
-  },
-  comments: {
-    userId: { type: String, required: true },
-    isAI: { type: Boolean },
-    comment: { type: String, required: true },
-    default: [],
-  },
+  status: { type: Boolean },
+  userId: { type: String, require: true },
 });
-voteSchema.index({ endDate: -1 }); // create an index for getting votes backwards by end date.
 
-module.exports = mongoose.model("Vote", voteSchema);
+const Vote = mongoose.model("Vote", voteSchema, "votes");
+module.exports = Vote;
