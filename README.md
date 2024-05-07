@@ -1,4 +1,6 @@
-# COMPSCI 732 / SOFTENG 750 project - Team Careless Crayfish
+# COMPSCI 732 / SOFTENG 750 Project - Team Careless Crayfish
+
+---
 
 Team members are:
 
@@ -8,6 +10,46 @@ Team members are:
 - Joe Zhao
 - Yangcheng Zhou
 - Mark Zhu
+
+---
+
+# **DineFinder** -- A web application designed to simplify the process of organizing social gatherings after work or school.
+
+## Overview
+
+**DineFinder** is an innovative application designed to streamline the organization of social gatherings, focusing on enhancing dining experiences with friends and colleagues. This solution integrates venue recommendations and voting mechanisms within a single, user-friendly interface.
+
+### Purpose
+
+The application simplifies the process of deciding where to go for meals or social outings after work or school. By combining location-based services and social features, it offers a seamless experience that facilitates social interactions and efficient planning.
+
+### Development Focus
+
+Our project is developed for both mobile and web platforms, targeting users who seek a convenient way to organize gatherings. It features:
+
+- **Location-Based Recommendations:** Suggests venues based on the user's current location and preferences.
+- **Voting System:** Allows groups to vote on preferred venues, democratizing the decision-making process.
+- **User-Friendly Interface:** Ensures a cohesive and intuitive user experience across all devices.
+
+---
+
+# Features Overview
+
+Below is a detailed table categorizing the essential and additional features of our web application designed to streamline organizing social gatherings after work or school. Each feature is listed along with a detailed description.
+
+## Feature Details
+
+| Feature                          | Description                                                                                                                                                                                                                                             |
+|----------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|                                  |                                                                                                                                                                                                                                                         |
+| **Recommendations**              | Utilize GPS to determine user location; allow users to select party type (e.g., food, shopping, natural scenery, exhibition) and input details like number of people, age range, and expected time; recommend appropriate venues based on these inputs. |
+| **Votes**                        | Enable voting on recommended locations; set a deadline for votes; count votes to select the final gathering place; display voting results for clarity.                                                                                                  |
+| **Support Sign-up & Login**      | Enable login via third-party accounts such as Google or Microsoft for ease.                                                                                                                                                                             |
+| **Keep User Status**             | Allow users to resume previous activities upon re-login and retain state and activity history like voting records and preferences.                                                                                                                      |
+| **Search Bar for History Votes** | Permit users to search and review past voting records and activity histories, refining searches by date and location.                                                                                                                                   |
+| **Community Platform**           | Create a community platform for users to share experiences, discuss venues, and provide post-event feedback. Allow users to post voting links in the community.                                                                                         |
+
+---
 
 # Useful commands
 
@@ -30,84 +72,91 @@ Team members are:
 1. `npm run dev`: start frontend react service(starts vite at `localhost:5173`)
 1. `npm test`: start unit test
 
-# How to set up local development environment
+---
 
-## Install nvm
+# Important: How to set up local development environment
 
+## 1. Install nvm
+
+### Windows
+Download the Zip (nvm-noinstall.zip)
+[HERE](https://github.com/coreybutler/nvm-windows/releases)
+
+### Mac
 ```bash
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 ```
 
-## Provision nodejs
+## 2. Provision nodejs
 
 ```bash
 nvm install 20.11.1
 nvm use
 ```
 
-## Install nodemon globally
+## 3. Install nodemon globally
 
 ```bash
 npm install -g nodemon
 ```
 
-## setup frontend react project
+## 4. setup frontend react project
 
-```
+```bash
 cd ./frontend
 npm install
 ```
 
-## setup backend node project
+## 5. setup backend node project
 
-```
+```bash
 cd ./backend
 npm install
 ```
 
-## Install Docker Desktop
+## 6. Install Docker Desktop
 
 ### Windows
 
-follow the instruction [HERE](https://docs.docker.com/desktop/install/windows-install/#:~:text=Download%20the%20installer%20using%20the,Program%20Files%5CDocker%5CDocker%20)
+Follow the instruction [HERE](https://docs.docker.com/desktop/install/windows-install/#:~:text=Download%20the%20installer%20using%20the,Program%20Files%5CDocker%5CDocker%20)
 
 ### Mac
 
-```
+```bash
 brew install docker
 ```
+---
 
-# How to run frontend react, backend node, mongodb in dev mode or as docker containers.
+# How to run frontend react, backend node, mongodb in dev mode or as docker containers
 
-## Run mongodb & wiremock
+## 1. Run mongodb & wiremock
 
 Run this from Git Bash if you use Windows
 
-```
-# In a new shell, and keep this shell opened
+```bash
+# In a new shell, and keep this shell opened 
 cd ./backend
 npm run start:dep
-
-#verify the env
-Open http://localhost:8080/db/admin/ in your browswer, and login with dev/dev
 ```
+#Verify the env,
+Open http://localhost:8080/db/admin/ in your browser, and login with dev/dev
 
-## Run frontend react
+## 2. Run frontend react
 
-```
+```bash
 cd ./frontend
 npm run dev
 ```
 
-## Run backend node
+## 3. Run backend node
 
-```
+```bash
 cd ./backend
-npm start(starts node server at `localhost:3000`)
+npm start
+# (starts node server at `localhost:3000`)
 ```
 
-# MongoDB
-
+## MongoDB
 ## Login to MongoDB
 
 1. default username: devroot
@@ -118,9 +167,9 @@ npm start(starts node server at `localhost:3000`)
 
 http://localhost:8080/db/admin/
 
-username: `dev`, password:`dev`
+Username: `dev`, Password:`dev`
 
-# Build Docker Image
+# 4. Build Docker Image
 
 ## Build the image
 
@@ -128,13 +177,13 @@ Run the following command under the root directory which builds a docker image `
 
 Run this from Git Bash if you use Windows
 
-```
+```bash
 sh scripts/build.sh
 ```
 
 ## Run the image
 
-```
+```bash
 docker run -p 8001:3000 -p 8000:5000 -d cs732-careless-crayfish
 ```
 
@@ -144,19 +193,21 @@ docker run -p 8001:3000 -p 8000:5000 -d cs732-careless-crayfish
 2. Visit the frontend: http://localhost:8000/
 3. Visit mongodb admin portal: http://localhost:8080 with username: dev, password: dev
 
+---
+
 # How to test the code
 
-## frontend unit tests
+## Frontend unit tests
 
 1. `cd ./frontend`
 2. `npm test`
 
-## backend unit tests
+## Backend unit tests
 
 1. `cd ./backend`
 2. `npm test`
 
-## backend api integration tests
+## Backend api integration tests
 
 1. spin up backend node.
 2. spin up mongodb database docker container
@@ -171,12 +222,12 @@ You can also manually test APIs with swagger UI
 1. go to http://localhost:3000/api/api-docs
 2. view and call apis for testing
 
-## testing AWS CDK infrastructure as code
+## Testing AWS CDK infrastructure as code
 
 We currently put dev and prod stacks all in one account but you can test deploying the stack with your own suffix.
 You need to reachout to Mark(mzhu929) for giving you permission to access AWS console and deploying stacks as this is his personal AWS account.
 
-```
+```bash
 cd ./infrastructure
 npm run deploy-dev
 ```
@@ -185,15 +236,15 @@ Note that `npm run deploy-dev` and `npm run deploy-prod` are actually deploying 
 
 ### install dependency (Mac)
 
-```
+```bash
 brew install arc
 ```
 
-## httpyac test example
+## Httpyac test example
 
 Follow the instruction from https://httpyac.github.io/guide/examples.html
 
-## wiremock
+## Wiremock
 
 Put your mock files under `deployment/wiremock/__files` and `deployment/wiremock/mappings`
 
@@ -206,15 +257,15 @@ act # run all github actions
 act -j build-test-backend # run a specific github action
 ```
 
-## browser end-to-end tests
+## Browser end-to-end tests
 
-### note that we support only `chrome` at this time
+### Note that we support only `Chrome` at this time
 
-### prerequisite
+### Prerequisite
 
 install playwright and chromium
 
-```
+```bash
 npx playwright install --with-deps chromium
 ```
 
@@ -226,6 +277,8 @@ under project root folder:
 2. `npm run test:e2e`
 
 If you raise a pr, Github Actions will trigger with the `./github/workflow/ci.yml` workflow which runs all automated tests
+
+---
 
 # Deployment
 
