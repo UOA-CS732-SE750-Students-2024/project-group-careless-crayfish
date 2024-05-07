@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FormControl, InputLabel, Select, MenuItem, TextField, Button, Container, Box, Typography } from '@mui/material';
+import { FormControl, InputLabel, Select, MenuItem, TextField, Button, Container, Box, Typography, Stack } from '@mui/material';
 import { useRoute } from '../GlobalProviders';
 import { useTheme } from '@mui/material/styles';
+
+import PlaceIcon from '@mui/icons-material/Place';
 
 export const RestaurantOptions = () => {
   const [ageGroup, setAgeGroup] = useState("");
@@ -11,6 +13,27 @@ export const RestaurantOptions = () => {
   const navigateTo = useNavigate();
   const { pageTitle, setPageTitle } = useRoute();
   const theme = useTheme();
+
+  const [userLocation, setUserLocation] = useState(null);
+
+  const getLocation = () => {
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setUserLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+          setLocation(`location (${position.coords.latitude}, ${position.coords.longitude})`);
+        },
+        (error) => {
+          console.error('Error getting location:', error.message);
+        }
+      );
+    } else {
+      console.error('Geolocation is not supported by this browser.');
+    }
+  };
 
   useEffect(() => {
     setPageTitle("Select Dining Preferences");
@@ -80,13 +103,21 @@ export const RestaurantOptions = () => {
               <MenuItem value="random">Random</MenuItem>
             </Select>
           </FormControl>
-          <TextField
-              fullWidth
-              label="Where do you want to eat?"
-              value={location}
-              onChange={(event) => setLocation(event.target.value)}
-              sx={{ marginTop: 2 }}
-          />
+          <Stack
+            direction="row"
+            alignItems="bottom"
+          >
+            <TextField
+                fullWidth
+                label="Where do you want to eat?"
+                value={location}
+                onChange={(event) => setLocation(event.target.value)}
+                sx={{ marginTop: 2 }}
+            />
+            <Button variant="contained" color="primary" onClick={getLocation} size="small" sx={{mt: 2}}>
+              <PlaceIcon />
+            </Button>
+          </Stack>
 
           <Button type="submit" variant="contained" color="primary" sx={{ display: 'block', width: 'auto', marginTop: 2 }}>
             Get Recommended Restaurant
