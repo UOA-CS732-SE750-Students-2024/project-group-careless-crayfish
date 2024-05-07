@@ -18,8 +18,8 @@ import { useTheme } from "@mui/material/styles";
 import PlaceIcon from '@mui/icons-material/Place';
 
 export const RestaurantOptions = () => {
-  const [ageGroup, setAgeGroup] = useState("");
-  const [cuisine, setCuisine] = useState("");
+  const [ageGroup, setAgeGroup] = useState("adult");
+  const [cuisine, setCuisine] = useState("asian");
   const [location, setLocation] = useState("Auckland City");
   const navigateTo = useNavigate();
   const { pageTitle, setPageTitle } = useRoute();

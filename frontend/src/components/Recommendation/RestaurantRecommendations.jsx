@@ -139,9 +139,9 @@ export const RestaurantRecommendations = () => {
           <Typography variant="h4" component="h1" gutterBottom>
             Restaurant Recommendations for {capitalizeEveryWord(location)}
           </Typography>
-          <br />
-          <br />
-          <h4>Loading restaurant details ...</h4>
+          <br/>
+          <br/>
+          <h4>{`Loading ${cuisine} restaurants for ${ageGroup}`}</h4>
           <LinearProgress />
         </Container>
       </Box>
