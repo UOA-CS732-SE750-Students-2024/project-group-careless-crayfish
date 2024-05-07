@@ -2,22 +2,12 @@
 
 ---
 
-Team members are:
-
-- Yongbin Yang
-- Hongjian Chen
-- Xinyuan Zeng
-- Joe Zhao
-- Yangcheng Zhou
-- Mark Zhu
-
----
-
-# **DineFinder** -- A web application designed to simplify the process of organizing social gatherings after work or school.
+# **FindMe** 
+> A web application designed to simplify the process of organizing social gatherings after work or school.
 
 ## Overview
 
-**DineFinder** is an innovative application designed to streamline the organization of social gatherings, focusing on enhancing dining experiences with friends and colleagues. This solution integrates venue recommendations and voting mechanisms within a single, user-friendly interface.
+**FindMe** is an innovative application designed to streamline the organization of social gatherings, focusing on enhancing social experiences with friends and colleagues. This solution integrates venue recommendations and voting mechanisms within a single, user-friendly interface.
 
 ### Purpose
 
@@ -25,7 +15,7 @@ The application simplifies the process of deciding where to go for meals or soci
 
 ### Development Focus
 
-Our project is developed for both mobile and web platforms, targeting users who seek a convenient way to organize gatherings. It features:
+Our project is developed for both mobile and web platforms but mainly focusing on web, targeting users who seek a convenient way to organize gatherings. It features:
 
 - **Location-Based Recommendations:** Suggests venues based on the user's current location and preferences.
 - **Voting System:** Allows groups to vote on preferred venues, democratizing the decision-making process.
@@ -33,7 +23,7 @@ Our project is developed for both mobile and web platforms, targeting users who 
 
 ---
 
-# Features Overview
+# 1. Features Overview
 
 Below is a detailed table categorizing the essential and additional features of our web application designed to streamline organizing social gatherings after work or school. Each feature is listed along with a detailed description.
 
@@ -51,7 +41,7 @@ Below is a detailed table categorizing the essential and additional features of 
 
 ---
 
-# Useful commands
+# 2. Useful development commands
 
 ## Useful backend commands
 
@@ -74,7 +64,7 @@ Below is a detailed table categorizing the essential and additional features of 
 
 ---
 
-# Important: How to set up local development environment
+# 3. Important: How to set up local development environment
 
 ## 1. Install nvm
 
@@ -127,7 +117,7 @@ brew install docker
 ```
 ---
 
-# How to run frontend react, backend node, mongodb in dev mode or as docker containers
+# 4. How to run frontend react, backend node, mongodb in dev mode or as docker containers
 
 ## 1. Run mongodb & wiremock
 
@@ -169,7 +159,9 @@ http://localhost:8080/db/admin/
 
 Username: `dev`, Password:`dev`
 
-# 4. Build Docker Image
+---
+
+# 5. Build Docker Image
 
 ## Build the image
 
@@ -195,7 +187,7 @@ docker run -p 8001:3000 -p 8000:5000 -d cs732-careless-crayfish
 
 ---
 
-# How to test the code
+# 6. How to test the code
 
 ## Frontend unit tests
 
@@ -280,7 +272,7 @@ If you raise a pr, Github Actions will trigger with the `./github/workflow/ci.ym
 
 ---
 
-# Deployment
+# 7. Deployment
 
 We deploy by using Github Actions to archive source code and ssh into ec2. See `.github/workflows/cd.yml`
 
