@@ -120,7 +120,6 @@ brew install docker
 # 4. How to run frontend react, backend node, mongodb in dev mode or as docker containers
 
 ## 1. Run mongodb & wiremock
-
 Run this from Git Bash if you use Windows
 
 ```bash
@@ -202,8 +201,7 @@ docker run -p 8001:3000 -p 8000:5000 -d cs732-careless-crayfish
 ## Backend api integration tests
 
 1. spin up backend node.
-2. spin up mongodb database docker container
-
+2. spin up mongodb database through docker-compose
 ```
 cd ./backend
 npm run test:e2e
@@ -242,13 +240,6 @@ Put your mock files under `deployment/wiremock/__files` and `deployment/wiremock
 
 Refere the `json` example here: https://wiremock.org/docs/stubbing/
 
-### Simulate github action locally
-
-```
-act # run all github actions
-act -j build-test-backend # run a specific github action
-```
-
 ## Browser end-to-end tests
 
 ### Note that we support only `Chrome` at this time
@@ -261,20 +252,25 @@ install playwright and chromium
 npx playwright install --with-deps chromium
 ```
 
-Ensure you have spinned up react, node servers & mongodb containers locally. If you have not, follow the `How to start local development` guide above.
+Ensure you have spinned up react, node servers & mongodb docker containers locally. If you have not, follow the `4. How to run frontend react, backend node, mongodb in dev mode or as docker containers` guide above.
 
 under project root folder:
 
 1. `cd e2eTests`
 2. `npm run test:e2e`
 
-If you raise a pr, Github Actions will trigger with the `./github/workflow/ci.yml` workflow which runs all automated tests
+If you raise a pr, Github Actions will trigger the `./github/workflow/ci.yml` workflow which runs all automated tests
 
 ---
 
 # 7. Deployment
 
-We deploy by using Github Actions to archive source code and ssh into ec2. See `.github/workflows/cd.yml`
+We deploy through Github Actions to an AWS EC2 instance. See `.github/workflows/cd.yml`
+
+
+# Documentation
+
+https://aucklanduni-team-cs732.atlassian.net/wiki/spaces/~7120204c38f940a5504122b1690ed6e3788862/pages/1114115
 
 Q & A
 
