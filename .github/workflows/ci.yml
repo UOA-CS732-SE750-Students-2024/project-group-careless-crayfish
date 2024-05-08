@@ -170,17 +170,14 @@ jobs:
           path: |
             ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
-      - name: Install Playwright Browsers
-        run: npx playwright install chromium
-      - name: build playwright
-        working-directory: "./e2eTests"
-        run: |
-          npm install
+
       - name: Run Playwright E2E tests
         working-directory: "./e2eTests"
         run: |
           echo "REACT_APP_URL=$REACT_APP_URL" >> .env
           echo "BACKEND_API_URL=$BACKEND_API_URL" >> .env
+          npm install
+          npx playwright install
           npm run test:e2e
         env:
           REACT_APP_URL: http://localhost:5000

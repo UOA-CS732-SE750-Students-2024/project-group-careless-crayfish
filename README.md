@@ -281,7 +281,7 @@ See WIKI: `https://aucklanduni-team-cs732.atlassian.net/wiki/spaces/~7120204c38f
 
 For sequence diagraming, this file `./diagrams/sequence-diagram.txt` has code that can be run on `https://sequencediagram.org/` to generate our sequence diagram.
 
-Q & A
+# Q & A
 
 ### 1. sh command not found running npm commands
 
