@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { Landing } from '../../../src/components/Recommendation/Landing';
+import { RestaurantOptions } from '../../../src/components/Recommendation/RestaurantOptions';
 
 vi.mock('react-router-dom', () => ({
   useNavigate: () => vi.fn(),
@@ -12,10 +12,10 @@ vi.mock('../../../src/components/GlobalProviders', () => ({
   }),
 }));
 
-describe('Landing', () => {
+describe('RestaurantOptions', () => {
   it('renders without crashing', () => {
-    render(<Landing />);
-    const linkElement = screen.getByText(/Find me .../i);
+    render(<RestaurantOptions />);
+    const linkElement = screen.getByText(/Choose Your Dining Options/i);
     expect(linkElement).toBeInTheDocument();
   });
 });
