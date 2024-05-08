@@ -293,6 +293,6 @@ For sequence diagraming, this file `./diagrams/sequence-diagram.txt` has code th
 
 ### 3. How do I access latest deployed website
 
-##### A: We provision new EC2 instances if we have infrastructure change. Need to go to github actions to grab the latest working public DNS
+##### A: We provision new EC2 instances if we have infrastructure change. Need to go to github actions to grab the latest working public DNS. Get it from the latest successful `CD` build from Github Actions
 
 ![image](https://github.com/UOA-CS732-SE750-Students-2024/project-group-careless-crayfish/assets/29388401/6aa34ed0-1479-48f9-89a5-ea07a2cd48cb)
