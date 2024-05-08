@@ -6,4 +6,7 @@ const userSchema = new mongoose.Schema({
   imageUrl: { type: String, required: true },
 });
 
+userSchema.index({ userId: 1 });
+
+
 module.exports = mongoose.model("User", userSchema);

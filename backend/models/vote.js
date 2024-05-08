@@ -21,5 +21,7 @@ const voteSchema = new mongoose.Schema({
   userId: { type: String, require: true },
 });
 
+voteSchema.index({ userId: 1 });
+
 const Vote = mongoose.model("Vote", voteSchema, "votes");
 module.exports = Vote;
