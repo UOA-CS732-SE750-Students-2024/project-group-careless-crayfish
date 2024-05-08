@@ -87,12 +87,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20.11.1" # latest LTS at the time this is written.
-      - name: Install Playwright Browsers
-        run: npx playwright install chromium
-      - name: build playwright
-        working-directory: "./e2eTests"
-        run: |
-          npm install
           
       - name: Set frontend envs
         working-directory: "./frontend"
@@ -161,11 +155,27 @@ jobs:
           npm install -g wait-on
           npx wait-on http://localhost:5000/ --timeout 120000
           npx wait-on http://localhost:3000/api/api-docs --timeout 120000
-
-      - name: Use Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v2
         with:
-          node-version: "17.0.1" # latest LTS at the time this is written.
+          node-version: '16.x'
+
+      - name: Get installed Playwright version
+        id: playwright-version
+        run: echo "PLAYWRIGHT_VERSION=$(node -e "console.log(require('./package-lock.json').dependencies['@playwright/test'].version)")" >> $GITHUB_ENV
+      - name: Cache playwright binaries
+        uses: actions/cache@v3
+        id: playwright-cache
+        with:
+          path: |
+            ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
+      - name: Install Playwright Browsers
+        run: npx playwright install chromium
+      - name: build playwright
+        working-directory: "./e2eTests"
+        run: |
+          npm install
       - name: Run Playwright E2E tests
         working-directory: "./e2eTests"
         run: |
