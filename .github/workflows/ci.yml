@@ -92,7 +92,7 @@ jobs:
       - name: build playwright
         working-directory: "./e2eTests"
         run: |
-          npm ci
+          npm install
           
       - name: Set frontend envs
         working-directory: "./frontend"
@@ -162,6 +162,10 @@ jobs:
           npx wait-on http://localhost:5000/ --timeout 120000
           npx wait-on http://localhost:3000/api/api-docs --timeout 120000
 
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.11.1" # latest LTS at the time this is written.
       - name: Run Playwright E2E tests
         working-directory: "./e2eTests"
         run: |
