@@ -25,7 +25,22 @@ const AuthPageContext = createContext({});
 export const useAuthPage = () => useContext(AuthPageContext);
 
 const AuthPageProvider = () => {
-  const { googleLogin } = useAuth();
+  const { googleLogin, handleSkipLogin } = useAuth();
+  const [switchingText, setSwitchingText] = useState("Restaurant");
+  const switchingOptions = [
+    "Restaurant",
+    "Club",
+    "Art and History",
+    "Outdoor Activity",
+    "Movie",
+  ];
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const randomIndex = Math.floor(Math.random() * switchingOptions.length);
+      setSwitchingText(switchingOptions[randomIndex]);
+    }, 2000); // Switch text every 2 seconds
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <AuthPageContext.Provider value={{}}>
@@ -57,6 +72,9 @@ const AuthPageProvider = () => {
               height: "100%", // Ensure the Box takes up the full height of its parent
             }}
           >
+            <Typography variant="h4" gutterBottom>
+              Find me: <span style={{ color: "blue" }}>{switchingText}</span>
+            </Typography>
             <Button
               component="label"
               fontSize="large"
@@ -64,6 +82,18 @@ const AuthPageProvider = () => {
               variant="contained"
               onClick={googleLogin}
               startIcon={<GitHubIcon fontSize="large" />}
+            >
+              Google SSO Sign In
+            </Button>
+            <Button
+              component="label"
+              fontSize="large"
+              size="large"
+              variant="contained"
+              onClick={handleSkipLogin}
+              startIcon={<GitHubIcon fontSize="large" />}
+              id="google-sso-button"
+              sx={{ opacity: 0 }} // Add this line to hide the button
             >
               Google SSO Sign In
             </Button>

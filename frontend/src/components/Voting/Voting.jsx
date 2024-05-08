@@ -74,7 +74,7 @@ export const Voting = () => {
     const params = new URLSearchParams(url.search);
     const voteId = params.get("voteId");
     setPageTitle("Voting your favorite restaurant");
-
+    
     if (location.state) {
       setSelectedRestaurants(JSON.parse(location.state));
     }
@@ -94,6 +94,7 @@ export const Voting = () => {
         .then((res) => {
           setSelectedRestaurants([...res.recommend]);
           console.log(res);
+          setTitle(res.title)
           setStatus(res.status);
 
           if (

@@ -2,7 +2,8 @@
 
 ---
 
-# **FindMe** 
+# **FindMe**
+
 > A web application designed to simplify the process of organizing social gatherings after work or school.
 
 ## Overview
@@ -30,7 +31,7 @@ Below is a detailed table categorizing the essential and additional features of 
 ## Feature Details
 
 | Feature                          | Description                                                                                                                                                                                                                                             |
-|----------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 |                                  |                                                                                                                                                                                                                                                         |
 | **Recommendations**              | Utilize GPS to determine user location; allow users to select party type (e.g., food, shopping, natural scenery, exhibition) and input details like number of people, age range, and expected time; recommend appropriate venues based on these inputs. |
 | **Votes**                        | Enable voting on recommended locations; set a deadline for votes; count votes to select the final gathering place; display voting results for clarity.                                                                                                  |
@@ -69,10 +70,12 @@ Below is a detailed table categorizing the essential and additional features of 
 ## 1. Install nvm
 
 ### Windows
+
 Download the Zip (nvm-noinstall.zip)
 [HERE](https://github.com/coreybutler/nvm-windows/releases)
 
 ### Mac
+
 ```bash
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 ```
@@ -115,6 +118,7 @@ Follow the instruction [HERE](https://docs.docker.com/desktop/install/windows-in
 ```bash
 brew install docker
 ```
+
 ---
 
 # 4. How to run frontend react, backend node, mongodb in dev mode or as docker containers
@@ -124,10 +128,11 @@ brew install docker
 Run this from Git Bash if you use Windows
 
 ```bash
-# In a new shell, and keep this shell opened 
+# In a new shell, and keep this shell opened
 cd ./backend
 npm run start:dep
 ```
+
 #Verify the env,
 Open http://localhost:8080/db/admin/ in your browser, and login with dev/dev
 
@@ -147,6 +152,7 @@ npm start
 ```
 
 ## MongoDB
+
 ## Login to MongoDB
 
 1. default username: devroot
@@ -242,13 +248,6 @@ Put your mock files under `deployment/wiremock/__files` and `deployment/wiremock
 
 Refere the `json` example here: https://wiremock.org/docs/stubbing/
 
-### Simulate github action locally
-
-```
-act # run all github actions
-act -j build-test-backend # run a specific github action
-```
-
 ## Browser end-to-end tests
 
 ### Note that we support only `Chrome` at this time
@@ -268,13 +267,13 @@ under project root folder:
 1. `cd e2eTests`
 2. `npm run test:e2e`
 
-If you raise a pr, Github Actions will trigger with the `./github/workflow/ci.yml` workflow which runs all automated tests
+If you raise a pr, Github Actions will trigger with the `./.github/workflow/ci.yml` workflow which runs all automated tests
 
 ---
 
 # 7. Deployment
 
-We deploy by using Github Actions to archive source code and ssh into ec2. See `.github/workflows/cd.yml`
+We deploy by using Github Actions. See `./.github/workflows/cd.yml`
 
 Q & A
 
@@ -289,5 +288,5 @@ Q & A
 ### 3. How do I access latest deployed website
 
 ##### A: We provision new EC2 instances if we have infrastructure change. Need to go to github actions to grab the latest working public DNS
-![image](https://github.com/UOA-CS732-SE750-Students-2024/project-group-careless-crayfish/assets/29388401/6aa34ed0-1479-48f9-89a5-ea07a2cd48cb)
 
+![image](https://github.com/UOA-CS732-SE750-Students-2024/project-group-careless-crayfish/assets/29388401/6aa34ed0-1479-48f9-89a5-ea07a2cd48cb)

@@ -139,8 +139,8 @@ export const RestaurantRecommendations = () => {
           <Typography variant="h4" component="h1" gutterBottom>
             Restaurant Recommendations for {capitalizeEveryWord(location)}
           </Typography>
-          <br/>
-          <br/>
+          <br />
+          <br />
           <h4>{`Loading ${cuisine} restaurants for ${ageGroup}`}</h4>
           <LinearProgress />
         </Container>
@@ -185,14 +185,10 @@ export const RestaurantRecommendations = () => {
         <Button
           variant="contained"
           disableElevation
-          // onClick={() => {
-          //   checked.sort().map((index) => {
-          //     console.log(index, recommendations[index].name);
-          //   });
-          // }}
           onClick={handleStartVote}
+          id="start-a-vote-button"
         >
-          Start a vote (currently just log to console)
+          Start a vote
         </Button>
       </Container>
     </Box>
