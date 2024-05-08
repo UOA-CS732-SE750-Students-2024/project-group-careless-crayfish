@@ -77,7 +77,7 @@ jobs:
   # Playwright end-to-end test
   chrome-e2e-test:
     needs: [build-test-backend, build-test-frontend]
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
