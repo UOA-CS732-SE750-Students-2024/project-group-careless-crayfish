@@ -233,7 +233,16 @@ export const Voting = () => {
     }
   };
   return (
-    <Box pt={10} pb={10}>
+    <Box
+      pt={10}
+      pb={10}
+      sx={{
+        background:
+          theme.palette.mode === "light"
+            ? "linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.99)), url('/landing/restaurant.png')"
+            : theme.palette.background.default,
+      }}
+    >
       <Container maxWidth="md">
         <Snackbar
           ClickAwayListenerProps={{ mouseEvent: false }}
@@ -281,6 +290,12 @@ export const Voting = () => {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               margin="normal"
+              sx={{
+                background:
+                  theme.palette.mode === "light"
+                    ? "linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.99))"
+                    : "rgba(90, 90, 90, 0.9)",
+              }}
             />
 
             <TextField
@@ -297,6 +312,12 @@ export const Voting = () => {
                 max: formattedMaxTime,
               }}
               margin="normal"
+              sx={{
+                background:
+                  theme.palette.mode === "light"
+                    ? "linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.99))"
+                    : "rgba(90, 90, 90, 0.9)",
+              }}
             />
             <Button variant="contained" color="primary" onClick={createVote}>
               Create Vote With the above Options!
@@ -315,7 +336,24 @@ export const Voting = () => {
               sx={{ paddingLeft: 0, paddingRight: 0 }}
               key={restaurant.name + v4()}
             >
-              <Card>
+              <Card
+                sx={{
+                  mb: 2,
+                  p: 2,
+                  background:
+                    index === votedIndex && voted
+                      ? `linear-gradient(${
+                          theme.palette.mode === "light"
+                            ? "rgba(230, 255, 230, 0.9), rgba(255, 255, 255, 0.99)"
+                            : "rgba(60, 60, 60, 0.9), rgba(30, 30, 30, 0.99)"
+                        })`
+                      : `linear-gradient(${
+                          theme.palette.mode === "light"
+                            ? "rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.99)"
+                            : "rgba(90, 90, 90, 0.9), rgba(60, 60, 60, 0.99)"
+                        })`,
+                }}
+              >
                 <CardHeader
                   title={restaurant.name}
                   subheader={restaurant.location}
