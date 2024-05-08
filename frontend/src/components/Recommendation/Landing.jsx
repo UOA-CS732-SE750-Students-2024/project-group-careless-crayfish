@@ -33,7 +33,7 @@ export const Landing = () => {
   return (
     <Box mt={10}>
       <Container maxWidth="md" display="flex" >
-        <Typography variant="h3" align="center">
+        <Typography variant="h2" align="center">
           Find me ... 
         </Typography>
         <br/><br/>

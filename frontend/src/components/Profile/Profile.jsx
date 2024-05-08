@@ -155,11 +155,15 @@ export const Profile = () => {
                     <Collapse in={expanded[index]} timeout="auto" unmountOnExit>
                       <CardContent>
                         <Typography paragraph>Open Hours</Typography>
-                        {Object.keys(restaurant.openHours).map((key) => (
-                          <div key={key}>
-                            {key} : {restaurant.openHours[key]}
-                          </div>
-                        ))}
+                        {typeof restaurant.openHours === 'string' ? (
+                          <div>{restaurant.openHours}</div>
+                        ) : (
+                          Object.keys(restaurant.openHours).map((key) => (
+                            <div key={key}>
+                              {key} : {restaurant.openHours[key]}
+                            </div>
+                          ))
+                        )}
                       </CardContent>
                     </Collapse>
                   </Card>
