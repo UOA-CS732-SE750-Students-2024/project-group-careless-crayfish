@@ -273,7 +273,7 @@ If you raise a pr, Github Actions will trigger with the `./.github/workflow/ci.y
 
 # 7. Deployment
 
-We deploy by using Github Actions. See `./.github/workflows/cd.yml`
+Currently if you raise a pr, Github Actions will trigger a deployment(to make testing easier). See `./.github/workflows/cd.yml`
 
 # 8. Diagrams
 

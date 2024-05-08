@@ -2,7 +2,6 @@ const { test, expect, afterEach } = require("@playwright/test");
 require("dotenv").config();
 
 test("test can login and access landing page.", async ({ page }) => {
-  browser = await p.chromium.launch(headless=True, args=["--disable-gpu", "--single-process"])
   await page.goto(`${process.env.REACT_APP_URL}`);
 
   // Wait for the element containing the text "Google SSO Sign In" to be visible

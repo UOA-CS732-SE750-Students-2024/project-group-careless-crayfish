@@ -112,7 +112,7 @@ jobs:
           MONGO_USERNAME: ${{ secrets.MONGO_USERNAME }}
           MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
           API_KEY: ${{ secrets.API_KEY }}
-          API_URL: https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=
+          API_URL: http://localhost:8081/v1beta/models/gemini-pro:generateContent?key=
       - name: Set docker-compose configs
         working-directory: "./"
         run: |
