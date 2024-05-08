@@ -1,4 +1,4 @@
-describe("voteService integration test", () => {
+describe("voteService unit test", () => {
   test("test get all votes", async () => {
     // Given
     const voteDao = require("../../daos/voteDao.js");
