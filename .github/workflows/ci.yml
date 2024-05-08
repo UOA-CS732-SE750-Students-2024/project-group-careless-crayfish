@@ -103,9 +103,7 @@ jobs:
           echo "MONGO_SERVER=$MONGO_SERVER" >> .env
           echo "MONGO_USERNAME=$MONGO_USERNAME" >> .env
           echo "MONGO_PASSWORD=$MONGO_PASSWORD" >> .env
-          echo "API_KEY=$API_KEY" >> .env
           echo "API_URL=$API_URL" >> .env
-
         env:
           # node creds
           MONGO_SERVER: mongo
