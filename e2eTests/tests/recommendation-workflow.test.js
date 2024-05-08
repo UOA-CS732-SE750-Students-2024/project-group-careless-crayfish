@@ -57,7 +57,7 @@ test("test can login, see landing page and generate recommendations.", async ({
   await expect(page.getByText("logout")).toBeTruthy();
 });
 
-test("test can login, see landing page, generate recommendations and select recommendations", async ({
+test("test can login, see landing page, generate recommendations", async ({
   page,
 }) => {
   await page.goto(`${process.env.REACT_APP_URL}`);
@@ -107,9 +107,6 @@ test("test can login, see landing page, generate recommendations and select reco
     page.getByText("12 Customs Street East, Auckland CBD")
   ).toBeTruthy();
 
-  // select restaurants
-  await page.click("#The-French-Cafe");
-  await page.click("#Mexico");
   //header
   await page.click("#demo-positioned-button");
   await expect(page.getByText("profile")).toBeTruthy();

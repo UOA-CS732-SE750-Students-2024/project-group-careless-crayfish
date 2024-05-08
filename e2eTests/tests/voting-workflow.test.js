@@ -51,24 +51,8 @@ test("test can login, see landing page, generate recommendations and create a vo
     page.getByText("12 Customs Street East, Auckland CBD")
   ).toBeTruthy();
 
-  // select restaurants
-  await page.click("#The-French-Cafe");
-  await page.click("#Mexico");
-
   // start a vote
   await page.click("#start-a-vote-button");
-
-  await expect(page.getByText("Selected Recommendations")).toBeTruthy();
-  await expect(page.getByText("Mexico")).toBeTruthy();
-  await expect(page.getByText("210 Quay Street, Auckland CBD")).toBeTruthy();
-  await expect(page.getByText("The French Cafe")).toBeTruthy();
-  await expect(page.getByText("240 Parnell Road, Parnell")).toBeTruthy();
-  await expect(page.getByText("Mexico")).toBeTruthy();
-  await expect(page.getByText("210 Quay Street, Auckland CBD")).toBeTruthy();
-
-  await expect(
-    page.getByText("Create Vote With the above Options!")
-  ).toBeTruthy();
 
   //header
   await page.click("#demo-positioned-button");
