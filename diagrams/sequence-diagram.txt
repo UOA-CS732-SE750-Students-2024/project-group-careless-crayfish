@@ -1,0 +1,60 @@
+# This code can be used on https://sequencediagram.org/ to generate sequence diagram
+participant User
+participant React SPA
+participant userService
+participant geminiQueryService
+participant voteService
+participant commentService
+participant MongoDB
+
+User -> React SPA: Interacts with UI
+
+activate React SPA
+
+React SPA -> userService: Request User Data
+userService -> MongoDB: Query User Data
+MongoDB --> userService: Return User Data
+userService --> React SPA: Return User Data
+
+React SPA -> geminiQueryService: Request AI Comments
+geminiQueryService -> MongoDB: Query AI Comments
+MongoDB --> geminiQueryService: Return AI Comments
+geminiQueryService --> React SPA: Return AI Comments
+
+React SPA -> voteService: Request All Votes
+voteService -> MongoDB: Query All Votes
+MongoDB --> voteService: Return All Votes
+voteService --> React SPA: Return All Votes
+
+React SPA -> commentService: Request User Comments
+commentService -> userService: getUserById
+userService -> MongoDB: Query User Data
+MongoDB --> userService: Return User Data
+userService --> commentService: Return User Data
+commentService -> geminiQueryService: getAIComment
+geminiQueryService -> MongoDB: Query AI Comments
+MongoDB --> geminiQueryService: Return AI Comments
+geminiQueryService --> commentService: Return AI Comments
+commentService --> React SPA: Return User Comments with AI Comments
+
+React SPA -> geminiQueryService: Create Recommendation
+geminiQueryService -> MongoDB: Store Recommendation
+MongoDB --> geminiQueryService: Confirmation of Recommendation Stored
+geminiQueryService --> React SPA: Confirmation of Recommendation Stored
+
+React SPA -> commentService: Create Comment
+commentService -> MongoDB: Store Comment
+MongoDB --> commentService: Confirmation of Comment Stored
+commentService --> React SPA: Confirmation of Comment Stored
+
+React SPA -> commentService: Request Total Number of Records
+commentService -> MongoDB: Count Records
+MongoDB --> commentService: Total Number of Records
+commentService --> React SPA: Total Number of Records
+
+React SPA -> commentService: Delete Comment
+commentService -> MongoDB: Delete Comment
+MongoDB --> commentService: Confirmation of Comment Deleted
+commentService --> React SPA: Confirmation of Comment Deleted
+
+deactivate React SPA
