@@ -275,6 +275,12 @@ If you raise a pr, Github Actions will trigger with the `./.github/workflow/ci.y
 
 We deploy by using Github Actions. See `./.github/workflows/cd.yml`
 
+# 8. Diagrams
+
+See WIKI: `https://aucklanduni-team-cs732.atlassian.net/wiki/spaces/~7120204c38f940a5504122b1690ed6e3788862/pages/1114115/cs732-careless-crayfish+WIKI#Technical-Documentations`
+
+For sequence diagraming, this file `./diagrams/sequence-diagram.txt` has code that can be run on `https://sequencediagram.org/` to generate our sequence diagram.
+
 Q & A
 
 ### 1. sh command not found running npm commands
