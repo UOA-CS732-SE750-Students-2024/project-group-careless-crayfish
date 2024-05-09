@@ -30,17 +30,18 @@ Below is a detailed table categorizing the essential and additional features of 
 
 ## Feature Details
 
-| Feature                          | Description                                                                                                                                                                                                                                             |
-| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-|                                  |                                                                                                                                                                                                                                                         |
-| **Recommendations**              | Utilize GPS to determine user location; allow users to select party type (e.g., food, shopping, natural scenery, exhibition) and input details like number of people, age range, and expected time; recommend appropriate venues based on these inputs. |
-| **Votes**                        | Enable voting on recommended locations; set a deadline for votes; count votes to select the final gathering place; display voting results for clarity.                                                                                                  |
-| **Support Sign-up & Login**      | Enable login via third-party accounts such as Google or Microsoft for ease.                                                                                                                                                                             |
-| **Keep User Status**             | Allow users to resume previous activities upon re-login and retain state and activity history like voting records and preferences.                                                                                                                      |
-| **Search Bar for History Votes** | Permit users to search and review past voting records and activity histories, refining searches by date and location.                                                                                                                                   |
-| **Community Platform**           | Create a community platform for users to share experiences, discuss venues, and provide post-event feedback. Allow users to post voting links in the community.                                                                                         |
+| Feature                          | Description                                                                                                                                                                                                                            |
+| -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|                                  |                                                                                                                                                                                                                                        |
+| **Recommendations**              | Utilize GPS to determine user location; allow users to select party type (e.g., food, club, sports, exhibition) and input details like cuisine type, age range, and expected time; recommend appropriate venues based on these inputs. |
+| **Votes**                        | Enable voting on recommended locations; set a deadline for votes; count votes to select the final gathering place; display voting results for clarity.                                                                                 |
+| **Support Sign-up & Login**      | Enable login via third-party accounts such as Google or Microsoft for ease.                                                                                                                                                            |
+| **Keep User Status**             | Allow users to resume previous activities upon re-login and retain state and activity history like voting records and preferences.                                                                                                     |
+| **Search Bar for History Votes** | Permit users to search and review past voting records and activity histories, refining searches by date and location.                                                                                                                  |
+| **Community Platform**           | Create a platform for users to add notes or communicate with AI.                                                                                                                                                                       |
 
 # 1. Code Structure
+
 ```bash
 > .github - Github Actions CICD Pipeline
     | cd.yml - continuous deployment workflow
@@ -65,6 +66,7 @@ docker-compose-prod.yml - docker-compose for PROD environment
 docker-compose.yml - docker-compose for LOCAL DEV environment
 Dockerfile - Frontend & Backend App docker container
 ```
+
 ---
 
 # 2. Useful development commands
@@ -89,6 +91,7 @@ Dockerfile - Frontend & Backend App docker container
 1. `npm test`: start unit test
 
 ---
+
 # 3. Important: How to set up local development environment
 
 ## 1. Install nvm
@@ -108,7 +111,7 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 
 ```bash
 nvm install 20.11.1
-nvm use
+nvm use 20.11.1
 ```
 
 ## 3. Install nodemon globally
@@ -127,7 +130,7 @@ npm install
 ## 5. setup backend node project
 
 ```bash
-cd ./backend
+cd ../backend
 npm install
 ```
 
@@ -192,10 +195,12 @@ Username: `dev`, Password:`dev`
 ---
 
 # 5.How to Build & Test Docker Image
+
 Note that you do not need to use the docker image for local development.
-The docker image is used for CI and PROD envs in docker-compose files. 
+The docker image is used for CI and PROD envs in docker-compose files.
 
 See `./scripts/start-ci.sh` and `./scripts/start-prod.sh`
+
 ## Build the image
 
 Run the following command under the root directory which builds a docker image `cs732-careless-crayfish` for react, node & mongodb
@@ -235,7 +240,7 @@ docker run -p 8001:3000 -p 8000:5000 -d cs732-careless-crayfish
 ## Backend api integration tests
 
 1. spin up backend node.
-2. spin up mongodb database docker container
+2. spin up mongodb database through docker-compose
 
 ```
 cd ./backend
@@ -287,20 +292,24 @@ install playwright and chromium
 npx playwright install --with-deps chromium
 ```
 
-Ensure you have spinned up react, node servers & mongodb containers locally. If you have not, follow the `How to start local development` guide above.
+Ensure you have spinned up react, node servers & mongodb docker containers locally. If you have not, follow the `4. How to run frontend react, backend node, mongodb in dev mode or as docker containers` guide above.
 
 under project root folder:
 
 1. `cd e2eTests`
 2. `npm run test:e2e`
 
-If you raise a pr, Github Actions will trigger with the `./.github/workflow/ci.yml` workflow which runs all automated tests
+If you raise a pr, Github Actions will trigger the `./github/workflow/ci.yml` workflow which runs all automated tests
 
 ---
 
 # 7. Deployment
 
+We deploy through Github Actions to an AWS EC2 instance. See `.github/workflows/cd.yml`
+
 Currently if you raise a pr, Github Actions will trigger a deployment(to make testing easier). See `./.github/workflows/cd.yml`
+
+---
 
 # 8. Diagrams
 
@@ -308,7 +317,9 @@ See WIKI: `https://aucklanduni-team-cs732.atlassian.net/wiki/spaces/~7120204c38f
 
 For sequence diagraming, this file `./diagrams/sequence-diagram.txt` has code that can be run on `https://sequencediagram.org/` to generate our sequence diagram.
 
-# Q & A
+---
+
+# 9. Q & A
 
 ### 1. sh command not found running npm commands
 
@@ -325,3 +336,9 @@ For sequence diagraming, this file `./diagrams/sequence-diagram.txt` has code th
 ![image](https://github.com/UOA-CS732-SE750-Students-2024/project-group-careless-crayfish/assets/29388401/6aa34ed0-1479-48f9-89a5-ea07a2cd48cb)
 
 latest frontend url(at the time of writing): http://ec2-54-252-174-153.ap-southeast-2.compute.amazonaws.com:5000
+
+### 4. I see you have local config/creds stored in the .env files, do you use different configs/creds for CI and EC2?
+
+##### A: See below screenshot where we store CI and EC2 configs/creds (you don't need to touch these unless you want to contribute):
+
+![image](https://github.com/UOA-CS732-SE750-Students-2024/project-group-careless-crayfish/assets/29388401/4c32332d-afc6-4c0b-84cb-fd554ec9b361)
