@@ -324,4 +324,4 @@ For sequence diagraming, this file `./diagrams/sequence-diagram.txt` has code th
 
 ![image](https://github.com/UOA-CS732-SE750-Students-2024/project-group-careless-crayfish/assets/29388401/6aa34ed0-1479-48f9-89a5-ea07a2cd48cb)
 
-latest frontend url(at the time of writing): 
+latest frontend url(at the time of writing): http://ec2-54-252-174-153.ap-southeast-2.compute.amazonaws.com:5000
