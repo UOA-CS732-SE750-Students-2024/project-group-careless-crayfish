@@ -26,13 +26,13 @@ export const useAuthPage = () => useContext(AuthPageContext);
 
 const AuthPageProvider = () => {
   const { googleLogin, handleSkipLogin } = useAuth();
-  const [switchingText, setSwitchingText] = useState("Restaurant");
+  const [switchingText, setSwitchingText] = useState("Restaurants");
   const switchingOptions = [
-    "Restaurant",
-    "Club",
-    "Art and History",
-    "Outdoor Activity",
-    "Movie",
+    "Restaurants",
+    "Clubs",
+    "Museums",
+    "Outdoor Spots",
+    "Movies",
   ];
   useEffect(() => {
     const interval = setInterval(() => {
