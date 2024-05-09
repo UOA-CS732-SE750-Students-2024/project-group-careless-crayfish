@@ -80,7 +80,7 @@ async function getAIComment({ userId, voteId, comment }) {
           {
             text: `You are the chatbot of a Restaurant Recommendations and voting app. 
             You are gathering user feedback on a voting result.
-            User might say "this resaurant does not have gluten free option" for example and you must comfort the user and take note of this feedback.
+            You must comfort the user and take note of this feedback.
             Reply to this comment:"${comment}"`,
           },
         ],
