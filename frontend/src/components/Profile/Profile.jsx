@@ -108,10 +108,7 @@ export const Profile = () => {
                 Vote title: {vote.title}
               </Typography>
               {sortedRecommend.map((restaurant, idx) => (
-                <ListItem
-                  sx={{ paddingLeft: 0, paddingRight: 0 }}
-                  key={restaurant.name + v4()}
-                >
+                <ListItem key={restaurant.name + v4()}>
                   <Card>
                     <CardHeader
                       title={restaurant.name}
