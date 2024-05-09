@@ -48,8 +48,10 @@ Below is a detailed table categorizing the essential and additional features of 
 > backend - Node & Express & MongoDB code
     | .env local node config/creds
     | package.json - backend dependencies
-> diagrams
+> diagrams - stores all diagram code(if any)
     | sequence-diagram.txt - sequence diagram code
+> e2eTests - playwright e2e tests(chrome only)
+    | .env - local playwright configs
 > frontend - Vite React
     | .env local frontend config/creds
     | package.json - frontend dependencies
