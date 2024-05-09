@@ -11,8 +11,10 @@ import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 import Box from "@mui/material/Box";
 import LinearProgress from "@mui/material/LinearProgress";
-
+import MuiAlert from "@mui/material/Alert";
+import CloseIcon from "@mui/icons-material/Close";
 import RestaurantElement from "./RestaurantElement";
+import { IconButton, Snackbar } from "@mui/material";
 
 export const RestaurantRecommendations = () => {
   const { location } = useParams(); // Extract the location parameter from the current route
@@ -39,6 +41,21 @@ export const RestaurantRecommendations = () => {
   // use theme
   const theme = useTheme();
 
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("info");
+  const Alert = (props) => {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  };
+  const showMessage = (message, severity = "error") => {
+    setSnackbarMessage(message);
+    setSnackbarSeverity(severity);
+    setOpenSnackbar(true);
+  };
+  const handleClose = () => {
+    setSnackbarMessage(null);
+    setOpenSnackbar(false);
+  };
   /**
    * Handles the click event of a restaurant.
    * @param {React.MouseEvent<HTMLDivElement, MouseEvent>} event - The click event.
@@ -78,6 +95,11 @@ export const RestaurantRecommendations = () => {
   //link to voting page
   const handleStartVote = () => {
     const selectedRestaurants = checked.map((index) => recommendations[index]);
+    if (!selectedRestaurants || selectedRestaurants.length < 2) {
+      showMessage("Please select more than 1 restaurants!");
+      console.log(1111);
+      return;
+    }
     navigate("/voting", { state: JSON.stringify(selectedRestaurants) }); // 使用 navigate 进行跳转并传递状态
   };
   /**
@@ -139,8 +161,8 @@ export const RestaurantRecommendations = () => {
           <Typography variant="h4" component="h1" gutterBottom>
             Restaurant Recommendations for {capitalizeEveryWord(location)}
           </Typography>
-          <br/>
-          <br/>
+          <br />
+          <br />
           <h4>{`Loading ${cuisine} restaurants for ${ageGroup}`}</h4>
           <LinearProgress />
         </Container>
@@ -159,6 +181,30 @@ export const RestaurantRecommendations = () => {
             : theme.palette.background.default,
       }}
     >
+      <Snackbar
+        ClickAwayListenerProps={{ mouseEvent: false }}
+        open={openSnackbar}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        action={
+          <Box display="flex" flexDirection="row" width="100%">
+            <IconButton
+              aria-label="Snackbar close icon"
+              color="inherit"
+              size="small"
+              onClick={handleClose}
+            >
+              <CloseIcon fontSize="large" />
+            </IconButton>
+          </Box>
+        }
+      >
+        <div>
+          <Alert onClose={handleClose} severity={snackbarSeverity}>
+            {snackbarMessage}
+          </Alert>
+        </div>
+      </Snackbar>
       <Container maxWidth="md">
         <Typography variant="h4" component="h1" gutterBottom>
           Restaurant Recommendations for {capitalizeEveryWord(location)}
@@ -185,14 +231,10 @@ export const RestaurantRecommendations = () => {
         <Button
           variant="contained"
           disableElevation
-          // onClick={() => {
-          //   checked.sort().map((index) => {
-          //     console.log(index, recommendations[index].name);
-          //   });
-          // }}
           onClick={handleStartVote}
+          id="start-a-vote-button"
         >
-          Start a vote (currently just log to console)
+          Start a vote
         </Button>
       </Container>
     </Box>

@@ -1,0 +1,8 @@
+Relationships: 
+commentService calls userService.getUserById, 
+geminiQueryService.getAIComment, 
+userService calls voteService.getAllVotes
+user creates recommendations with geminiQueryService.fetchRestaurantRecommendations
+user creates a comment with commentService.createComment
+user gets total number of records with commentService.getTotalNumRecords
+user deletes a comment with commentService.deleteComment

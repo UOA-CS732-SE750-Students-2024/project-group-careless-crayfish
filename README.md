@@ -2,7 +2,8 @@
 
 ---
 
-# **FindMe** 
+# **FindMe**
+
 > A web application designed to simplify the process of organizing social gatherings after work or school.
 
 ## Overview
@@ -30,7 +31,7 @@ Below is a detailed table categorizing the essential and additional features of 
 ## Feature Details
 
 | Feature                          | Description                                                                                                                                                                                                                                             |
-|----------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 |                                  |                                                                                                                                                                                                                                                         |
 | **Recommendations**              | Utilize GPS to determine user location; allow users to select party type (e.g., food, shopping, natural scenery, exhibition) and input details like number of people, age range, and expected time; recommend appropriate venues based on these inputs. |
 | **Votes**                        | Enable voting on recommended locations; set a deadline for votes; count votes to select the final gathering place; display voting results for clarity.                                                                                                  |
@@ -69,10 +70,12 @@ Below is a detailed table categorizing the essential and additional features of 
 ## 1. Install nvm
 
 ### Windows
+
 Download the Zip (nvm-noinstall.zip)
 [HERE](https://github.com/coreybutler/nvm-windows/releases)
 
 ### Mac
+
 ```bash
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 ```
@@ -99,6 +102,7 @@ npm install
 
 ## 5. setup backend node project
 
+
 ```bash
 cd ./backend
 npm install
@@ -115,6 +119,7 @@ Follow the instruction [HERE](https://docs.docker.com/desktop/install/windows-in
 ```bash
 brew install docker
 ```
+
 ---
 
 # 4. How to run frontend react, backend node, mongodb in dev mode or as docker containers
@@ -124,10 +129,11 @@ brew install docker
 Run this from Git Bash if you use Windows
 
 ```bash
-# In a new shell, and keep this shell opened 
+# In a new shell, and keep this shell opened
 cd ./backend
 npm run start:dep
 ```
+
 #Verify the env,
 Open http://localhost:8080/db/admin/ in your browser, and login with dev/dev
 
@@ -147,6 +153,7 @@ npm start
 ```
 
 ## MongoDB
+
 ## Login to MongoDB
 
 1. default username: devroot
@@ -268,15 +275,19 @@ If you raise a pr, Github Actions will trigger the `./github/workflow/ci.yml` wo
 ---
 
 # 7. Deployment
-
 We deploy through Github Actions to an AWS EC2 instance. See `.github/workflows/cd.yml`
 
+Currently if you raise a pr, Github Actions will trigger a deployment(to make testing easier). See `./.github/workflows/cd.yml`
 
-# Documentation
+---
+# 8. Diagrams
 
-https://aucklanduni-team-cs732.atlassian.net/wiki/spaces/~7120204c38f940a5504122b1690ed6e3788862/pages/1114115
+See WIKI: `https://aucklanduni-team-cs732.atlassian.net/wiki/spaces/~7120204c38f940a5504122b1690ed6e3788862/pages/1114115/cs732-careless-crayfish+WIKI#Technical-Documentations`
 
-Q & A
+For sequence diagraming, this file `./diagrams/sequence-diagram.txt` has code that can be run on `https://sequencediagram.org/` to generate our sequence diagram.
+
+---
+# 9. Q & A
 
 ### 1. sh command not found running npm commands
 
@@ -288,6 +299,6 @@ Q & A
 
 ### 3. How do I access latest deployed website
 
-##### A: We provision new EC2 instances if we have infrastructure change. Need to go to github actions to grab the latest working public DNS
-![image](https://github.com/UOA-CS732-SE750-Students-2024/project-group-careless-crayfish/assets/29388401/6aa34ed0-1479-48f9-89a5-ea07a2cd48cb)
+##### A: We provision new EC2 instances if we have infrastructure change. Need to go to github actions to grab the latest working public DNS. Get it from the latest successful `CD` build from Github Actions
 
+![image](https://github.com/UOA-CS732-SE750-Students-2024/project-group-careless-crayfish/assets/29388401/6aa34ed0-1479-48f9-89a5-ea07a2cd48cb)

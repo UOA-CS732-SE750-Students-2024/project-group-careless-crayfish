@@ -4,11 +4,6 @@ permissions:
   contents: read
 on:
   pull_request:
-# TODO change to trigger deployment on push when presenting to Andrew
-# Currently deploying at pull request so we can test changes.
-  # push:
-  #   branches: 
-  #     - main
 
 jobs:
   archive-src-code:

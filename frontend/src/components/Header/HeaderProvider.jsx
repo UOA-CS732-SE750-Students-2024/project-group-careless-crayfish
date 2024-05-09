@@ -39,10 +39,12 @@ const HeaderProvider = () => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const { logout, user } = useAuth();
+
   const isMenuOpen = Boolean(anchorEl);
   const handleLogoutLinkCLick = (event) => {
     handleMenuClose(event);
     logout();
+    navigate("/");
   };
   const handleMenuClose = () => {
     setAnchorEl(null);
@@ -119,12 +121,14 @@ const HeaderProvider = () => {
                   <MenuItem
                     aria-label={"menu profile link"}
                     onClick={handleProfileClick}
+                    id="profile-button"
                   >
                     <Typography noWrap>profile</Typography>
                   </MenuItem>
                   <MenuItem
                     aria-label={"menu logout link"}
                     onClick={handleLogoutLinkCLick}
+                    id="logout-button"
                   >
                     <Typography noWrap>logout</Typography>
                   </MenuItem>

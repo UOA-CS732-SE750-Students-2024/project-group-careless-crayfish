@@ -29,6 +29,7 @@ export const CommentDialogPaginated = ({
   setOpenComments,
   userId,
   voteId,
+  voteTitle
 }) => {
   const [page, setPage] = useState(0);
   const [comments, setComments] = useState([]);
@@ -163,7 +164,7 @@ export const CommentDialogPaginated = ({
   };
   return (
     <Dialog open={openComments} onClose={handleClose} fullScreen>
-      <DialogTitle>Comments for Voting Result {voteId}</DialogTitle>
+      <DialogTitle>Comments for Voting title: {voteTitle}</DialogTitle>
       <DialogContent dividers>
         <Box textAlign="center">
           {hasMore ? (

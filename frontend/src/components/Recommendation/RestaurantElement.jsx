@@ -1,10 +1,22 @@
 import React, { useMemo } from "react";
 
-import { Checkbox, ListItem, Card, CardMedia, CardContent, Typography, CardHeader, CardActions, IconButton, Collapse, Stack } from '@mui/material';
-import MapIcon from '@mui/icons-material/Map';
-import HomeIcon from '@mui/icons-material/Home';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import PollIcon from '@mui/icons-material/Poll';
+import {
+  Checkbox,
+  ListItem,
+  Card,
+  CardMedia,
+  CardContent,
+  Typography,
+  CardHeader,
+  CardActions,
+  IconButton,
+  Collapse,
+  Stack,
+} from "@mui/material";
+import MapIcon from "@mui/icons-material/Map";
+import HomeIcon from "@mui/icons-material/Home";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import PollIcon from "@mui/icons-material/Poll";
 
 const RestaurantElement = ({ restaurant }) => {
   const [expanded, setExpanded] = React.useState(false);
@@ -13,7 +25,10 @@ const RestaurantElement = ({ restaurant }) => {
     setExpanded(!expanded);
   };
 
-  const randomImageNumber = useMemo(() => Math.floor(Math.random() * 30) + 1, [restaurant.name]);
+  const randomImageNumber = useMemo(
+    () => Math.floor(Math.random() * 30) + 1,
+    [restaurant.name],
+  );
   restaurant.imageUrl = `/restaurants/${randomImageNumber}.jpg`;
   restaurant.mapUrl = `https://www.google.com/maps/search/?api=1&query=${restaurant.location}`;
 
@@ -21,7 +36,7 @@ const RestaurantElement = ({ restaurant }) => {
     <>
       {/* 1. Restaurant element */}
       <ListItem
-        sx = {{paddingLeft: 0, paddingRight: 0}}
+        sx={{ paddingLeft: 0, paddingRight: 0 }}
         key={restaurant.index}
         className="restaurant-element"
       >
@@ -37,19 +52,17 @@ const RestaurantElement = ({ restaurant }) => {
             title={restaurant.name}
             subheader={restaurant.location}
             action={
-              <Stack
-                direction="row"
-                alignItems="center"
-              >
-                <PollIcon/>
+              <Stack direction="row" alignItems="center">
+                <PollIcon />
                 <Checkbox
-                  sx = {{paddingLeft: 0}}
+                  sx={{ paddingLeft: 0 }}
                   edge="end"
                   checked={restaurant.checked.indexOf(restaurant.index) !== -1}
                   onChange={restaurant.handleToggleRestaurant(restaurant.index)}
                   tabIndex={-1}
                   disableRipple
                   inputProps={{ "aria-labelledby": restaurant.labelId }}
+                  id={`${restaurant.name.replaceAll(" ", "-")}`}
                 />
               </Stack>
             }
@@ -66,15 +79,15 @@ const RestaurantElement = ({ restaurant }) => {
             </Typography>
           </CardContent>
           <CardActions disableSpacing>
-            <IconButton 
+            <IconButton
               aria-label="open map"
-              onClick = {() => window.open(restaurant.mapUrl)}
+              onClick={() => window.open(restaurant.mapUrl)}
             >
               <MapIcon />
             </IconButton>
-            <IconButton 
+            <IconButton
               aria-label="open website"
-              onClick = {() => window.open(restaurant.websiteUrl)}
+              onClick={() => window.open(restaurant.websiteUrl)}
             >
               <HomeIcon />
             </IconButton>
@@ -89,7 +102,7 @@ const RestaurantElement = ({ restaurant }) => {
           <Collapse in={expanded} timeout="auto" unmountOnExit>
             <CardContent>
               <Typography paragraph>Open Hours</Typography>
-              {typeof restaurant.openHours === 'string' ? (
+              {typeof restaurant.openHours === "string" ? (
                 <div>{restaurant.openHours}</div>
               ) : (
                 Object.keys(restaurant.openHours).map((key) => (
@@ -101,7 +114,6 @@ const RestaurantElement = ({ restaurant }) => {
             </CardContent>
           </Collapse>
         </Card>
-
       </ListItem>
     </>
   );
