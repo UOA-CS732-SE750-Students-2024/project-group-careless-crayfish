@@ -93,7 +93,8 @@ export const Profile = () => {
         <Typography variant="h4" component="h1" gutterBottom>
           Voting history for {user.userName}
         </Typography>
-        {!votes && <Typography>No voting history</Typography>}
+        {!votes ||
+          (votes.length == 0 && <Typography>No voting history</Typography>)}
         {votes.map((vote, index) => {
           // Sort the recommend array in descending order based on the count property
           const sortedRecommend = vote.recommend.sort(
@@ -108,7 +109,7 @@ export const Profile = () => {
               </Typography>
               {sortedRecommend.map((restaurant, idx) => (
                 <ListItem
-                  sx={{ paddingLeft: 0, paddingRight: 0 }}
+                  sx={{ paddingLeft: 0, paddingRight: 0, width: "100%" }}
                   key={restaurant.name + v4()}
                 >
                   <Card>

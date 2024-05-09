@@ -1,7 +1,9 @@
 # COMPSCI 732 / SOFTENG 750 Project - Team Careless Crayfish
 
 ---
-
+# Deployment url
+latest frontend url(at the time of writing): `http://ec2-54-252-174-153.ap-southeast-2.compute.amazonaws.com:5000`
+If this is not working, checkout the Q&A section: `3. How do I access latest deployed website`
 # **FindMe**
 
 > A web application designed to simplify the process of organizing social gatherings after work or school.
@@ -31,7 +33,7 @@ Below is a detailed table categorizing the essential and additional features of 
 ## Feature Details
 
 | Feature                          | Description                                                                                                                                                                                                                            |
-| -------------------------------- |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 |                                  |                                                                                                                                                                                                                                        |
 | **Recommendations**              | Utilize GPS to determine user location; allow users to select party type (e.g., food, club, sports, exhibition) and input details like cuisine type, age range, and expected time; recommend appropriate venues based on these inputs. |
 | **Votes**                        | Enable voting on recommended locations; set a deadline for votes; count votes to select the final gathering place; display voting results for clarity.                                                                                 |
@@ -41,6 +43,7 @@ Below is a detailed table categorizing the essential and additional features of 
 | **Community Platform**           | Create a platform for users to add notes or communicate with AI.                                                                                                                                                                       |
 
 # 1. Code Structure
+
 ```bash
 > .github - Github Actions CICD Pipeline
     | cd.yml - continuous deployment workflow
@@ -65,6 +68,7 @@ docker-compose-prod.yml - docker-compose for PROD environment
 docker-compose.yml - docker-compose for LOCAL DEV environment
 Dockerfile - Frontend & Backend App docker container
 ```
+
 ---
 
 # 2. Useful development commands
@@ -89,6 +93,7 @@ Dockerfile - Frontend & Backend App docker container
 1. `npm test`: start unit test
 
 ---
+
 # 3. Important: How to set up local development environment
 
 ## 1. Install nvm
@@ -126,7 +131,6 @@ npm install
 
 ## 5. setup backend node project
 
-
 ```bash
 cd ../backend
 npm install
@@ -148,8 +152,8 @@ brew install docker
 
 # 4. How to run frontend react, backend node, mongodb in dev mode or as docker containers
 
-
 ## 1. Run mongodb & wiremock(docker-compose)
+
 Run this from Git Bash if you use Windows
 
 ```bash
@@ -193,10 +197,12 @@ Username: `dev`, Password:`dev`
 ---
 
 # 5.How to Build & Test Docker Image
+
 Note that you do not need to use the docker image for local development.
-The docker image is used for CI and PROD envs in docker-compose files. 
+The docker image is used for CI and PROD envs in docker-compose files.
 
 See `./scripts/start-ci.sh` and `./scripts/start-prod.sh`
+
 ## Build the image
 
 Run the following command under the root directory which builds a docker image `cs732-careless-crayfish` for react, node & mongodb
@@ -237,6 +243,7 @@ docker run -p 8001:3000 -p 8000:5000 -d cs732-careless-crayfish
 
 1. spin up backend node.
 2. spin up mongodb database through docker-compose
+
 ```
 cd ./backend
 npm run test:e2e
@@ -299,11 +306,13 @@ If you raise a pr, Github Actions will trigger the `./github/workflow/ci.yml` wo
 ---
 
 # 7. Deployment
+
 We deploy through Github Actions to an AWS EC2 instance. See `.github/workflows/cd.yml`
 
 Currently if you raise a pr, Github Actions will trigger a deployment(to make testing easier). See `./.github/workflows/cd.yml`
 
 ---
+
 # 8. Diagrams
 
 See WIKI: `https://aucklanduni-team-cs732.atlassian.net/wiki/spaces/~7120204c38f940a5504122b1690ed6e3788862/pages/1114115/cs732-careless-crayfish+WIKI#Technical-Documentations`
@@ -311,6 +320,7 @@ See WIKI: `https://aucklanduni-team-cs732.atlassian.net/wiki/spaces/~7120204c38f
 For sequence diagraming, this file `./diagrams/sequence-diagram.txt` has code that can be run on `https://sequencediagram.org/` to generate our sequence diagram.
 
 ---
+
 # 9. Q & A
 
 ### 1. sh command not found running npm commands
@@ -327,7 +337,10 @@ For sequence diagraming, this file `./diagrams/sequence-diagram.txt` has code th
 
 ![image](https://github.com/UOA-CS732-SE750-Students-2024/project-group-careless-crayfish/assets/29388401/6aa34ed0-1479-48f9-89a5-ea07a2cd48cb)
 
-### 4. I see you have local config/creds stored in the .env files, do you use different configs/creds for CI and EC2? 
+latest frontend url(at the time of writing): http://ec2-54-252-174-153.ap-southeast-2.compute.amazonaws.com:5000
+
+### 4. I see you have local config/creds stored in the .env files, do you use different configs/creds for CI and EC2?
 
 ##### A: See below screenshot where we store CI and EC2 configs/creds (you don't need to touch these unless you want to contribute):
+
 ![image](https://github.com/UOA-CS732-SE750-Students-2024/project-group-careless-crayfish/assets/29388401/4c32332d-afc6-4c0b-84cb-fd554ec9b361)

@@ -86,7 +86,7 @@ export const Voting = () => {
     const params = new URLSearchParams(url.search);
     const voteId = params.get("voteId");
     setPageTitle("Voting your favorite restaurant");
-    
+
     if (location.state) {
       setSelectedRestaurants(JSON.parse(location.state));
     }
@@ -106,7 +106,7 @@ export const Voting = () => {
         .then((res) => {
           setSelectedRestaurants([...res.recommend]);
           console.log(res);
-          setTitle(res.title)
+          setTitle(res.title);
           setStatus(res.status);
           setExpiryTime(res.endDate);
           if (
@@ -225,14 +225,6 @@ export const Voting = () => {
     setOpenSnackbar(false);
   };
 
-  const copyToClipboard = async () => {
-    try {
-      await navigator.clipboard.writeText(link);
-      alert("Link copied to clipboard!");
-    } catch (error) {
-      console.error("Failed to copy link: ", error);
-    }
-  };
   return (
     <Box
       pt={10}
@@ -466,15 +458,6 @@ export const Voting = () => {
               value={`${window.location.origin}/voting?voteId=${voteId}`}
               margin="normal"
             />
-
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={copyToClipboard}
-              sx={{ marginLeft: "10px" }}
-            >
-              Copy
-            </Button>
           </Box>
         )}
       </Container>
