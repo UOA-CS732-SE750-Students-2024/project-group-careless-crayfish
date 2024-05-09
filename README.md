@@ -40,6 +40,29 @@ Below is a detailed table categorizing the essential and additional features of 
 | **Search Bar for History Votes** | Permit users to search and review past voting records and activity histories, refining searches by date and location.                                                                                                                                   |
 | **Community Platform**           | Create a community platform for users to share experiences, discuss venues, and provide post-event feedback. Allow users to post voting links in the community.                                                                                         |
 
+# Code Structure
+```bash
+> .github - Github Actions CICD Pipeline
+    | cd.yml - continuous deployment workflow
+    | ci.yml - continuous integration workflow
+> backend - Node & Express & MongoDB code
+    | .env local node config/creds
+    | package.json - backend dependencies
+> diagrams
+    | sequence-diagram.txt - sequence diagram code
+> frontend - Vite React
+    | .env local frontend config/creds
+    | package.json - frontend dependencies
+> infrastructure AWS CDK TypeScript
+    | package.json - AWS CDK dependencies
+> scripts - useful scripts for local dev, CI and CD
+> wiremock - API tests
+.env - MONGODB local config/creds
+docker-compose-ci.yml - docker-compose for CI environment
+docker-compose-prod.yml - docker-compose for PROD environment
+docker-compose.yml - docker-compose for LOCAL DEV environment
+Dockerfile - Frontend & Backend App docker container
+```
 ---
 
 # 2. Useful development commands
@@ -64,7 +87,6 @@ Below is a detailed table categorizing the essential and additional features of 
 1. `npm test`: start unit test
 
 ---
-
 # 3. Important: How to set up local development environment
 
 ## 1. Install nvm
