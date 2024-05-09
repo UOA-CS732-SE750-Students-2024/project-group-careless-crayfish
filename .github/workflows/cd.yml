@@ -2,6 +2,7 @@ name: CD
 permissions:
   id-token: write
   contents: read
+# triggers on pull_request for ease of testing
 on:
   pull_request:
 
