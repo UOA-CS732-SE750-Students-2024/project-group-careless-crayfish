@@ -95,7 +95,18 @@ export const Profile = () => {
         </Typography>
         {!votes && <Typography>No voting history</Typography>}
         {votes
-          .sort((a, b) => a - b)
+          .sort((a, b) => {
+            const dateA = new Date(a.startDate);
+            const dateB = new Date(b.startDate);
+
+            if (dateA < dateB) {
+              return 1; // b should come before a
+            } else if (dateA > dateB) {
+              return -1; // a should come before b
+            } else {
+              return 0; // dates are equal
+            }
+          })
           .map((vote, index) => {
             // Sort the recommend array in descending order based on the count property
             const sortedRecommend = vote.recommend.sort(
