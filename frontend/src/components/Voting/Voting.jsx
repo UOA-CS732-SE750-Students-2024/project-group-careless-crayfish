@@ -30,6 +30,7 @@ import { useAPI, useAuth, useRoute } from "../GlobalProviders";
 import { v4 } from "uuid";
 import MuiAlert from "@mui/material/Alert";
 import CloseIcon from "@mui/icons-material/Close";
+import CountDownWapper from "./timer";
 export const Voting = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -47,6 +48,17 @@ export const Voting = () => {
   const [link, setLink] = useState(
     `${window.location.origin}/voting?voteId=${voteId}`,
   );
+  // get current time，format datetime-local
+  const now = new Date();
+  const formattedNow = formatDateTimeLocal(now);
+
+  // calculate the time after 24h
+  const maxTime = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+  const formattedMaxTime = formatDateTimeLocal(maxTime);
+
+  function formatDateTimeLocal(date) {
+    return date.toISOString().slice(0, 16);
+  }
   const { user } = useAuth();
   const handleExpandClick = (index) => {
     setExpanded((prevState) => {
@@ -96,7 +108,7 @@ export const Voting = () => {
           console.log(res);
           setTitle(res.title)
           setStatus(res.status);
-
+          setExpiryTime(res.endDate);
           if (
             new Date(res.endDate).getTime() < new Date().getTime() ||
             res.status
@@ -114,7 +126,7 @@ export const Voting = () => {
       return;
     }
     setVotedIndex(index);
-    selectedRestaurants[index].count++;
+    //selectedRestaurants[index].count++;
   };
 
   const handleVote = async () => {
@@ -122,6 +134,10 @@ export const Voting = () => {
       showMessage("You already voted", "error");
       return;
     }
+    if (!votedIndex && votedIndex !== 0) {
+      showMessage("Please select votes", "error");
+    }
+    selectedRestaurants[votedIndex].count++;
     const sendData = {
       voteId,
       recommend: selectedRestaurants,
@@ -218,7 +234,16 @@ export const Voting = () => {
     }
   };
   return (
-    <Box pt={10} pb={10}>
+    <Box
+      pt={10}
+      pb={10}
+      sx={{
+        background:
+          theme.palette.mode === "light"
+            ? "linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.99)), url('/landing/restaurant.png')"
+            : theme.palette.background.default,
+      }}
+    >
       <Container maxWidth="md">
         <Snackbar
           ClickAwayListenerProps={{ mouseEvent: false }}
@@ -266,6 +291,12 @@ export const Voting = () => {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               margin="normal"
+              sx={{
+                background:
+                  theme.palette.mode === "light"
+                    ? "linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.99))"
+                    : "rgba(90, 90, 90, 0.9)",
+              }}
             />
 
             <TextField
@@ -277,7 +308,17 @@ export const Voting = () => {
               InputLabelProps={{
                 shrink: true,
               }}
+              inputProps={{
+                min: formattedNow,
+                max: formattedMaxTime,
+              }}
               margin="normal"
+              sx={{
+                background:
+                  theme.palette.mode === "light"
+                    ? "linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.99))"
+                    : "rgba(90, 90, 90, 0.9)",
+              }}
             />
             <Button variant="contained" color="primary" onClick={createVote}>
               Create Vote With the above Options!
@@ -296,7 +337,24 @@ export const Voting = () => {
               sx={{ paddingLeft: 0, paddingRight: 0 }}
               key={restaurant.name + v4()}
             >
-              <Card>
+              <Card
+                sx={{
+                  mb: 2,
+                  p: 2,
+                  background:
+                    index === votedIndex && voted
+                      ? `linear-gradient(${
+                          theme.palette.mode === "light"
+                            ? "rgba(230, 255, 230, 0.9), rgba(255, 255, 255, 0.99)"
+                            : "rgba(60, 60, 60, 0.9), rgba(30, 30, 30, 0.99)"
+                        })`
+                      : `linear-gradient(${
+                          theme.palette.mode === "light"
+                            ? "rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.99)"
+                            : "rgba(90, 90, 90, 0.9), rgba(60, 60, 60, 0.99)"
+                        })`,
+                }}
+              >
                 <CardHeader
                   title={restaurant.name}
                   subheader={restaurant.location}
@@ -313,14 +371,21 @@ export const Voting = () => {
                   </Typography>
                 </CardContent>
                 <CardActions disableSpacing>
-                  {voteId && !status && (
+                  {/* votedId indicate vote already created */}
+                  {/* status == true => session end */}
+                  {voteId && (
                     <Button
                       variant="contained"
                       onClick={() => incrementVote(index)}
                       disabled={!voteId || status || voted}
                     >
-                      {index === votedIndex ? "Voted" : "Vote"}{" "}
-                      {restaurant.count}
+                      {!status &&
+                        (voted
+                          ? `Voted: ${restaurant.count}`
+                          : index === votedIndex
+                            ? "Voted"
+                            : "Vote")}
+                      {status && `Voted: ${restaurant.count}`}
                     </Button>
                   )}
                   <IconButton
@@ -346,7 +411,7 @@ export const Voting = () => {
                 <Collapse in={expanded[index]} timeout="auto" unmountOnExit>
                   <CardContent>
                     <Typography paragraph>Open Hours</Typography>
-                    {typeof restaurant.openHours === 'string' ? (
+                    {typeof restaurant.openHours === "string" ? (
                       <div>{restaurant.openHours}</div>
                     ) : (
                       Object.keys(restaurant.openHours).map((key) => (
@@ -370,9 +435,24 @@ export const Voting = () => {
               </Button>
             )}
             {voteId && !status && (
-              <Button variant="contained" color="error" onClick={endVote}>
-                End now
-              </Button>
+              <>
+                <Button variant="contained" color="error" onClick={endVote}>
+                  End now
+                </Button>
+                <Button className="countdown">
+                  Session end:
+                  <span
+                    className="lastTime"
+                    style={{ margin: "10px", fontSize: "16px", color: "blue" }}
+                  >
+                    <CountDownWapper
+                      expire={expiryTime}
+                      showDomStruct={true}
+                      onExpire={endVote}
+                    />
+                  </span>
+                </Button>
+              </>
             )}
           </Stack>
         </Box>

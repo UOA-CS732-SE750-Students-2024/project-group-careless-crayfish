@@ -123,7 +123,7 @@ brew install docker
 
 # 4. How to run frontend react, backend node, mongodb in dev mode or as docker containers
 
-## 1. Run mongodb & wiremock
+## 1. Run mongodb & wiremock(docker-compose)
 
 Run this from Git Bash if you use Windows
 
@@ -167,8 +167,11 @@ Username: `dev`, Password:`dev`
 
 ---
 
-# 5. Build Docker Image
+# 5.How to Build & Test Docker Image
+Note that you do not need to use the docker image for local development.
+The docker image is used for CI and PROD envs in docker-compose files. 
 
+See `./scripts/start-ci.sh` and `./scripts/start-prod.sh`
 ## Build the image
 
 Run the following command under the root directory which builds a docker image `cs732-careless-crayfish` for react, node & mongodb
