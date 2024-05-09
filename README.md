@@ -30,15 +30,15 @@ Below is a detailed table categorizing the essential and additional features of 
 
 ## Feature Details
 
-| Feature                          | Description                                                                                                                                                                                                                                             |
-| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-|                                  |                                                                                                                                                                                                                                                         |
-| **Recommendations**              | Utilize GPS to determine user location; allow users to select party type (e.g., food, shopping, natural scenery, exhibition) and input details like number of people, age range, and expected time; recommend appropriate venues based on these inputs. |
-| **Votes**                        | Enable voting on recommended locations; set a deadline for votes; count votes to select the final gathering place; display voting results for clarity.                                                                                                  |
-| **Support Sign-up & Login**      | Enable login via third-party accounts such as Google or Microsoft for ease.                                                                                                                                                                             |
-| **Keep User Status**             | Allow users to resume previous activities upon re-login and retain state and activity history like voting records and preferences.                                                                                                                      |
-| **Search Bar for History Votes** | Permit users to search and review past voting records and activity histories, refining searches by date and location.                                                                                                                                   |
-| **Community Platform**           | Create a community platform for users to share experiences, discuss venues, and provide post-event feedback. Allow users to post voting links in the community.                                                                                         |
+| Feature                          | Description                                                                                                                                                                                                                            |
+| -------------------------------- |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|                                  |                                                                                                                                                                                                                                        |
+| **Recommendations**              | Utilize GPS to determine user location; allow users to select party type (e.g., food, club, sports, exhibition) and input details like cuisine type, age range, and expected time; recommend appropriate venues based on these inputs. |
+| **Votes**                        | Enable voting on recommended locations; set a deadline for votes; count votes to select the final gathering place; display voting results for clarity.                                                                                 |
+| **Support Sign-up & Login**      | Enable login via third-party accounts such as Google or Microsoft for ease.                                                                                                                                                            |
+| **Keep User Status**             | Allow users to resume previous activities upon re-login and retain state and activity history like voting records and preferences.                                                                                                     |
+| **Search Bar for History Votes** | Permit users to search and review past voting records and activity histories, refining searches by date and location.                                                                                                                  |
+| **Community Platform**           | Create a platform for users to add notes or communicate with AI.                                                                                                                                                                       |
 
 # 1. Code Structure
 ```bash
@@ -108,7 +108,7 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 
 ```bash
 nvm install 20.11.1
-nvm use
+nvm use 20.11.1
 ```
 
 ## 3. Install nodemon globally
@@ -128,7 +128,7 @@ npm install
 
 
 ```bash
-cd ./backend
+cd ../backend
 npm install
 ```
 
