@@ -124,6 +124,7 @@ npm install
 
 ## 5. setup backend node project
 
+
 ```bash
 cd ./backend
 npm install
@@ -145,8 +146,8 @@ brew install docker
 
 # 4. How to run frontend react, backend node, mongodb in dev mode or as docker containers
 
-## 1. Run mongodb & wiremock(docker-compose)
 
+## 1. Run mongodb & wiremock(docker-compose)
 Run this from Git Bash if you use Windows
 
 ```bash
@@ -233,8 +234,7 @@ docker run -p 8001:3000 -p 8000:5000 -d cs732-careless-crayfish
 ## Backend api integration tests
 
 1. spin up backend node.
-2. spin up mongodb database docker container
-
+2. spin up mongodb database through docker-compose
 ```
 cd ./backend
 npm run test:e2e
@@ -285,28 +285,31 @@ install playwright and chromium
 npx playwright install --with-deps chromium
 ```
 
-Ensure you have spinned up react, node servers & mongodb containers locally. If you have not, follow the `How to start local development` guide above.
+Ensure you have spinned up react, node servers & mongodb docker containers locally. If you have not, follow the `4. How to run frontend react, backend node, mongodb in dev mode or as docker containers` guide above.
 
 under project root folder:
 
 1. `cd e2eTests`
 2. `npm run test:e2e`
 
-If you raise a pr, Github Actions will trigger with the `./.github/workflow/ci.yml` workflow which runs all automated tests
+If you raise a pr, Github Actions will trigger the `./github/workflow/ci.yml` workflow which runs all automated tests
 
 ---
 
 # 7. Deployment
+We deploy through Github Actions to an AWS EC2 instance. See `.github/workflows/cd.yml`
 
 Currently if you raise a pr, Github Actions will trigger a deployment(to make testing easier). See `./.github/workflows/cd.yml`
 
+---
 # 8. Diagrams
 
 See WIKI: `https://aucklanduni-team-cs732.atlassian.net/wiki/spaces/~7120204c38f940a5504122b1690ed6e3788862/pages/1114115/cs732-careless-crayfish+WIKI#Technical-Documentations`
 
 For sequence diagraming, this file `./diagrams/sequence-diagram.txt` has code that can be run on `https://sequencediagram.org/` to generate our sequence diagram.
 
-# Q & A
+---
+# 9. Q & A
 
 ### 1. sh command not found running npm commands
 
