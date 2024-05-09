@@ -1,7 +1,9 @@
 # COMPSCI 732 / SOFTENG 750 Project - Team Careless Crayfish
 
 ---
-
+# Deployment url
+latest frontend url(at the time of writing): `http://ec2-54-252-174-153.ap-southeast-2.compute.amazonaws.com:5000`
+If this is not working, checkout the Q&A section: `3. How do I access latest deployed website`
 # **FindMe**
 
 > A web application designed to simplify the process of organizing social gatherings after work or school.

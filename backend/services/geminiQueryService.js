@@ -10,7 +10,7 @@ async function fetchRestaurantRecommendations(location, ageGroup, cuisine) {
   const headers = {
     "Content-Type": "application/json",
   };
-  
+
   location = location ? location : "University Of Auckland";
 
   const queryStr = `recommend me 5 ${cuisine} restaurants around ${location} for ${ageGroup} age group, return it in JSON format [(name, location, priceRange, websiteUrl, detailIntroduction, openHours)]`;
@@ -69,7 +69,6 @@ async function getAIComment({ userId, voteId, comment }) {
   // eslint-disable-next-line no-undef
   const apiKey = process.env.API_KEY || "";
 
-
   const headers = {
     "Content-Type": "application/json",
   };
@@ -79,7 +78,10 @@ async function getAIComment({ userId, voteId, comment }) {
       {
         parts: [
           {
-            text: `Reply to this comment:"${comment}"`,
+            text: `You are the chatbot of a Restaurant Recommendations and voting app. 
+            You are gathering user feedback on a voting result.
+            User might say "this resaurant does not have gluten free option" for example and you must comfort the user and take note of this feedback.
+            Reply to this comment:"${comment}"`,
           },
         ],
       },
