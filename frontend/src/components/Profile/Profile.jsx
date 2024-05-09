@@ -94,105 +94,113 @@ export const Profile = () => {
           Voting history for {user.userName}
         </Typography>
         {!votes && <Typography>No voting history</Typography>}
-        {votes.map((vote, index) => {
-          // Sort the recommend array in descending order based on the count property
-          const sortedRecommend = vote.recommend.sort(
-            (a, b) => b.count - a.count,
-          );
-          const highestCount =
-            sortedRecommend.length > 0 ? sortedRecommend[0].count : 0;
-          return (
-            <List key={vote._id + v4()}>
-              <Typography variant="h4" component="h1" gutterBottom>
-                Vote title: {vote.title}
-              </Typography>
-              {sortedRecommend.map((restaurant, idx) => (
-                <ListItem
-                  sx={{ paddingLeft: 0, paddingRight: 0 }}
-                  key={restaurant.name + v4()}
-                >
-                  <Card>
-                    <CardHeader
-                      title={restaurant.name}
-                      subheader={restaurant.location}
-                      action={
-                        // Added action prop for avatar
-                        <Avatar
-                          sx={{
-                            bgcolor:
-                              restaurant.count === highestCount
-                                ? "green"
-                                : "primary.main",
-                            color: "white",
-                          }}
-                        >
-                          {restaurant.count}
-                        </Avatar>
-                      }
-                    />
-                    <CardMedia
-                      component="img"
-                      height="200"
-                      image={restaurant.imageUrl}
-                      alt={restaurant.name}
-                    />
-                    <CardContent>
-                      <Typography variant="body2" color="text.secondary">
-                        {restaurant.detailIntroduction}
-                      </Typography>
-                    </CardContent>
-                    <CardActions disableSpacing>
-                      {restaurant.count == highestCount && idx == 0 && (
-                        <Tooltip title={"Open votes dialog"}>
-                          <IconButton
-                            variant="contained"
-                            color="primary"
-                            onClick={() => handleToggleCommentsDialog(vote._id)}
+        {votes
+          .sort((a, b) => a - b)
+          .map((vote, index) => {
+            // Sort the recommend array in descending order based on the count property
+            const sortedRecommend = vote.recommend.sort(
+              (a, b) => b.count - a.count,
+            );
+            const highestCount =
+              sortedRecommend.length > 0 ? sortedRecommend[0].count : 0;
+            return (
+              <List key={vote._id + v4()}>
+                <Typography variant="h4" component="h1" gutterBottom>
+                  Vote title: {vote.title}
+                </Typography>
+                {sortedRecommend.map((restaurant, idx) => (
+                  <ListItem
+                    sx={{ paddingLeft: 0, paddingRight: 0 }}
+                    key={restaurant.name + v4()}
+                  >
+                    <Card>
+                      <CardHeader
+                        title={restaurant.name}
+                        subheader={restaurant.location}
+                        action={
+                          // Added action prop for avatar
+                          <Avatar
+                            sx={{
+                              bgcolor:
+                                restaurant.count === highestCount
+                                  ? "green"
+                                  : "primary.main",
+                              color: "white",
+                            }}
                           >
-                            <CommentIcon />
-                          </IconButton>
-                        </Tooltip>
-                      )}
-                      <IconButton
-                        aria-label="open map"
-                        onClick={() => window.open(restaurant.mapUrl)}
-                      >
-                        <MapIcon />
-                      </IconButton>
-                      <IconButton
-                        aria-label="open website"
-                        onClick={() => window.open(restaurant.websiteUrl)}
-                      >
-                        <HomeIcon />
-                      </IconButton>
-                      <IconButton
-                        onClick={() => handleExpandClick(index)}
-                        aria-expanded={expanded[index]}
-                        aria-label="show more"
-                      >
-                        <ExpandMoreIcon />
-                      </IconButton>
-                    </CardActions>
-                    <Collapse in={expanded[index]} timeout="auto" unmountOnExit>
+                            {restaurant.count}
+                          </Avatar>
+                        }
+                      />
+                      <CardMedia
+                        component="img"
+                        height="200"
+                        image={restaurant.imageUrl}
+                        alt={restaurant.name}
+                      />
                       <CardContent>
-                        <Typography paragraph>Open Hours</Typography>
-                        {typeof restaurant.openHours === "string" ? (
-                          <div>{restaurant.openHours}</div>
-                        ) : (
-                          Object.keys(restaurant.openHours).map((key) => (
-                            <div key={key}>
-                              {key} : {restaurant.openHours[key]}
-                            </div>
-                          ))
-                        )}
+                        <Typography variant="body2" color="text.secondary">
+                          {restaurant.detailIntroduction}
+                        </Typography>
                       </CardContent>
-                    </Collapse>
-                  </Card>
-                </ListItem>
-              ))}
-            </List>
-          );
-        })}
+                      <CardActions disableSpacing>
+                        {restaurant.count == highestCount && idx == 0 && (
+                          <Tooltip title={"Open votes dialog"}>
+                            <IconButton
+                              variant="contained"
+                              color="primary"
+                              onClick={() =>
+                                handleToggleCommentsDialog(vote._id)
+                              }
+                            >
+                              <CommentIcon />
+                            </IconButton>
+                          </Tooltip>
+                        )}
+                        <IconButton
+                          aria-label="open map"
+                          onClick={() => window.open(restaurant.mapUrl)}
+                        >
+                          <MapIcon />
+                        </IconButton>
+                        <IconButton
+                          aria-label="open website"
+                          onClick={() => window.open(restaurant.websiteUrl)}
+                        >
+                          <HomeIcon />
+                        </IconButton>
+                        <IconButton
+                          onClick={() => handleExpandClick(index)}
+                          aria-expanded={expanded[index]}
+                          aria-label="show more"
+                        >
+                          <ExpandMoreIcon />
+                        </IconButton>
+                      </CardActions>
+                      <Collapse
+                        in={expanded[index]}
+                        timeout="auto"
+                        unmountOnExit
+                      >
+                        <CardContent>
+                          <Typography paragraph>Open Hours</Typography>
+                          {typeof restaurant.openHours === "string" ? (
+                            <div>{restaurant.openHours}</div>
+                          ) : (
+                            Object.keys(restaurant.openHours).map((key) => (
+                              <div key={key}>
+                                {key} : {restaurant.openHours[key]}
+                              </div>
+                            ))
+                          )}
+                        </CardContent>
+                      </Collapse>
+                    </Card>
+                  </ListItem>
+                ))}
+              </List>
+            );
+          })}
         <CommentDialogPaginated
           openComments={openComments}
           setOpenComments={setOpenComments}
