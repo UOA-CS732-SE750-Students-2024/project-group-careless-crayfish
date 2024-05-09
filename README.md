@@ -24,7 +24,7 @@ Our project is developed for both mobile and web platforms but mainly focusing o
 
 ---
 
-# 1. Features Overview
+# Features Overview
 
 Below is a detailed table categorizing the essential and additional features of our web application designed to streamline organizing social gatherings after work or school. Each feature is listed along with a detailed description.
 
@@ -40,7 +40,7 @@ Below is a detailed table categorizing the essential and additional features of 
 | **Search Bar for History Votes** | Permit users to search and review past voting records and activity histories, refining searches by date and location.                                                                                                                                   |
 | **Community Platform**           | Create a community platform for users to share experiences, discuss venues, and provide post-event feedback. Allow users to post voting links in the community.                                                                                         |
 
-# Code Structure
+# 1. Code Structure
 ```bash
 > .github - Github Actions CICD Pipeline
     | cd.yml - continuous deployment workflow
@@ -56,7 +56,7 @@ Below is a detailed table categorizing the essential and additional features of 
 > infrastructure AWS CDK TypeScript
     | package.json - AWS CDK dependencies
 > scripts - useful scripts for local dev, CI and CD
-> wiremock - API tests
+> wiremock - mock gemini ai response for local dev
 .env - MONGODB local config/creds
 docker-compose-ci.yml - docker-compose for CI environment
 docker-compose-prod.yml - docker-compose for PROD environment
