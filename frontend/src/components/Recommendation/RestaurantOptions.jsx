@@ -139,6 +139,7 @@ export const RestaurantOptions = () => {
             variant="contained"
             color="primary"
             sx={{ display: "block", width: "auto", marginTop: 2 }}
+            id="get-recommended-restaurant"
           >
             Get Recommended Restaurant
           </Button>

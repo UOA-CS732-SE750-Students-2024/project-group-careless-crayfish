@@ -13,7 +13,9 @@ const commentSchema = new mongoose.Schema({
   userAvatarUrl: { type: String },
   default: [],
 });
-
+commentSchema.index({ voteId: 1 });
+commentSchema.index({ userId: 1 });
+commentSchema.index({ commentId: 1 });
 commentSchema.index({ creationDate: -1 }); // create an index for getting comments backwards by creation date.
 
 module.exports = mongoose.model("Comment", commentSchema);

@@ -87,12 +87,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20.11.1" # latest LTS at the time this is written.
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps chromium
-      - name: build playwright
-        working-directory: "./e2eTests"
-        run: |
-          npm ci
           
       - name: Set frontend envs
         working-directory: "./frontend"
@@ -109,16 +103,13 @@ jobs:
           echo "MONGO_SERVER=$MONGO_SERVER" >> .env
           echo "MONGO_USERNAME=$MONGO_USERNAME" >> .env
           echo "MONGO_PASSWORD=$MONGO_PASSWORD" >> .env
-          echo "API_KEY=$API_KEY" >> .env
           echo "API_URL=$API_URL" >> .env
-
         env:
           # node creds
           MONGO_SERVER: mongo
           MONGO_USERNAME: ${{ secrets.MONGO_USERNAME }}
           MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
-          API_KEY: ${{ secrets.API_KEY }}
-          API_URL: https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=
+          API_URL: http://localhost:8081/v1beta/models/gemini-pro:generateContent?key=
       - name: Set docker-compose configs
         working-directory: "./"
         run: |
@@ -161,12 +152,13 @@ jobs:
           npm install -g wait-on
           npx wait-on http://localhost:5000/ --timeout 120000
           npx wait-on http://localhost:3000/api/api-docs --timeout 120000
-
-      - name: Run Playwright E2E tests
+      - name: Build and Run Playwright E2E tests
         working-directory: "./e2eTests"
         run: |
           echo "REACT_APP_URL=$REACT_APP_URL" >> .env
           echo "BACKEND_API_URL=$BACKEND_API_URL" >> .env
+          npm install
+          npx playwright install --with-deps chromium
           npm run test:e2e
         env:
           REACT_APP_URL: http://localhost:5000

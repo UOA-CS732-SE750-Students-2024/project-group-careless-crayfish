@@ -98,6 +98,40 @@ const AuthProvider = ({ children }) => {
       userResp && userResp.data && setUser(userResp.data);
     }
   };
+  const handleSkipLogin = async (response) => {
+    setItem("accessToken", "blabla");
+    setAccessToken("blabla");
+    const googleUserResp = await get(
+      `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${response.access_token}`,
+      {
+        headers: {
+          Authorization: `Bearer ${response.access_token}`,
+          Accept: "application/json",
+        },
+      },
+    );
+    const googleUser = {
+      id: "106433914132318818488",
+      email: "mark19960630@gmail.com",
+      verified_email: true,
+      name: "Mark Zhu",
+      given_name: "Mark",
+      family_name: "Zhu",
+      picture:
+        "https://lh3.googleusercontent.com/a/ACg8ocL1CnsdsiZGRl0mnNSV7NzhsU3aELVfi44QXRY3DgLLYfjF=s96-c",
+      locale: "en",
+    };
+
+    const personInfo = {
+      email: googleUser.email,
+      name: googleUser.name,
+      imageUrl: googleUser.picture,
+      accessToken: response.access_token,
+      userId: googleUser.id,
+    };
+
+    processLogin(personInfo);
+  };
   const handleLogin = async (response) => {
     setItem("accessToken", response.access_token);
     setAccessToken(response.access_token);
@@ -140,6 +174,7 @@ const AuthProvider = ({ children }) => {
         setUser,
         handleLogin,
         googleLogin,
+        handleSkipLogin,
       }}
     >
       {children}
